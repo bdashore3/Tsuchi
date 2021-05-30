@@ -1,8 +1,8 @@
 {
-  "name": "MangaUpdates-ts",
+  "name": "manga-updates",
   "version": "1.0.0",
   "main": "dist/src/index.js",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "scripts": {
     "build": "tsc",
     "start": "yarn build && node dist/src/index.js",
