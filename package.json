@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc",
+    "start": "yarn build && node dist/src/index.js",
     "scrapeBackup": "yarn build && node dist/src/PBBackupEncoder/index.js",
     "lint": "eslint --ext .ts ."
   },
