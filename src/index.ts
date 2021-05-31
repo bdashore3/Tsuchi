@@ -1,9 +1,12 @@
+import { fetchMangaLife } from './SourceUpdates/MangaLife';
+
 if (require.main === module) {
     main();
 }
 
 // Future home for web server
 
-function main() {
-    console.log('Nothing here yet!');
+async function main() {
+    // Fetches update json from Manga4Life
+    console.log(await fetchMangaLife());
 }
