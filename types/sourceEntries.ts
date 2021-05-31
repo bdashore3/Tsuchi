@@ -1,7 +1,7 @@
 // Generic type that will be used by all sources and notification handlers.
 export type MangaPacket = {
     Name: string;
-    Chatper: string;
+    Chapter: string;
     TimeElapsed: number; // in Minutes
     Source: string;
 };

@@ -29,7 +29,7 @@ export async function fetchMangaFox(): Promise<Array<MangaPacket>> {
 
         const mangapacket: MangaPacket = {
             Name: title,
-            Chatper: chapter,
+            Chapter: chapter,
             TimeElapsed: time,
             Source: 'MangaFox'
         };
