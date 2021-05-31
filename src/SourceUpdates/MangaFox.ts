@@ -22,10 +22,15 @@ export async function fetchMangaFox(): Promise<Array<MangaPacket>> {
         const chapter = subtitle.split(' ').slice(0, 3).join(' ');
         const time_string = subtitle.split(' ').slice(3).join(' ');
 
+        const time = calculateTime(time_string);
+        if (time > 61) {
+            break;
+        }
+
         const mangapacket: MangaPacket = {
             Name: title,
             Chatper: chapter,
-            TimeElapsed: calculateTime(time_string),
+            TimeElapsed: time,
             Source: 'MangaFox'
         };
         mangaFoxUpdates.push(mangapacket);
