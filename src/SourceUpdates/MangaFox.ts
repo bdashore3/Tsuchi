@@ -1,12 +1,12 @@
 import axios from 'axios';
 import cheerio from 'cheerio';
-import { MangaFoxEntry } from 'types/sourceEntries';
+import { MangaPacket } from 'types/sourceEntries';
 
-export async function fetchMangaFox(): Promise<Array<MangaFoxEntry>> {
+export async function fetchMangaFox(): Promise<Array<MangaPacket>> {
 
     const baseDomain = 'https://fanfox.net/releases/';
 
-    const mangaFoxUpdates: Array<MangaFoxEntry> = [];
+    const mangaFoxUpdates: Array<MangaPacket> = [];
 
     const html = await axios.get(baseDomain);
     const $ = cheerio.load(html.data, {
@@ -22,15 +22,15 @@ export async function fetchMangaFox(): Promise<Array<MangaFoxEntry>> {
         const subtitle: string = $('.manga-list-4-item-subtitle', manga).text().trim();
 
         var chapter = subtitle.split(' ').slice(0,3).join(' ');
-        var time = subtitle.split(' ').slice(3).join(' ');
+        var time_string = subtitle.split(' ').slice(3).join(' ');
 
-        const mangaJson: MangaFoxEntry = {
-            SeriesName: title,
+        const mangapacket: MangaPacket = {
+            Name: title,
             Chatper: chapter,
-            Release: time,
-            TimeElapsed: calculateTime(time)
+            TimeElapsed: calculateTime(time_string),
+            Source: 'MangaFox'
         }
-        mangaFoxUpdates.push(mangaJson)
+        mangaFoxUpdates.push(mangapacket)
     }
     
     return mangaFoxUpdates;
@@ -46,6 +46,8 @@ function calculateTime(time: string): number {
         timeElapsed = int * 60;
     } else if (arr[1] == 'minutes') {
         timeElapsed = int;
+    } else {
+        timeElapsed = int * 1440
     }
     return timeElapsed
 }
