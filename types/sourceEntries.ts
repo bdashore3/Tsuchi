@@ -9,9 +9,10 @@ export type MangaLifeEntry = {
     IsEdd: boolean;
 };
 
-export type MangaFoxEntry = {
-    SeriesName: string;
+// Generic type that will be used by all sources and notification handlers.
+export type MangaPacket = {
+    Name: string;
     Chatper: string;
-    Release: string;
-    TimeElapsed: number
-};
+    TimeElapsed: number; // in Minutes
+    Source: string;
+}
