@@ -9,5 +9,6 @@ export class Ifttt {
     async sendNotification(mangapacket: MangaPacket): Promise<void> {
 
         var a;
+        var b;
     }
 }
