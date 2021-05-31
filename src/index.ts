@@ -1,3 +1,4 @@
+import { fetchMangaFox } from './SourceUpdates/MangaFox';
 import { fetchMangaLife } from './SourceUpdates/MangaLife';
 
 if (require.main === module) {
@@ -9,4 +10,7 @@ if (require.main === module) {
 async function main() {
     // Fetches update json from Manga4Life
     console.log(await fetchMangaLife());
+
+    // Fetches update json from MangaFox
+    console.log(await fetchMangaFox());
 }

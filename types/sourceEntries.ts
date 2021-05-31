@@ -8,3 +8,10 @@ export type MangaLifeEntry = {
     Date: string;
     IsEdd: boolean;
 };
+
+export type MangaFoxEntry = {
+    SeriesName: string;
+    Chatper: string;
+    Release: string;
+    TimeElapsed: number
+};
