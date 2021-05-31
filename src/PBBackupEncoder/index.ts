@@ -1,6 +1,6 @@
 import fs from 'fs';
 import promptSync from 'prompt-sync';
-import { MangaJson } from 'types/mangaJson';
+import { MangaEntry, UserJson } from 'types/userJson';
 import { Library, PBBackup, SourceMangas } from 'types/paperbackBackup';
 
 if (require.main === module) {
@@ -28,11 +28,11 @@ function main() {
 
     const uuids = getUuids(backupJson);
 
-    const titles = genSourceList(backupJson, uuids);
+    const mangas = genSourceList(backupJson, uuids);
 
-    const mangaJson: MangaJson = {
+    const mangaJson: UserJson = {
         user: username,
-        titles: titles
+        mangas: mangas
     };
 
     fs.writeFileSync('backupDump/encodedManga.json', JSON.stringify(mangaJson, null, 2));
@@ -54,12 +54,15 @@ function getUuids(rawJson: PBBackup): Array<string> {
  *
  * Then saves the titles and returns them
  */
-function genSourceList(rawJson: PBBackup, uuids: Array<string>): Array<string> {
-    const titles: Array<string> = [];
+function genSourceList(rawJson: PBBackup, uuids: Array<string>): Array<MangaEntry> {
+    const titles: Array<MangaEntry> = [];
 
     rawJson.sourceMangas.forEach((element: SourceMangas) => {
         if (uuids.includes(element.manga.id)) {
-            titles.push(element.manga.titles[0]);
+            titles.push({
+                title: element.manga.titles[0],
+                source: element.sourceId
+            });
         }
     });
 
