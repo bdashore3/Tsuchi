@@ -1,3 +1,11 @@
+// Generic type that will be used by all sources and notification handlers.
+export type MangaPacket = {
+    Name: string;
+    Chatper: string;
+    TimeElapsed: number; // in Minutes
+    Source: string;
+};
+
 export type MangaLifeEntry = {
     SeriesId: string;
     IndexName: string;
@@ -8,11 +16,3 @@ export type MangaLifeEntry = {
     Date: string;
     IsEdd: boolean;
 };
-
-// Generic type that will be used by all sources and notification handlers.
-export type MangaPacket = {
-    Name: string;
-    Chatper: string;
-    TimeElapsed: number; // in Minutes
-    Source: string;
-}
