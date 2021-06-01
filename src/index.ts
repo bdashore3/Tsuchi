@@ -5,6 +5,7 @@ import { fetchMangaDex } from './SourceUpdates/MangaDex';
 import { checkCache, flushCache, updateCache } from './cache';
 import { fetchMangaFox } from './SourceUpdates/MangaFox';
 import { fetchMangaLife } from './SourceUpdates/MangaLife';
+import sendIfttt from './NotificationHandler/ifttt';
 
 if (require.main === module) {
     main();
@@ -13,7 +14,7 @@ if (require.main === module) {
 async function main() {
     const flushCacheTask = setInterval(() => flushCache(), 5000);
 
-    // Manga entry for testing the filter system
+    /* Manga entry for testing the filter system */
     /*
     const testEntry: MangaPacket = {
         Name: 'My Hero Academia',
@@ -65,7 +66,20 @@ async function main() {
 
                 // Placeholder for sending logic
                 console.log(`Sending chapter: ${updateResult.Chapter} of ${updateResult.Name}`);
+
+                await handleServices(userConfig, updateResult);
             }
+        }
+    });
+}
+
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+async function handleServices(userConfig: UserJson, payload: MangaPacket) {
+    userConfig.services.forEach(async (name) => {
+        switch (name) {
+            case 'ifttt':
+                await sendIfttt(userConfig.ifttt!.event_name, userConfig.ifttt!.key, payload);
+                break;
         }
     });
 }

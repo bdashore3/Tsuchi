@@ -32,7 +32,8 @@ function main() {
 
     const mangaJson: UserJson = {
         user: username,
-        mangas: mangas
+        mangas: mangas,
+        services: []
     };
 
     fs.writeFileSync('backupDump/encodedManga.json', JSON.stringify(mangaJson, null, 2));
