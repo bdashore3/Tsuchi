@@ -6,6 +6,7 @@ import { checkCache, flushCache, updateCache } from './cache';
 import { fetchMangaFox } from './SourceUpdates/MangaFox';
 import { fetchMangaLife } from './SourceUpdates/MangaLife';
 import sendIfttt from './NotificationHandler/ifttt';
+import sendSpontit from './NotificationHandler/spontit';
 
 if (require.main === module) {
     main();
@@ -79,6 +80,13 @@ function handleServices(userConfig: UserJson, payload: MangaPacket) {
         switch (name) {
             case 'ifttt':
                 await sendIfttt(userConfig.ifttt!.event_name, userConfig.ifttt!.key, payload);
+                break;
+            case 'spontit':
+                await sendSpontit(
+                    userConfig.spontit!.userId,
+                    userConfig.spontit!.secretKey,
+                    payload
+                );
                 break;
         }
     });
