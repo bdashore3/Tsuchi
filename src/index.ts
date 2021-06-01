@@ -2,6 +2,7 @@ import { promises as fs } from 'fs';
 import { MangaPacket } from 'types/sourceEntries';
 import { UserJson } from 'types/userJson';
 import { fetchMangaDex } from './SourceUpdates/MangaDex';
+import { checkCache, flushCache, updateCache } from './cache';
 import { fetchMangaFox } from './SourceUpdates/MangaFox';
 import { fetchMangaLife } from './SourceUpdates/MangaLife';
 
@@ -9,10 +10,11 @@ if (require.main === module) {
     main();
 }
 
-// Future home for web server
-
 async function main() {
-    /* Manga entry for testing the filter system
+    const flushCacheTask = setInterval(() => flushCache(), 5000);
+
+    // Manga entry for testing the filter system
+    /*
     const testEntry: MangaPacket = {
         Name: 'My Hero Academia',
         Chapter: '125',
@@ -42,19 +44,28 @@ async function main() {
      *
      * If the user entry's title and source is found in the updates list, send a notification.
      */
-    userConfig.mangas.forEach((userEntry) => {
+    userConfig.mangas.forEach(async (userEntry) => {
         console.log(
             `Original element title: ${userEntry.title} \nOriginal element source: ${userEntry.source} \n`
         );
 
-        const result = updateArray.find((updateEntry) => {
-            return userEntry.title === updateEntry.Name && userEntry.source === updateEntry.Source;
+        const updateResult = updateArray.find((i) => {
+            return userEntry.title === i.Name && userEntry.source === i.Source;
         });
 
-        if (result === undefined) {
+        // Remove once sending is added
+        if (updateResult === undefined) {
             console.log(`No updates found for ${userEntry.title}`);
         } else {
-            console.log(`Sending chapter: ${result.Chapter} of ${result.Name}`);
+            // If there is a hit in the cache, bail.
+            const cacheHit = checkCache(updateResult);
+
+            if (!cacheHit) {
+                updateCache(updateResult);
+
+                // Placeholder for sending logic
+                console.log(`Sending chapter: ${updateResult.Chapter} of ${updateResult.Name}`);
+            }
         }
     });
 }
