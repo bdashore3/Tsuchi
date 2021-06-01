@@ -24,7 +24,7 @@ export async function fetchMangaFox(): Promise<Array<MangaPacket>> {
         const time_string = subtitle.split(' ').slice(3).join(' ');
 
         const time = calculateTime(time_string);
-        if (time > 61) {
+        if (time > 59) {
             break;
         }
 
@@ -36,21 +36,16 @@ export async function fetchMangaFox(): Promise<Array<MangaPacket>> {
         };
         mangaFoxUpdates.push(mangapacket);
     }
-
     return mangaFoxUpdates;
 }
 
 function calculateTime(time: string): number {
     const arr = time.split(' ');
     const int: number = +arr[0];
-    let timeElapsed = 0;
 
-    if (arr[1] == 'hour') {
-        timeElapsed = int * 60;
-    } else if (arr[1] == 'minutes') {
-        timeElapsed = int;
+    if (arr[1] == 'minutes') {
+        return int;
     } else {
-        timeElapsed = int * 1440;
+        return 100
     }
-    return timeElapsed;
 }
