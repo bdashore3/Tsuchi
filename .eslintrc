@@ -1,4 +1,8 @@
 {
+    "rules": {
+        "require-await": "warn",
+        "no-return-await": "warn"
+    },
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaVersion": 2021

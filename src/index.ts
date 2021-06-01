@@ -45,7 +45,7 @@ async function main() {
      *
      * If the user entry's title and source is found in the updates list, send a notification.
      */
-    userConfig.mangas.forEach(async (userEntry) => {
+    userConfig.mangas.forEach((userEntry) => {
         console.log(
             `Original element title: ${userEntry.title} \nOriginal element source: ${userEntry.source} \n`
         );
@@ -67,14 +67,14 @@ async function main() {
                 // Placeholder for sending logic
                 console.log(`Sending chapter: ${updateResult.Chapter} of ${updateResult.Name}`);
 
-                await handleServices(userConfig, updateResult);
+                handleServices(userConfig, updateResult);
             }
         }
     });
 }
 
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-async function handleServices(userConfig: UserJson, payload: MangaPacket) {
+function handleServices(userConfig: UserJson, payload: MangaPacket) {
     userConfig.services.forEach(async (name) => {
         switch (name) {
             case 'ifttt':
