@@ -3,11 +3,12 @@ import cheerio from 'cheerio';
 import { MangaPacket } from 'types/sourceEntries';
 
 export async function fetchMangaFox(): Promise<Array<MangaPacket>> {
-    const baseDomain = 'https://fanfox.net/releases/';
+    const baseDomain = 'https://fanfox.net/';
+    const latest = baseDomain + 'releases/'
 
     const mangaFoxUpdates: Array<MangaPacket> = [];
 
-    const html = await axios.get(baseDomain);
+    const html = await axios.get(latest);
     const $ = cheerio.load(html.data, {
         xmlMode: false,
         decodeEntities: true

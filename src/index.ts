@@ -1,6 +1,7 @@
 import { promises as fs } from 'fs';
 import { MangaPacket } from 'types/sourceEntries';
 import { UserJson } from 'types/userJson';
+import { fetchMangaDex } from './SourceUpdates/MangaDex';
 import { fetchMangaFox } from './SourceUpdates/MangaFox';
 import { fetchMangaLife } from './SourceUpdates/MangaLife';
 
@@ -31,6 +32,10 @@ async function main() {
     // Fetches updates from MangaFox
     const mangaFox = await fetchMangaFox();
     updateArray.concat(mangaFox);
+
+    // Fetches updates from MangaDex
+    const mangaDex = await fetchMangaDex();
+    updateArray.concat(mangaDex);
 
     /*
      * Iterates through each entry in the User configuration.
