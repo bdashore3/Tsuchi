@@ -2,13 +2,9 @@ import { MangaPacket } from 'types/sourceEntries';
 import axios from 'axios';
 
 
-export class Ifttt {
-
-    constructor(private key: string, private value: string) {}
-
-    async sendNotification(mangapacket: MangaPacket): Promise<void> {
-
+export async function sendIft(mangapacket: MangaPacket,
+     eventName: string, secretKey: string) {
         var a;
-        var b;
-    }
+        
+
 }
