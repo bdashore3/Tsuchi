@@ -28,7 +28,6 @@ export async function fetchMangaDex(): Promise<Array<MangaPacket>> {
                     Source: 'MangaDex'
                 };
                 MangaDexUpdates.push(mangapacket);
-
             }
         }
     )
