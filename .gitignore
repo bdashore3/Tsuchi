@@ -93,3 +93,4 @@ out/
 
 # Backup dump folder
 backupDump/
+src/SourceUpdates/SourceTemplate.ts
