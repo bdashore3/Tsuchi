@@ -4,7 +4,7 @@ import { MangaPacket } from 'types/sourceEntries';
 
 export async function fetchMangaFox(): Promise<Array<MangaPacket>> {
     const baseDomain = 'https://fanfox.net/';
-    const latest = baseDomain + 'releases/'
+    const latest = baseDomain + 'releases/';
 
     const mangaFoxUpdates: Array<MangaPacket> = [];
 
@@ -46,6 +46,6 @@ function calculateTime(time: string): number {
     if (arr[1] == 'minutes') {
         return int;
     } else {
-        return 100
+        return 100;
     }
 }
