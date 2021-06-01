@@ -1,5 +1,4 @@
 import axios from 'axios';
-import cheerio from 'cheerio';
 import { MangaLifeEntry, MangaPacket } from 'types/sourceEntries';
 
 export async function fetchMangaLife(): Promise<Array<MangaPacket>> {
@@ -8,24 +7,11 @@ export async function fetchMangaLife(): Promise<Array<MangaPacket>> {
     const baseDomain = 'https://manga4life.com/';
 
     const html = await axios.get(baseDomain);
-    const $ = cheerio.load(html.data, {
-        xmlMode: false,
-        decodeEntities: true
-    });
-
-    const child = $('script').get()[16].children[0];
-
-    /* eslint-disable @typescript-eslint/no-explicit-any */
-    const data: string = (<any>child).data;
 
     const rawUpdates: Array<MangaLifeEntry> = JSON.parse(
-        data
-            .substring(
-                data.lastIndexOf('vm.LatestJSON = [{') + 16,
-                data.lastIndexOf('vm.NewSeriesJSON = [{')
-            )
-            .slice(0, -5)
+        html.data.match(/vm.LatestJSON = (.*);/)?.[1]
     );
+
     rawUpdates.splice(20, rawUpdates.length - 1);
 
     rawUpdates.forEach((element) => {
@@ -49,9 +35,8 @@ export async function fetchMangaLife(): Promise<Array<MangaPacket>> {
 }
 
 function convertTime(inputDate: string): number {
-    const currentDate = new Date();
-    const stampedDate = Date.parse(inputDate);
-    const minutes = currentDate.getTime() / 60000 - stampedDate / 60000;
+    const time = Date.parse(inputDate) - 3600000;
+    const minutes = (Date.now() - time) / 60000;
 
     return minutes;
 }
