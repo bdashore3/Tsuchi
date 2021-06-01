@@ -19,8 +19,7 @@ export async function fetchMangaDex(): Promise<Array<MangaPacket>> {
                 const title = manga.data.attributes.title.en
                 const chapter = manga.data.attributes.lastChapter
                 const release = manga.data.attributes.updatedAt
-                const test = new Date(release)
-                console.log(test)
+                
                 const mangapacket: MangaPacket = {
                     Name: title,
                     Chapter: chapter,
