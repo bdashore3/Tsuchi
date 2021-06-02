@@ -3,6 +3,8 @@ import promptSync from 'prompt-sync';
 import { configureIfttt } from '../NotificationHandler/ifttt';
 import { configureSpontit } from '../NotificationHandler/spontit';
 import { UserJson } from 'types/userJson';
+// import { Color } from 'types/enums';
+import { cpuUsage } from 'process';
 
 const userJson: UserJson = {
     user: '',
@@ -41,18 +43,25 @@ async function main() {
     });
 
     let services: Array<string> = [];
+    let msg = `Pick a service from the list of possible services: `;
     while (true) {
         console.clear();
-        console.log(`Pick a service from the list of possible services: `);
+        console.log(msg);
         console.log(possibleServiceString);
         console.log(`Your services: [${services}]`);
         console.log();
         const service = prompt('> ');
 
-        // TODO: Add a way to bail on recurse
-        if (service === '' || !possibleServices.includes(service.toLowerCase())) {
-            console.log('Please enter a valid service!');
+        // Exit recursion on adding services prompt
+        if (['exit', 'stop', 'n'].includes(service.toLowerCase())) {
+            console.clear();
+            console.log('\x1b[33m' + 'EXITITNG PROGRAM!..\nEXITITNG PROGRAM!..' + '\x1b[0m');
+            break;
+        }
 
+        if (service === '' || !possibleServices.includes(service.toLowerCase())) {
+            msg =
+                "NOTE:\x1b[31m'exit' 'N/n'\x1b[0m to STOP adding services to the list\n\nPlease enter a valid service!";
             continue;
         }
 
@@ -89,3 +98,33 @@ function setupServices(services: Array<string>) {
         }
     });
 }
+
+// Change into enums later
+// Color List used in console
+/*
+Reset = "\x1b[0m"
+Bright = "\x1b[1m"
+Dim = "\x1b[2m"
+Underscore = "\x1b[4m"
+Blink = "\x1b[5m"
+Reverse = "\x1b[7m"
+Hidden = "\x1b[8m"
+
+FgBlack = "\x1b[30m"
+FgRed = "\x1b[31m"
+FgGreen = "\x1b[32m"
+FgYellow = "\x1b[33m"
+FgBlue = "\x1b[34m"
+FgMagenta = "\x1b[35m"
+FgCyan = "\x1b[36m"
+FgWhite = "\x1b[37m"
+
+BgBlack = "\x1b[40m"
+BgRed = "\x1b[41m"
+BgGreen = "\x1b[42m"
+BgYellow = "\x1b[43m"
+BgBlue = "\x1b[44m"
+BgMagenta = "\x1b[45m"
+BgCyan = "\x1b[46m"
+BgWhite = "\x1b[47m"
+*/
