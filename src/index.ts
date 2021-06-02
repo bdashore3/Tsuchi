@@ -5,7 +5,7 @@ import { checkCache, flushCache, updateCache } from './cache';
 // import { fetchMangaDex } from './SourceUpdates/MangaDex';
 import { fetchMangaFox } from './SourceUpdates/MangaFox';
 import { fetchMangaLife } from './SourceUpdates/MangaLife';
-import { fetchMangaNelo } from './SourceUpdates/MangaNelo';
+import { fetchMangaKakalot } from './SourceUpdates/MangaKakalot';
 import sendIfttt from './NotificationHandler/ifttt';
 import sendSpontit from './NotificationHandler/spontit';
 
@@ -14,7 +14,8 @@ if (require.main === module) {
 }
 
 async function main() {
-    const flushCacheTask = setInterval(() => flushCache(), 5000);
+    // Flush the cache every 12 hours to remove leftovers
+    setInterval(() => flushCache(), 43200000);
 
     // Dispatch updates on an interval. Disabled for now due to testing.
     /*
@@ -66,9 +67,9 @@ async function fetchUpdates(): Promise<Array<MangaPacket>> {
     const mangaFox = await fetchMangaFox();
     updateArray.concat(mangaFox);
 
-    // Fetches updates from MangaNelo
-    const mangaNelo = await fetchMangaNelo();
-    updateArray.concat(mangaNelo);
+    // Fetches updates from MangaKakalot
+    const mangaKakalot = await fetchMangaKakalot();
+    updateArray.concat(mangaKakalot);
 
     return updateArray;
 }
