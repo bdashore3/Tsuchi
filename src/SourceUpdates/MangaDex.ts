@@ -7,22 +7,19 @@ export async function fetchMangaDex(): Promise<Array<MangaPacket>> {
     const baseDomain = 'https://api.mangadex.org/';
     const limit = '20';
     const latest = baseDomain + 'manga?limit=' + limit;
-    const AxiosInstance = axios.create();
-    const response = await AxiosInstance.get(latest, { timeout: 30000 }).catch(
-        (err: AxiosError) => {
-            // Handle errors
-            switch (err.code) {
-                case 'ECONNABORTED':
-                    console.log('Error: Mangadex: forcibly timed out');
-                    break;
-                case 'ETIMEDOUT':
-                    console.log('Error: Mangadex: timed out');
-                    break;
-                default:
-                    console.log(err);
-            }
+    const response = await axios.get(latest, { timeout: 30000 }).catch((err: AxiosError) => {
+        // Handle errors
+        switch (err.code) {
+            case 'ECONNABORTED':
+                console.log('Error: Mangadex: forcibly timed out');
+                break;
+            case 'ETIMEDOUT':
+                console.log('Error: Mangadex: timed out');
+                break;
+            default:
+                console.log(err);
         }
-    );
+    });
 
     if (!response) {
         return MangaDexUpdates;
@@ -39,7 +36,7 @@ export async function fetchMangaDex(): Promise<Array<MangaPacket>> {
             Name: title,
             Chapter: chapter,
             TimeElapsed: convertTime(release),
-            Source: 'MangaDex'
+            Source: 'mangadex'
         };
         MangaDexUpdates.push(mangapacket);
     }

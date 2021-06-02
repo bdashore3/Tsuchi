@@ -67,10 +67,20 @@ function genSourceList(rawJson: PBBackup, uuids: Array<string>): Array<MangaEntr
     const titles: Array<MangaEntry> = [];
 
     rawJson.sourceMangas.forEach((element: SourceMangas) => {
+        let source = element.sourceId;
+
+        if (['mangasee', 'mangalife'].includes(source.toLowerCase())) {
+            source = 'mangalife';
+        } else if (['mangakakalot', 'manganelo'].includes(source.toLowerCase())) {
+            source = 'mangakakalot';
+        } else {
+            source = source.toLowerCase();
+        }
+
         if (uuids.includes(element.manga.id)) {
             titles.push({
                 title: element.manga.titles[0],
-                source: element.sourceId
+                source: source
             });
         }
     });

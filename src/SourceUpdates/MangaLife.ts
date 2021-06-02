@@ -39,7 +39,7 @@ export async function fetchMangaLife(): Promise<Array<MangaPacket>> {
         const mangaPacket: MangaPacket = {
             Chapter: parseChapter(element.Chapter),
             Name: element.SeriesName,
-            Source: 'MangaLife',
+            Source: 'mangalife',
             TimeElapsed: timeElapsed
         };
 
