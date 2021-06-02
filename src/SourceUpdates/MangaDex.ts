@@ -45,14 +45,12 @@ export async function fetchMangaDex(): Promise<Array<MangaPacket>> {
         };
         MangaDexUpdates.push(mangapacket);
     }
-
     return MangaDexUpdates;
 }
 
-// Needs to be fixed later
 function convertTime(inputDate: string): number {
     const currentDate = new Date();
     const stampedDate = Date.parse(inputDate);
-    const minutes = currentDate.getTime() / 60000 - stampedDate / 60000;
+    const minutes = (currentDate.getTime() - stampedDate) / 60000;
     return Math.round(minutes);
 }
