@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { MangaLifeEntry, MangaPacket } from 'types/sourceEntries';
 
 export async function fetchMangaLife(): Promise<Array<MangaPacket>> {
@@ -6,7 +6,22 @@ export async function fetchMangaLife(): Promise<Array<MangaPacket>> {
 
     const baseDomain = 'https://manga4life.com/';
 
-    const html = await axios.get(baseDomain);
+    const html = await axios.get(baseDomain, { timeout: 30000 }).catch((err: AxiosError) => {
+        switch (err.code) {
+            case 'ECONNABORTED':
+                console.log('Error: Mangalife: forcibly timed out');
+                break;
+            case 'ETIMEDOUT':
+                console.log('Error: Mangalife: timed out');
+                break;
+            default:
+                console.log(err);
+        }
+    });
+
+    if (!html) {
+        return mangaLifeUpdates;
+    }
 
     const rawUpdates: Array<MangaLifeEntry> = JSON.parse(
         html.data.match(/vm.LatestJSON = (.*);/)?.[1]

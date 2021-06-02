@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { MangaPacket } from 'types/sourceEntries';
 
 export async function fetchMangaDex(): Promise<Array<MangaPacket>> {
@@ -10,25 +10,42 @@ export async function fetchMangaDex(): Promise<Array<MangaPacket>> {
 
     const AxiosInstance = axios.create();
 
-    await AxiosInstance.get(latest)
-        .then((response) => {
-            const json =
-                typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
-            for (const manga of json.results) {
-                const title = manga.data.attributes.title.en;
-                const chapter = manga.data.attributes.lastChapter;
-                const release = manga.data.attributes.updatedAt;
-
-                const mangapacket: MangaPacket = {
-                    Name: title,
-                    Chapter: chapter,
-                    TimeElapsed: convertTime(release),
-                    Source: 'MangaDex'
-                };
-                MangaDexUpdates.push(mangapacket);
+    const response = await AxiosInstance.get(latest, { timeout: 30000 }).catch(
+        (err: AxiosError) => {
+            // Handle errors
+            switch (err.code) {
+                case 'ECONNABORTED':
+                    console.log('Error: Mangadex: forcibly timed out');
+                    break;
+                case 'ETIMEDOUT':
+                    console.log('Error: Mangadex: timed out');
+                    break;
+                default:
+                    console.log(err);
             }
-        })
-        .catch(console.error); // Error handling
+        }
+    );
+
+    if (!response) {
+        return MangaDexUpdates;
+    }
+
+    const json = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
+
+    for (const manga of json.results) {
+        const title = manga.data.attributes.title.en;
+        const chapter = manga.data.attributes.lastChapter;
+        const release = manga.data.attributes.updatedAt;
+
+        const mangapacket: MangaPacket = {
+            Name: title,
+            Chapter: chapter,
+            TimeElapsed: convertTime(release),
+            Source: 'MangaDex'
+        };
+        MangaDexUpdates.push(mangapacket);
+    }
+
     return MangaDexUpdates;
 }
 

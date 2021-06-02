@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import cheerio from 'cheerio';
 import { MangaPacket } from 'types/sourceEntries';
 
@@ -8,7 +8,23 @@ export async function fetchMangaFox(): Promise<Array<MangaPacket>> {
 
     const mangaFoxUpdates: Array<MangaPacket> = [];
 
-    const html = await axios.get(latest);
+    const html = await axios.get(latest, { timeout: 30000 }).catch((err: AxiosError) => {
+        switch (err.code) {
+            case 'ECONNABORTED':
+                console.log('Error: Mangafox: forcibly timed out');
+                break;
+            case 'ETIMEDOUT':
+                console.log('Error: Mangafox: timed out');
+                break;
+            default:
+                console.log(err);
+        }
+    });
+
+    if (!html) {
+        return mangaFoxUpdates;
+    }
+
     const $ = cheerio.load(html.data, {
         xmlMode: false,
         decodeEntities: true
@@ -16,7 +32,9 @@ export async function fetchMangaFox(): Promise<Array<MangaPacket>> {
 
     const latestMangas = $('ul.manga-list-4-list');
 
-    for (const manga of $('.manga-list-4-list > li', latestMangas).toArray()) {
+    const mangas = $('.manga-list-4-list > li', latestMangas).toArray();
+
+    mangas.forEach((manga) => {
         const title: string = $('.manga-list-4-item-title', manga).text().trim();
         const subtitle: string = $('.manga-list-4-item-subtitle', manga).text().trim();
 
@@ -24,8 +42,9 @@ export async function fetchMangaFox(): Promise<Array<MangaPacket>> {
         const time_string = subtitle.split(' ').slice(3).join(' ');
 
         const time = calculateTime(time_string);
+
         if (time > 59) {
-            break;
+            return;
         }
 
         const mangapacket: MangaPacket = {
@@ -34,8 +53,10 @@ export async function fetchMangaFox(): Promise<Array<MangaPacket>> {
             TimeElapsed: time,
             Source: 'MangaFox'
         };
+
         mangaFoxUpdates.push(mangapacket);
-    }
+    });
+
     return mangaFoxUpdates;
 }
 
