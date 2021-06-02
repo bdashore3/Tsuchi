@@ -1,5 +1,7 @@
 import { MangaPacket } from 'types/sourceEntries';
 import axios from 'axios';
+import promptSync from 'prompt-sync';
+import { Ifttt } from 'types/services';
 
 export default async function sendIfttt(
     eventName: string,
@@ -11,4 +13,43 @@ export default async function sendIfttt(
         value2: payload.Chapter,
         value3: payload.Source
     });
+}
+
+export function configureIfttt(): Ifttt {
+    const prompt = promptSync();
+
+    let event_name;
+    let key;
+
+    console.clear();
+
+    console.log('IFTTT setup \n');
+    while (true) {
+        console.log('Please enter your applet event name below');
+        event_name = prompt('> ');
+
+        if (event_name === '') {
+            console.log('Please enter an event name!');
+        } else {
+            break;
+        }
+    }
+
+    while (true) {
+        console.log('Alright, please enter your ifttt webhook key');
+        key = prompt('> ');
+
+        if (event_name === '') {
+            console.log('Please enter a key!');
+        } else {
+            break;
+        }
+    }
+
+    const ifttt = {
+        event_name: event_name,
+        key: key
+    };
+
+    return ifttt;
 }
