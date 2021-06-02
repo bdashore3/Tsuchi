@@ -1,10 +1,11 @@
 import { promises as fs } from 'fs';
 import { MangaPacket } from 'types/sourceEntries';
 import { UserJson } from 'types/userJson';
-// import { fetchMangaDex } from './SourceUpdates/MangaDex';
 import { checkCache, flushCache, updateCache } from './cache';
+// import { fetchMangaDex } from './SourceUpdates/MangaDex';
 import { fetchMangaFox } from './SourceUpdates/MangaFox';
 import { fetchMangaLife } from './SourceUpdates/MangaLife';
+import { fetchMangaNelo } from './SourceUpdates/MangaNelo';
 import sendIfttt from './NotificationHandler/ifttt';
 import sendSpontit from './NotificationHandler/spontit';
 
@@ -64,6 +65,10 @@ async function fetchUpdates(): Promise<Array<MangaPacket>> {
     // Fetches updates from MangaFox
     const mangaFox = await fetchMangaFox();
     updateArray.concat(mangaFox);
+
+    // Fetches updates from MangaNelo
+    const mangaNelo = await fetchMangaNelo();
+    updateArray.concat(mangaNelo);
 
     return updateArray;
 }
