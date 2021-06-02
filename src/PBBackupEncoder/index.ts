@@ -1,5 +1,4 @@
-import fs from 'fs';
-import promptSync from 'prompt-sync';
+import { promises as fs } from 'fs';
 import { MangaEntry, UserJson } from 'types/userJson';
 import { Library, PBBackup, SourceMangas } from 'types/paperbackBackup';
 
@@ -7,36 +6,45 @@ if (require.main === module) {
     main();
 }
 
-function main() {
-    const prompt = promptSync();
+async function main() {
+    const username = process.argv[2];
+    if (username === '' || username === undefined) {
+        console.log('Please provide a username in the first argument position!');
 
-    // Synchronously read the JSON file and cast it to a PBBackup type
-    const rawBackupJson = fs.readFileSync('backupDump/input.json', 'utf8');
-    const backupJson: PBBackup = JSON.parse(rawBackupJson);
-
-    let username;
-
-    while (username === null || username === undefined || username === '') {
-        console.log(typeof username);
-
-        username = prompt('What is your username? ');
-
-        if (username === null || username === '') {
-            console.log('Please provide a valid username!');
-        }
+        return;
     }
+
+    let userConfig: UserJson | undefined;
+    try {
+        userConfig = await fetchUserJson(username);
+    } catch (e) {
+        console.log(
+            "I tried getting your config, but it isn't there? \nCheck the entered username or run setup first!"
+        );
+    }
+
+    if (userConfig === undefined) {
+        return;
+    }
+
+    // Read the backup JSON file and cast it to a PBBackup type
+    const rawBackupJson = await fs.readFile('backupDump/input.json', 'utf8');
+    const backupJson: PBBackup = JSON.parse(rawBackupJson);
 
     const uuids = getUuids(backupJson);
 
     const mangas = genSourceList(backupJson, uuids);
 
-    const mangaJson: UserJson = {
-        user: username,
-        mangas: mangas,
-        services: []
-    };
+    userConfig.mangas = mangas;
 
-    fs.writeFileSync('backupDump/encodedManga.json', JSON.stringify(mangaJson, null, 2));
+    await fs.writeFile(`users/${userConfig.user}.json`, JSON.stringify(userConfig, null, 2));
+}
+
+async function fetchUserJson(username: string): Promise<UserJson> {
+    const file = await fs.readFile(`users/${username}.json`, 'utf8');
+    const userJson = JSON.parse(file);
+
+    return userJson;
 }
 
 // Generates an array of UUIDs from the library section of the backup
