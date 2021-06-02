@@ -115,6 +115,8 @@ function setupServices(services: Array<string>) {
 
                 if (iftttResult === undefined) {
                     services.splice(index);
+                } else {
+                    userJson.ifttt = iftttResult;
                 }
 
                 break;
@@ -123,6 +125,8 @@ function setupServices(services: Array<string>) {
 
                 if (spontitResult === undefined) {
                     services.splice(index);
+                } else {
+                    userJson.spontit = spontitResult;
                 }
 
                 break;
