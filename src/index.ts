@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 import { MangaPacket } from 'types/sourceEntries';
 import { UserJson } from 'types/userJson';
-import { fetchMangaDex } from './SourceUpdates/MangaDex';
+// import { fetchMangaDex } from './SourceUpdates/MangaDex';
 import { checkCache, flushCache, updateCache } from './cache';
 import { fetchMangaFox } from './SourceUpdates/MangaFox';
 import { fetchMangaLife } from './SourceUpdates/MangaLife';
@@ -15,19 +15,34 @@ if (require.main === module) {
 async function main() {
     const flushCacheTask = setInterval(() => flushCache(), 5000);
 
-    /* Manga entry for testing the filter system */
+    // Dispatch updates on an interval. Disabled for now due to testing.
     /*
+    const updateDispatchTask = setInterval(async () => {
+        await dispatchUpdateEvent();
+    }, 900000);
+    */
+
+    await dispatchUpdateEvent();
+}
+
+async function dispatchUpdateEvent() {
+    // Manga entry for testing the filter system
     const testEntry: MangaPacket = {
         Name: 'My Hero Academia',
         Chapter: '125',
         TimeElapsed: 300,
         Source: 'MangaLife'
     };
-    */
 
+    const userConfig = await fetchUserJson();
+    const updates = await fetchUpdates();
+    updates.push(testEntry);
+    dispatchToUser(userConfig, updates);
+}
+
+async function fetchUpdates(): Promise<Array<MangaPacket>> {
     // Empty array of updates from all sources
     const updateArray: Array<MangaPacket> = [];
-    const userConfig = await fetchUserJson();
 
     // Fetches updates from Manga4Life
     const mangaLife = await fetchMangaLife();
@@ -37,21 +52,21 @@ async function main() {
     const mangaFox = await fetchMangaFox();
     updateArray.concat(mangaFox);
 
-    // Fetches updates from MangaDex
-    const mangaDex = await fetchMangaDex();
-    updateArray.concat(mangaDex);
+    return updateArray;
+}
 
-    /*
-     * Iterates through each entry in the User configuration.
-     *
-     * If the user entry's title and source is found in the updates list, send a notification.
-     */
+/*
+ * Iterates through each entry in the User configuration.
+ *
+ * If the user entry's title and source is found in the updates list, send a notification.
+ */
+function dispatchToUser(userConfig: UserJson, updates: Array<MangaPacket>) {
     userConfig.mangas.forEach((userEntry) => {
         console.log(
             `Original element title: ${userEntry.title} \nOriginal element source: ${userEntry.source} \n`
         );
 
-        const updateResult = updateArray.find((i) => {
+        const updateResult = updates.find((i) => {
             return userEntry.title === i.Name && userEntry.source === i.Source;
         });
 
@@ -94,7 +109,7 @@ function handleServices(userConfig: UserJson, payload: MangaPacket) {
 
 // Fetches user configuration.
 async function fetchUserJson(): Promise<UserJson> {
-    const file = await fs.readFile('backupDump/encodedManga.json', 'utf8');
+    const file = await fs.readFile('users/kingbri.json', 'utf8');
     const userJson = JSON.parse(file);
 
     return userJson;
