@@ -2,10 +2,10 @@ import { promises as fs } from 'fs';
 import { MangaPacket } from 'types/sourceEntries';
 import { UserJson } from 'types/userJson';
 import { checkCache, flushCache, updateCache } from './cache';
-// import { fetchMangaDex } from './SourceUpdates/MangaDex';
-import { fetchMangaFox } from './SourceUpdates/MangaFox';
-import { fetchMangaLife } from './SourceUpdates/MangaLife';
-import { fetchMangaKakalot } from './SourceUpdates/MangaKakalot';
+// import fetchMangaDex from './SourceUpdates/MangaDex';
+import fetchMangaFox from './SourceUpdates/MangaFox';
+import fetchMangaLife from './SourceUpdates/MangaLife';
+import fetchMangaKakalot from './SourceUpdates/MangaKakalot';
 import sendIfttt from './NotificationHandler/ifttt';
 import sendSpontit from './NotificationHandler/spontit';
 

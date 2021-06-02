@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios';
 import cheerio from 'cheerio';
 import { MangaPacket } from 'types/sourceEntries';
 
-export async function fetchMangaFox(): Promise<Array<MangaPacket>> {
+export default async function fetchMangaFox(): Promise<Array<MangaPacket>> {
     const mangaFoxUpdates: Array<MangaPacket> = [];
 
     const baseDomain = 'https://fanfox.net/';

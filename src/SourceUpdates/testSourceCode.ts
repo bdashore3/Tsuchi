@@ -1,5 +1,5 @@
-import { fetchMangaKakalot } from './MangaKakalot';
-import { fetchMangaFox } from './MangaFox';
+import fetchMangaKakalot from './MangaKakalot';
+import fetchMangaFox from './MangaFox';
 
 if (require.main === module) {
     main();

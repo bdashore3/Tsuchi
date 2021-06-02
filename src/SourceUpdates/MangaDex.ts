@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import { MangaPacket } from 'types/sourceEntries';
 
-export async function fetchMangaDex(): Promise<Array<MangaPacket>> {
+export default async function fetchMangaDex(): Promise<Array<MangaPacket>> {
     const MangaDexUpdates: Array<MangaPacket> = [];
 
     const baseDomain = 'https://api.mangadex.org/';

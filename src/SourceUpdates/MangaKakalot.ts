@@ -2,7 +2,7 @@ import axios, { AxiosError } from 'axios';
 import cheerio from 'cheerio';
 import { MangaPacket } from 'types/sourceEntries';
 
-export async function fetchMangaKakalot(): Promise<Array<MangaPacket>> {
+export default async function fetchMangaKakalot(): Promise<Array<MangaPacket>> {
     const mangaNeloUpdates: Array<MangaPacket> = [];
 
     const baseDomain = 'https://mangakakalot.com/';

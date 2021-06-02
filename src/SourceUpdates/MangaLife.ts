@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import { MangaLifeEntry, MangaPacket } from 'types/sourceEntries';
 
-export async function fetchMangaLife(): Promise<Array<MangaPacket>> {
+export default async function fetchMangaLife(): Promise<Array<MangaPacket>> {
     const mangaLifeUpdates: Array<MangaPacket> = [];
 
     const baseDomain = 'https://manga4life.com/';
