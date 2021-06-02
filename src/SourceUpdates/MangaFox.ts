@@ -3,11 +3,10 @@ import cheerio from 'cheerio';
 import { MangaPacket } from 'types/sourceEntries';
 
 export async function fetchMangaFox(): Promise<Array<MangaPacket>> {
-    const baseDomain = 'https://fanfox.net/';
-    const latest = baseDomain + 'releases/';
-
     const mangaFoxUpdates: Array<MangaPacket> = [];
 
+    const baseDomain = 'https://fanfox.net/';
+    const latest = baseDomain + 'releases/';
     const html = await axios.get(latest, { timeout: 30000 }).catch((err: AxiosError) => {
         switch (err.code) {
             case 'ECONNABORTED':

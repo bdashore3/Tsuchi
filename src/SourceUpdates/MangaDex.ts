@@ -2,14 +2,12 @@ import axios, { AxiosError } from 'axios';
 import { MangaPacket } from 'types/sourceEntries';
 
 export async function fetchMangaDex(): Promise<Array<MangaPacket>> {
+    const MangaDexUpdates: Array<MangaPacket> = [];
+
     const baseDomain = 'https://api.mangadex.org/';
     const limit = '20';
     const latest = baseDomain + 'manga?limit=' + limit;
-
-    const MangaDexUpdates: Array<MangaPacket> = [];
-
     const AxiosInstance = axios.create();
-
     const response = await AxiosInstance.get(latest, { timeout: 30000 }).catch(
         (err: AxiosError) => {
             // Handle errors
