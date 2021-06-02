@@ -1,4 +1,4 @@
-import { fetchMangaNelo } from './MangaNelo';
+import { fetchMangaKakalot } from './MangaKakalot';
 import { fetchMangaFox } from './MangaFox';
 
 if (require.main === module) {
@@ -7,7 +7,7 @@ if (require.main === module) {
 // yarn stest
 async function main(): Promise<void> {
     console.clear();
-    // console.log(await fetchMangaNelo());
+    // console.log(await fetchMangaKakalot());
     const mangaFox = await fetchMangaFox();
     console.log(mangaFox);
 }
