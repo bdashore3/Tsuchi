@@ -79,8 +79,9 @@ async function fetchUpdates(): Promise<Array<MangaPacket>> {
  * If the user entry's title and source is found in the updates list, send a notification.
  */
 function dispatchToUser(userConfig: UserJson, updates: Array<MangaPacket>) {
+    console.log(`Evaluating mangas for ${userConfig.user}`);
+
     userConfig.mangas.forEach((userEntry) => {
-        console.log(`Evaluating mangas for ${userConfig.user}`);
         console.log(
             `Original element title: ${userEntry.title} \nOriginal element source: ${userEntry.source} \n`
         );
