@@ -1,5 +1,7 @@
 import { MangaPacket } from 'types/sourceEntries';
 import axios from 'axios';
+import promptSync from 'prompt-sync';
+import { Spontit } from 'types/services';
 
 export default async function sendSpontit(
     userId: string,
@@ -19,4 +21,42 @@ export default async function sendSpontit(
     };
 
     await axios.post(url, JSON.stringify(body), options);
+}
+
+export function configureSpontit(): Spontit {
+    const prompt = promptSync();
+
+    let userId;
+    let secretKey;
+
+    console.clear();
+
+    console.log('Spontit setup \n');
+    while (true) {
+        console.log('Please enter your profile User ID below');
+        userId = prompt('> ');
+
+        if (userId === '') {
+            console.log('Please enter a user name');
+        } else {
+            break;
+        }
+    }
+
+    while (true) {
+        console.log('Alright, please enter your spontit secret API key');
+        secretKey = prompt('> ');
+
+        if (secretKey === '') {
+            console.log('Please enter API key');
+        } else {
+            break;
+        }
+    }
+
+    const spontit = {
+        userId: userId,
+        secretKey: secretKey
+    };
+    return spontit;
 }

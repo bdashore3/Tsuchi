@@ -1,6 +1,7 @@
 import { promises as fs } from 'fs';
 import promptSync from 'prompt-sync';
 import { configureIfttt } from '../NotificationHandler/ifttt';
+import { configureSpontit } from '../NotificationHandler/spontit';
 import { UserJson } from 'types/userJson';
 
 const userJson: UserJson = {
@@ -83,7 +84,7 @@ function setupServices(services: Array<string>) {
                 userJson.ifttt = configureIfttt();
                 break;
             case 'spontit':
-                // Spontit configure function here.
+                userJson.spontit = configureSpontit();
                 break;
         }
     });
