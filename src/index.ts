@@ -27,17 +27,30 @@ async function main() {
 
 async function dispatchUpdateEvent() {
     // Manga entry for testing the filter system
+    /*
     const testEntry: MangaPacket = {
         Name: 'My Hero Academia',
         Chapter: '125',
         TimeElapsed: 300,
         Source: 'MangaLife'
     };
+    */
 
-    const userConfig = await fetchUserJson();
+    const users = await fs.readdir('users').catch((_e) => {
+        console.log('No users in the directory!');
+    });
+
+    if (!users) {
+        return;
+    }
+
     const updates = await fetchUpdates();
-    updates.push(testEntry);
-    dispatchToUser(userConfig, updates);
+    // updates.push(testEntry);
+
+    users.forEach(async (userFile) => {
+        const userConfig = await fetchUserJson(userFile);
+        dispatchToUser(userConfig, updates);
+    });
 }
 
 async function fetchUpdates(): Promise<Array<MangaPacket>> {
@@ -108,8 +121,8 @@ function handleServices(userConfig: UserJson, payload: MangaPacket) {
 }
 
 // Fetches user configuration.
-async function fetchUserJson(): Promise<UserJson> {
-    const file = await fs.readFile('users/kingbri.json', 'utf8');
+async function fetchUserJson(userFile: string): Promise<UserJson> {
+    const file = await fs.readFile(`users/${userFile}`, 'utf8');
     const userJson = JSON.parse(file);
 
     return userJson;
