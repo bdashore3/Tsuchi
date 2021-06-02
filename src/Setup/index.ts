@@ -3,8 +3,6 @@ import promptSync from 'prompt-sync';
 import { configureIfttt } from '../NotificationHandler/ifttt';
 import { configureSpontit } from '../NotificationHandler/spontit';
 import { UserJson } from 'types/userJson';
-// import { Color } from 'types/enums';
-import { cpuUsage } from 'process';
 
 const userJson: UserJson = {
     user: '',
