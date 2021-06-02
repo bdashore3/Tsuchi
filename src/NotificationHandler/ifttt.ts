@@ -15,7 +15,7 @@ export default async function sendIfttt(
     });
 }
 
-export function configureIfttt(): Ifttt {
+export function configureIfttt(): Ifttt | undefined {
     const prompt = promptSync();
 
     let event_name;
@@ -44,6 +44,10 @@ export function configureIfttt(): Ifttt {
         } else {
             break;
         }
+    }
+
+    if (event_name === null || key === null) {
+        return;
     }
 
     const ifttt = {

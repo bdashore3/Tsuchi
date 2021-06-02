@@ -23,7 +23,7 @@ export default async function sendSpontit(
     await axios.post(url, JSON.stringify(body), options);
 }
 
-export function configureSpontit(): Spontit {
+export function configureSpontit(): Spontit | undefined {
     const prompt = promptSync();
 
     let userId;
@@ -52,6 +52,10 @@ export function configureSpontit(): Spontit {
         } else {
             break;
         }
+    }
+
+    if (userId === null || secretKey === null) {
+        return;
     }
 
     const spontit = {
