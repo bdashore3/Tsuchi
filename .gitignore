@@ -91,6 +91,9 @@ typings/
 # Electron-Forge
 out/
 
-# Backup dump folder
+# JSON storage folders
 backupDump/
+users/
+
+# Source template for now
 src/SourceUpdates/SourceTemplate.ts
