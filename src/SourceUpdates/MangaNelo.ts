@@ -1,24 +1,63 @@
-
-
-
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import cheerio from 'cheerio';
 import { MangaPacket } from 'types/sourceEntries';
 
 export async function fetchMangaNelo(): Promise<Array<MangaPacket>> {
-    const baseDomain = 'https://manganato.com/';
-    const latest = baseDomain + 'releases/'
-
     const mangaNeloUpdates: Array<MangaPacket> = [];
 
-    const html = await axios.get(latest);
+    const baseDomain = 'https://mangakakalot.com/';
+    const html = await axios.get(baseDomain, { timeout: 30000 }).catch((err: AxiosError) => {
+        switch (err.code) {
+            case 'ECONNABORTED':
+                console.log('Error: Mangafox: forcibly timed out');
+                break;
+            case 'ETIMEDOUT':
+                console.log('Error: Mangafox: timed out');
+                break;
+            default:
+                console.log(err);
+        }
+    });
+
+    if (!html) {
+        return mangaNeloUpdates;
+    }
+
     const $ = cheerio.load(html.data, {
         xmlMode: false,
         decodeEntities: true
     });
-    console.log($.html())
-    for (const item of $('.content-homepage-item', '.panel-content-homepage').toArray()) {
+    // console.log($.html());
+    for (const item of $('.itemupdate.first', '.doreamon').toArray()) {
+        const title = $('h3', item).text();
+        const chapter = $('.sts_1', item).first().text();
+        const update = $('i', item).first().text();
+
+        const time = calculateTime(update);
+        if (time > 60) {
+            break;
+        }
+
+        const mangapacket: MangaPacket = {
+            Name: title,
+            Chapter: chapter,
+            TimeElapsed: time,
+            Source: 'MangaNelo'
+        };
+
+        mangaNeloUpdates.push(mangapacket);
     }
 
     return mangaNeloUpdates;
+}
+
+function calculateTime(time: string): number {
+    const arr = time.split(' ');
+    const int: number = +arr[0];
+
+    if (arr[1] == 'mins') {
+        return int;
+    } else {
+        return 100;
+    }
 }
