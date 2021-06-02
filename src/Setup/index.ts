@@ -19,6 +19,16 @@ async function main() {
     const possibleServices = ['ifttt', 'spontit'];
 
     console.clear();
+    console.log('Welcome to the MangaUpdates setup wizard!');
+    console.log('This will setup a user configuration for the update server.');
+    console.log('Please follow the prompts. \n');
+    console.log(
+        'You can exit the program at any time by hitting ctrl + c multiple times or by closing out the executable.'
+    );
+    await sleep(4000);
+
+    console.clear();
+
     let username;
     while (true) {
         console.log('What is the username you want to be referred by? ');
@@ -32,6 +42,12 @@ async function main() {
         }
     }
 
+    console.clear();
+    console.log('Please add your mangas manually or through the Paperback backup converter!');
+    console.log(
+        'To run the backup converter, use the `scrapeBackup` command after finishing this wizard'
+    );
+
     let possibleServiceString = '';
 
     possibleServices.forEach(function (serviceName) {
@@ -41,25 +57,25 @@ async function main() {
     });
 
     let services: Array<string> = [];
-    let msg = `Pick a service from the list of possible services: `;
     while (true) {
         console.clear();
-        console.log(msg);
+        console.log('Pick a service from the list of possible services: ');
         console.log(possibleServiceString);
-        console.log(`Your services: [${services}]`);
-        console.log();
-        const service = prompt('> ');
+        console.log(`Your services: [${services}] \n`);
+        if (services.length >= 1) {
+            console.log('Type in `next` if you want to proceed without adding new services \n');
+        }
+        const service = prompt('> ').toLowerCase();
 
         // Exit recursion on adding services prompt
-        if (['exit', 'stop', 'n'].includes(service.toLowerCase())) {
-            console.clear();
-            console.log('\x1b[33m' + 'EXITITNG PROGRAM!..\nEXITITNG PROGRAM!..' + '\x1b[0m');
+        if (service === 'next' && services.length >= 1) {
+            console.log('Alright. Continuing...');
+            await sleep(2000);
             break;
         }
 
-        if (service === '' || !possibleServices.includes(service.toLowerCase())) {
-            msg =
-                "NOTE:\x1b[31m'exit' 'N/n'\x1b[0m to STOP adding services to the list\n\nPlease enter a valid service!";
+        if (service === '' || !possibleServices.includes(service)) {
+            console.log('Please enter a valid service!');
             continue;
         }
 
@@ -71,11 +87,14 @@ async function main() {
             continue;
         } else if (['n', 'N'].includes(again)) {
             console.log('Alright. Continuing...');
-            console.log();
+            await sleep(2000);
             break;
         }
     }
 
+    console.clear();
+    console.log('You will now be taken to set up each service. Please follow the prompts.');
+    await sleep(2000);
     setupServices(services);
 
     userJson.user = username;
@@ -84,45 +103,29 @@ async function main() {
     await fs.writeFile(`users/${username}.json`, JSON.stringify(userJson, null, 2));
 }
 
+function sleep(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 function setupServices(services: Array<string>) {
-    services.forEach((service) => {
+    services.forEach((service, index) => {
         switch (service.toLowerCase()) {
             case 'ifttt':
-                userJson.ifttt = configureIfttt();
+                const iftttResult = configureIfttt();
+
+                if (iftttResult === undefined) {
+                    services.splice(index);
+                }
+
                 break;
             case 'spontit':
-                userJson.spontit = configureSpontit();
+                const spontitResult = (userJson.spontit = configureSpontit());
+
+                if (spontitResult === undefined) {
+                    services.splice(index);
+                }
+
                 break;
         }
     });
 }
-
-// Change into enums later
-// Color List used in console
-/*
-Reset = "\x1b[0m"
-Bright = "\x1b[1m"
-Dim = "\x1b[2m"
-Underscore = "\x1b[4m"
-Blink = "\x1b[5m"
-Reverse = "\x1b[7m"
-Hidden = "\x1b[8m"
-
-FgBlack = "\x1b[30m"
-FgRed = "\x1b[31m"
-FgGreen = "\x1b[32m"
-FgYellow = "\x1b[33m"
-FgBlue = "\x1b[34m"
-FgMagenta = "\x1b[35m"
-FgCyan = "\x1b[36m"
-FgWhite = "\x1b[37m"
-
-BgBlack = "\x1b[40m"
-BgRed = "\x1b[41m"
-BgGreen = "\x1b[42m"
-BgYellow = "\x1b[43m"
-BgBlue = "\x1b[44m"
-BgMagenta = "\x1b[45m"
-BgCyan = "\x1b[46m"
-BgWhite = "\x1b[47m"
-*/
