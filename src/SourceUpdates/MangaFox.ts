@@ -35,14 +35,15 @@ export async function fetchMangaFox(): Promise<Array<MangaPacket>> {
 
     mangas.forEach((manga) => {
         const title: string = $('.manga-list-4-item-title', manga).text().trim();
-        const subtitle: string = $('.manga-list-4-item-subtitle', manga).text().trim();
 
-        const chapter = subtitle.split(' ').slice(0, 3).join(' ');
+        const subtitle = $('.manga-list-4-item-subtitle', manga).text().trim();
         const time_string = subtitle.split(' ').slice(3).join(' ');
-
         const time = calculateTime(time_string);
 
-        if (time > 59) {
+        const chapter_string = $('.manga-list-4-item-part', manga).text();
+        const chapter = chapter_string.split(' ')[1];
+
+        if (time > 60) {
             return;
         }
 
