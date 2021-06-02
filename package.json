@@ -8,7 +8,8 @@
     "start": "node dist/src/index.js",
     "scrapeBackup": "node dist/src/PBBackupEncoder/index.js",
     "setup": "node dist/src/Setup/index.js",
-    "lint": "eslint --ext .ts ."
+    "lint": "eslint --ext .ts .",
+    "stest": "node dist/src/SourceUpdates/testSourceCode.js"
   },
   "devDependencies": {
     "@types/node": "^15.6.1",
