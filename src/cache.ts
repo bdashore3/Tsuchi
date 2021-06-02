@@ -27,6 +27,8 @@ export function checkCache(input: MangaPacket): boolean {
 }
 
 export function flushCache(): void {
+    console.log('Flushing cache!');
+
     const now = Date.now();
 
     userCache.forEach((timestamp, manga) => {

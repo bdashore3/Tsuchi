@@ -17,14 +17,13 @@ async function main() {
     // Flush the cache every 12 hours to remove leftovers
     setInterval(() => flushCache(), 43200000);
 
-    // Dispatch updates on an interval. Disabled for now due to testing.
-    /*
-    const updateDispatchTask = setInterval(async () => {
+    // Initial dispatch update call
+    await dispatchUpdateEvent();
+
+    // Dispatch updates on an interval every 15 minutes.
+    setInterval(async () => {
         await dispatchUpdateEvent();
     }, 900000);
-    */
-
-    await dispatchUpdateEvent();
 }
 
 async function dispatchUpdateEvent() {
@@ -81,6 +80,7 @@ async function fetchUpdates(): Promise<Array<MangaPacket>> {
  */
 function dispatchToUser(userConfig: UserJson, updates: Array<MangaPacket>) {
     userConfig.mangas.forEach((userEntry) => {
+        console.log(`Evaluating mangas for ${userConfig.user}`);
         console.log(
             `Original element title: ${userEntry.title} \nOriginal element source: ${userEntry.source} \n`
         );
@@ -91,7 +91,7 @@ function dispatchToUser(userConfig: UserJson, updates: Array<MangaPacket>) {
 
         // Remove once sending is added
         if (updateResult === undefined) {
-            console.log(`No updates found for ${userEntry.title}`);
+            console.log(`No updates found for ${userEntry.title} \n`);
         } else {
             // If there is a hit in the cache, bail.
             const cacheHit = checkCache(updateResult);
@@ -100,7 +100,7 @@ function dispatchToUser(userConfig: UserJson, updates: Array<MangaPacket>) {
                 updateCache(updateResult);
 
                 // Placeholder for sending logic
-                console.log(`Sending chapter: ${updateResult.Chapter} of ${updateResult.Name}`);
+                console.log(`Sending chapter: ${updateResult.Chapter} of ${updateResult.Name} \n`);
 
                 handleServices(userConfig, updateResult);
             }
