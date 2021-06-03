@@ -20,23 +20,13 @@ async function main() {
     // Initial dispatch update call
     await dispatchUpdateEvent();
 
-    // Dispatch updates on an interval every 15 minutes.
+    // Dispatch updates on an interval every 30 minutes.
     setInterval(async () => {
         await dispatchUpdateEvent();
-    }, 5000);
+    }, 1.8e6);
 }
 
 async function dispatchUpdateEvent() {
-    // Manga entry for testing the filter system
-    /*
-    const testEntry: MangaPacket = {
-        Name: 'My Hero Academia',
-        Chapter: '125',
-        TimeElapsed: 300,
-        Source: 'MangaLife'
-    };
-    */
-
     const users = await fs.readdir('users').catch((_e) => {
         console.log('No users in the directory!');
     });
@@ -46,7 +36,6 @@ async function dispatchUpdateEvent() {
     }
 
     const updates = await fetchUpdates();
-    // updates.push(testEntry);
 
     users.forEach(async (userFile) => {
         const userConfig = await fetchUserJson(userFile);
@@ -100,7 +89,6 @@ function dispatchToUser(userConfig: UserJson, updates: Array<MangaPacket>) {
             if (!cacheHit) {
                 updateCache(updateResult);
 
-                // Placeholder for sending logic
                 console.log(`Sending chapter: ${updateResult.Chapter} of ${updateResult.Name} \n`);
 
                 handleServices(userConfig, updateResult);
