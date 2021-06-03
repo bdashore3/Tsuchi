@@ -14,6 +14,8 @@ if (require.main === module) {
 }
 
 async function main() {
+    console.log('Starting update service...');
+
     // Flush the cache every 12 hours to remove leftovers
     setInterval(() => flushCache(), 43200000);
 
@@ -24,6 +26,8 @@ async function main() {
     setInterval(async () => {
         await dispatchUpdateEvent();
     }, 1.8e6);
+
+    console.log('Update interval successfully set');
 }
 
 async function dispatchUpdateEvent() {
@@ -68,33 +72,37 @@ async function fetchUpdates(): Promise<Array<MangaPacket>> {
  * If the user entry's title and source is found in the updates list, send a notification.
  */
 function dispatchToUser(userConfig: UserJson, updates: Array<MangaPacket>) {
-    console.log(`Evaluating mangas for ${userConfig.user}`);
+    let success = 0;
+    const total = userConfig.mangas.length;
+
     console.log();
+    console.log(`Evaluating mangas for ${userConfig.user}`);
 
     userConfig.mangas.forEach((userEntry) => {
-        console.log(`Original element title: ${userEntry.title}`);
-        console.log(`Original element source: ${userEntry.source} \n`);
-
         const updateResult = updates.find((i) => {
             return userEntry.title == i.Name;
         });
 
         // Remove once sending is added
-        if (updateResult === undefined) {
-            console.log(`No updates found for ${userEntry.title} \n`);
-        } else {
+        if (updateResult !== undefined) {
             // If there is a hit in the cache, bail.
             const cacheHit = checkCache(updateResult);
 
             if (!cacheHit) {
                 updateCache(updateResult);
 
-                console.log(`Sending chapter: ${updateResult.Chapter} of ${updateResult.Name} \n`);
+                success++;
+                console.log(
+                    `Sending notification for ${updateResult.Name} from ${updateResult.Source}`
+                );
 
                 handleServices(userConfig, updateResult);
             }
         }
     });
+
+    console.log(`${success} updates from a total of ${total} manga(s)`);
+    console.log();
 }
 
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
