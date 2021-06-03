@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 import { MangaPacket } from 'types/sourceEntries';
 import { UserJson } from 'types/userJson';
-import { checkCache, flushCache, updateCache } from './cache';
+import { checkCache, flushCache } from './cache';
 // import fetchMangaDex from './SourceUpdates/MangaDex';
 import fetchMangaFox from './SourceUpdates/MangaFox';
 import fetchMangaLife from './SourceUpdates/MangaLife';
@@ -89,8 +89,6 @@ function dispatchToUser(userConfig: UserJson, updates: Array<MangaPacket>) {
             const cacheHit = checkCache(updateResult);
 
             if (!cacheHit) {
-                updateCache(updateResult);
-
                 success++;
                 console.log(
                     `Sending notification for ${updateResult.Name} from ${updateResult.Source}`
@@ -105,6 +103,7 @@ function dispatchToUser(userConfig: UserJson, updates: Array<MangaPacket>) {
     console.log();
 }
 
+// Handles dispatch to notification services.
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 function handleServices(userConfig: UserJson, payload: MangaPacket) {
     userConfig.services.forEach(async (name) => {

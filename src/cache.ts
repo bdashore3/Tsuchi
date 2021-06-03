@@ -2,13 +2,19 @@ import { MangaPacket } from 'types/sourceEntries';
 
 const userCache: Map<string, number> = new Map();
 
+// Adds a new entry to the cache with an expiry time.
 function addToCache(input: string) {
     const now = Date.now();
 
     userCache.set(input, now + 3600000);
 }
 
-export function updateCache(input: MangaPacket): void {
+/*
+ * Checks if there's an entry in the cache.
+ * If there is an entry, check if the timestamp is old and delete it
+ * to free up cache space.
+ */
+export function checkCache(input: MangaPacket): boolean {
     const inputString = JSON.stringify(input);
     const testValue = userCache.get(inputString);
 
@@ -18,17 +24,16 @@ export function updateCache(input: MangaPacket): void {
         if (testValue < now) {
             userCache.delete(inputString);
         }
+
+        return true;
+    } else {
+        addToCache(inputString);
+
+        return false;
     }
-
-    addToCache(inputString);
 }
 
-export function checkCache(input: MangaPacket): boolean {
-    const check = JSON.stringify(input);
-
-    return userCache.has(check);
-}
-
+// Flushes out any cache leftovers.
 export function flushCache(): void {
     const now = Date.now();
 
