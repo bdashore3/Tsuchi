@@ -2,7 +2,6 @@
 export type MangaPacket = {
     Name: string;
     Chapter: string;
-    TimeElapsed: number; // in Minutes
     Source: string;
 };
 

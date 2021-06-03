@@ -30,22 +30,13 @@ export default async function fetchMangaDex(): Promise<Array<MangaPacket>> {
     for (const manga of json.results) {
         const title = manga.data.attributes.title.en;
         const chapter = manga.data.attributes.lastChapter;
-        const release = manga.data.attributes.updatedAt;
 
         const mangapacket: MangaPacket = {
             Name: title,
             Chapter: chapter,
-            TimeElapsed: convertTime(release),
             Source: 'mangadex'
         };
         MangaDexUpdates.push(mangapacket);
     }
     return MangaDexUpdates;
-}
-
-function convertTime(inputDate: string): number {
-    const currentDate = new Date();
-    const stampedDate = Date.parse(inputDate);
-    const minutes = (currentDate.getTime() - stampedDate) / 60000;
-    return Math.round(minutes);
 }

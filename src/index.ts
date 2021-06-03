@@ -23,7 +23,7 @@ async function main() {
     // Dispatch updates on an interval every 15 minutes.
     setInterval(async () => {
         await dispatchUpdateEvent();
-    }, 900000);
+    }, 5000);
 }
 
 async function dispatchUpdateEvent() {
@@ -80,11 +80,11 @@ async function fetchUpdates(): Promise<Array<MangaPacket>> {
  */
 function dispatchToUser(userConfig: UserJson, updates: Array<MangaPacket>) {
     console.log(`Evaluating mangas for ${userConfig.user}`);
+    console.log();
 
     userConfig.mangas.forEach((userEntry) => {
-        console.log(
-            `Original element title: ${userEntry.title} \nOriginal element source: ${userEntry.source} \n`
-        );
+        console.log(`Original element title: ${userEntry.title}`);
+        console.log(`Original element source: ${userEntry.source} \n`);
 
         const updateResult = updates.find((i) => {
             return userEntry.title == i.Name;

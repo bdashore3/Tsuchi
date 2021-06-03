@@ -39,8 +39,7 @@ export default async function fetchMangaLife(): Promise<Array<MangaPacket>> {
         const mangaPacket: MangaPacket = {
             Chapter: parseChapter(element.Chapter),
             Name: element.SeriesName,
-            Source: 'mangalife',
-            TimeElapsed: timeElapsed
+            Source: 'mangalife'
         };
 
         mangaLifeUpdates.push(mangaPacket);

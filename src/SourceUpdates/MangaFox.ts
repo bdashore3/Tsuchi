@@ -50,7 +50,6 @@ export default async function fetchMangaFox(): Promise<Array<MangaPacket>> {
         const mangapacket: MangaPacket = {
             Name: title,
             Chapter: chapter,
-            TimeElapsed: time,
             Source: 'mangafox'
         };
 

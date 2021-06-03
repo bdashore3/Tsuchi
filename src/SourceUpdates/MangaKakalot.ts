@@ -41,7 +41,6 @@ export default async function fetchMangaKakalot(): Promise<Array<MangaPacket>> {
         const mangapacket: MangaPacket = {
             Name: title,
             Chapter: chapter,
-            TimeElapsed: time,
             Source: 'mangakakalot'
         };
 
