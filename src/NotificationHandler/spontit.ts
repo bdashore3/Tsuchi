@@ -17,7 +17,7 @@ export default async function sendSpontit(
     };
     const body = {
         pushTitle: payload.Name,
-        content: `Chapter ${payload.Chapter} updated from ${payload.Source}`
+        content: `${payload.Chapter} updated from ${payload.Source}`
     };
 
     await axios.post(url, JSON.stringify(body), options);
