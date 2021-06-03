@@ -56,19 +56,19 @@ async function dispatchUpdateEvent() {
 
 async function fetchUpdates(): Promise<Array<MangaPacket>> {
     // Empty array of updates from all sources
-    const updateArray: Array<MangaPacket> = [];
+    let updateArray: Array<MangaPacket> = [];
 
     // Fetches updates from Manga4Life
     const mangaLife = await fetchMangaLife();
-    updateArray.concat(mangaLife);
+    updateArray = updateArray.concat(mangaLife);
 
     // Fetches updates from MangaFox
     const mangaFox = await fetchMangaFox();
-    updateArray.concat(mangaFox);
+    updateArray = updateArray.concat(mangaFox);
 
     // Fetches updates from MangaKakalot
     const mangaKakalot = await fetchMangaKakalot();
-    updateArray.concat(mangaKakalot);
+    updateArray = updateArray.concat(mangaKakalot);
 
     return updateArray;
 }
@@ -87,7 +87,7 @@ function dispatchToUser(userConfig: UserJson, updates: Array<MangaPacket>) {
         );
 
         const updateResult = updates.find((i) => {
-            return userEntry.title === i.Name && userEntry.source === i.Source;
+            return userEntry.title == i.Name;
         });
 
         // Remove once sending is added
