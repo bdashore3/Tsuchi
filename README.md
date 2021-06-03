@@ -49,7 +49,10 @@ There are many ways users can contribute since each piece of MangaUpdates is dyn
 -   Feature requests
 -   Making JSON configuration easier
 
-In all of these cases, please make a new issue in [Github issues](https://github.com/bdashore3/MangaUpdates/issues). If you have a new source/service you want to add, create an issue along with an optional [pull request](https://github.com/bdashore3/MangaUpdates/pulls) if you can add the new material yourself.
+For sources, please reference the [sources guide](https://github.com/bdashore3/MangaUpdates/blob/default/src/SourceUpdates/README.md)
+For notification services, please reference the [notification services guide](https://github.com/bdashore3/MangaUpdates/blob/default/src/NotificationHandler/README.md)
+
+In other cases, please make a new issue in [Github issues](https://github.com/bdashore3/MangaUpdates/issues).
 
 If you don't have a github account, please take a look at [other contact options](#developers-and-permissions) and we'll add your issue for you.
 
