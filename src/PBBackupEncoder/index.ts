@@ -2,6 +2,7 @@ import { promises as fs } from 'fs';
 import { MangaEntry, UserJson } from 'types/userJson';
 import { Library, PBBackup, SourceMangas } from 'types/paperbackBackup';
 import { fetchUserJson } from 'src/utils';
+import { removeExtraChars } from '../utils';
 
 if (require.main === module) {
     main();
@@ -71,7 +72,7 @@ function genSourceList(rawJson: PBBackup, uuids: Array<string>): Array<MangaEntr
 
         if (uuids.includes(element.manga.id) && element.manga.status == 1) {
             titles.push({
-                title: element.manga.titles[0],
+                title: removeExtraChars(element.manga.titles[0]),
                 source: source
             });
         }
