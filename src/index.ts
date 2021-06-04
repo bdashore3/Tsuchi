@@ -80,7 +80,7 @@ function dispatchToUser(userConfig: UserJson, updates: Array<MangaPacket>) {
 
     userConfig.mangas.forEach((userEntry) => {
         const updateResult = updates.find((i) => {
-            return userEntry.title == i.Name;
+            return userEntry.title === i.Name && userEntry.source === i.Source;
         });
 
         if (updateResult !== undefined) {
