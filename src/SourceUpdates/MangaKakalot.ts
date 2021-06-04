@@ -34,7 +34,7 @@ export default async function fetchMangaKakalot(): Promise<Array<MangaPacket>> {
         const update = $('i', item).first().text();
 
         const time = calculateTime(update);
-        if (time > 60) {
+        if (time > 120) {
             break;
         }
 

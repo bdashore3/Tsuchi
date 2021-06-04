@@ -6,7 +6,8 @@ const userCache: Map<string, number> = new Map();
 function addToCache(input: string) {
     const now = Date.now();
 
-    userCache.set(input, now + 3600000);
+    // 2 hours in ms
+    userCache.set(input, now + 7.2e6);
 }
 
 /*

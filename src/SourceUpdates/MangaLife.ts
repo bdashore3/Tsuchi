@@ -32,7 +32,7 @@ export default async function fetchMangaLife(): Promise<Array<MangaPacket>> {
     rawUpdates.forEach((element) => {
         const timeElapsed = convertTime(element.Date);
 
-        if (timeElapsed > 400) {
+        if (timeElapsed > 120) {
             return;
         }
 
