@@ -9,7 +9,8 @@
     "scrapeBackup": "node dist/src/PBBackupEncoder/index.js",
     "setup": "node dist/src/Setup/index.js",
     "lint": "eslint --ext .ts .",
-    "stest": "node dist/src/SourceUpdates/testSourceCode.js"
+    "stest": "node dist/src/SourceUpdates/testSourceCode.js",
+    "mconvert": "yarn build && node dist/src/ManualEncoder/index.js"
   },
   "devDependencies": {
     "@types/node": "^15.6.1",
