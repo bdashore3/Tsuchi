@@ -83,7 +83,6 @@ function dispatchToUser(userConfig: UserJson, updates: Array<MangaPacket>) {
             return userEntry.title == i.Name;
         });
 
-        // Remove once sending is added
         if (updateResult !== undefined) {
             // If there is a hit in the cache, bail.
             const cacheHit = checkCache(updateResult);

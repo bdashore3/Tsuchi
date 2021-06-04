@@ -18,7 +18,11 @@ export function checkCache(input: MangaPacket): boolean {
     const inputString = JSON.stringify(input);
     const testValue = userCache.get(inputString);
 
-    if (testValue !== undefined) {
+    if (testValue === undefined) {
+        addToCache(inputString);
+
+        return false;
+    } else {
         const now = Date.now();
 
         if (testValue < now) {
@@ -26,10 +30,6 @@ export function checkCache(input: MangaPacket): boolean {
         }
 
         return true;
-    } else {
-        addToCache(inputString);
-
-        return false;
     }
 }
 
