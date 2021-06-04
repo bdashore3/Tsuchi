@@ -9,6 +9,7 @@ import fetchMangaKakalot from './SourceUpdates/MangaKakalot';
 import fetchMangaNelo from './SourceUpdates/MangaNelo';
 import sendIfttt from './NotificationHandler/ifttt';
 import sendSpontit from './NotificationHandler/spontit';
+import { fetchUserJson, removeExtraChars } from './utils';
 
 if (require.main === module) {
     main();
@@ -85,7 +86,14 @@ function dispatchToUser(userConfig: UserJson, updates: Array<MangaPacket>) {
 
     userConfig.mangas.forEach((userEntry) => {
         const updateResult = updates.find((i) => {
-            return userEntry.title === i.Name && userEntry.source === i.Source;
+            const strippedName = removeExtraChars(i.Name);
+            const result = userEntry.title === strippedName && userEntry.source === i.Source;
+
+            if (result) {
+                userEntry.title = i.Name;
+            }
+
+            return result;
         });
 
         if (updateResult !== undefined) {
@@ -124,12 +132,4 @@ function handleServices(userConfig: UserJson, payload: MangaPacket) {
                 break;
         }
     });
-}
-
-// Fetches user configuration.
-async function fetchUserJson(userFile: string): Promise<UserJson> {
-    const file = await fs.readFile(`users/${userFile}`, 'utf8');
-    const userJson = JSON.parse(file);
-
-    return userJson;
 }

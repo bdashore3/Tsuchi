@@ -1,6 +1,7 @@
 import { promises as fs } from 'fs';
 import { MangaEntry, UserJson } from 'types/userJson';
 import { Library, PBBackup, SourceMangas } from 'types/paperbackBackup';
+import { fetchUserJson } from 'src/utils';
 
 if (require.main === module) {
     main();
@@ -38,13 +39,6 @@ async function main() {
     userConfig.mangas = mangas;
 
     await fs.writeFile(`users/${userConfig.user}.json`, JSON.stringify(userConfig, null, 2));
-}
-
-async function fetchUserJson(username: string): Promise<UserJson> {
-    const file = await fs.readFile(`users/${username}.json`, 'utf8');
-    const userJson = JSON.parse(file);
-
-    return userJson;
 }
 
 // Generates an array of UUIDs from the library section of the backup
