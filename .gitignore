@@ -97,3 +97,4 @@ users/
 
 # Source template for now
 src/SourceUpdates/SourceTemplate.ts
+src/SourceUpdates/testSourceCode.ts
