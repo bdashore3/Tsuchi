@@ -6,6 +6,7 @@ import { checkCache, flushCache } from './cache';
 import fetchMangaFox from './SourceUpdates/MangaFox';
 import fetchMangaLife from './SourceUpdates/MangaLife';
 import fetchMangaKakalot from './SourceUpdates/MangaKakalot';
+import fetchMangaNelo from './SourceUpdates/MangaNelo';
 import sendIfttt from './NotificationHandler/ifttt';
 import sendSpontit from './NotificationHandler/spontit';
 
@@ -62,6 +63,10 @@ async function fetchUpdates(): Promise<Array<MangaPacket>> {
     // Fetches updates from MangaKakalot
     const mangaKakalot = await fetchMangaKakalot();
     updateArray = updateArray.concat(mangaKakalot);
+
+    // Fetches updates from MangaNelo
+    const mangaNelo = await fetchMangaNelo();
+    updateArray = updateArray.concat(mangaNelo);
 
     return updateArray;
 }

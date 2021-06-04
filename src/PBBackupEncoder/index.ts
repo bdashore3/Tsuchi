@@ -71,13 +71,11 @@ function genSourceList(rawJson: PBBackup, uuids: Array<string>): Array<MangaEntr
 
         if (['mangasee', 'mangalife'].includes(source.toLowerCase())) {
             source = 'mangalife';
-        } else if (['mangakakalot', 'manganelo'].includes(source.toLowerCase())) {
-            source = 'mangakakalot';
         } else {
             source = source.toLowerCase();
         }
 
-        if (uuids.includes(element.manga.id) && (element.manga.status == 1)) {
+        if (uuids.includes(element.manga.id) && element.manga.status == 1) {
             titles.push({
                 title: element.manga.titles[0],
                 source: source

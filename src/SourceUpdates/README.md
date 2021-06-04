@@ -5,7 +5,8 @@ Sources are required to fetch updates for manga. Many people read and save their
 ## Currently supported:
 
 -   Manga4life/Mangasee
--   Mangakakalot (and all aggregate sites by association)
+-   Mangakakalot
+-   MangaNelo
 -   MangaDex (Has support, but won't go live until frontend works again)
 -   FanFox/MangaFox
 
