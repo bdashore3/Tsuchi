@@ -1,46 +1,43 @@
 import { MangaPacket } from 'types/sourceEntries';
+import NodeCache from 'node-cache';
 
-const userCache: Map<string, number> = new Map();
+const userCache: NodeCache = new NodeCache({
+    stdTTL: 7200,
+    checkperiod: 21600
+});
 
-// Adds a new entry to the cache with an expiry time.
-function addToCache(input: string) {
-    const now = Date.now();
-
+// Adds a new entry to the cache following the standard TTL.
+function addToCache(input: string, user: string) {
     // 2 hours in ms
-    userCache.set(input, now + 7.2e6);
+    userCache.set(input, [user]);
+}
+
+function updateCache(input: string, users: Array<string>) {
+    userCache.set(input, users);
 }
 
 /*
  * Checks if there's an entry in the cache.
- * If there is an entry, check if the timestamp is old and delete it
- * to free up cache space.
+ *
+ * If there is a user array, check if the provided user exists in the array.
+ * If the user array exists, but there's no user, update the cache with the new user.
+ * If the user array doesn't exist, create a new cache entry for this manga packet
  */
-export function checkCache(input: MangaPacket): boolean {
+export function checkCache(input: MangaPacket, user: string): boolean {
     const inputString = JSON.stringify(input);
-    const testValue = userCache.get(inputString);
+    const lowercaseUser = user.toLowerCase();
+    const userArray: Array<string> | undefined = userCache.get(inputString);
 
-    if (testValue === undefined) {
-        addToCache(inputString);
+    if (userArray === undefined) {
+        addToCache(inputString, lowercaseUser);
 
         return false;
-    } else {
-        const now = Date.now();
-
-        if (testValue < now) {
-            userCache.delete(inputString);
-        }
-
+    } else if (userArray.includes(lowercaseUser)) {
         return true;
+    } else {
+        userArray.push(lowercaseUser);
+        updateCache(inputString, userArray);
+
+        return false;
     }
-}
-
-// Flushes out any cache leftovers.
-export function flushCache(): void {
-    const now = Date.now();
-
-    userCache.forEach((timestamp, manga) => {
-        if (timestamp < now) {
-            userCache.delete(manga);
-        }
-    });
 }

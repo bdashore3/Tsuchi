@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 import { MangaPacket } from 'types/sourceEntries';
 import { UserJson } from 'types/userJson';
-import { checkCache, flushCache } from './cache';
+import { checkCache } from './cache';
 // import fetchMangaDex from './SourceUpdates/MangaDex';
 import fetchMangaFox from './SourceUpdates/MangaFox';
 import fetchMangaLife from './SourceUpdates/MangaLife';
@@ -18,9 +18,6 @@ if (require.main === module) {
 async function main() {
     console.log('Starting update service...');
 
-    // Flush the cache every 12 hours to remove leftovers
-    setInterval(() => flushCache(), 43200000);
-
     // Initial dispatch update call
     await dispatchUpdateEvent();
 
@@ -33,7 +30,7 @@ async function main() {
 }
 
 async function dispatchUpdateEvent() {
-    const users = await fs.readdir('users').catch((_e) => {
+    const users = await fs.readdir('users').catch(() => {
         console.log('No users in the directory!');
     });
 
@@ -98,7 +95,7 @@ function dispatchToUser(userConfig: UserJson, updates: Array<MangaPacket>) {
 
         if (updateResult !== undefined) {
             // If there is a hit in the cache, bail.
-            const cacheHit = checkCache(updateResult);
+            const cacheHit = checkCache(updateResult, userConfig.user);
 
             if (!cacheHit) {
                 success++;

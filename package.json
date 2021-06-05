@@ -24,6 +24,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "cheerio": "^1.0.0-rc.9",
+    "node-cache": "^5.1.2",
     "prompt-sync": "^4.2.0",
     "xmlhttprequest": "^1.8.0"
   }
