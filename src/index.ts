@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 import { MangaPacket } from 'types/sourceEntries';
 import { UserJson } from 'types/userJson';
-import { checkCache, flushCache } from './cache';
+import { checkCache } from './cache';
 // import fetchMangaDex from './SourceUpdates/MangaDex';
 import fetchMangaFox from './SourceUpdates/MangaFox';
 import fetchMangaLife from './SourceUpdates/MangaLife';
@@ -18,22 +18,19 @@ if (require.main === module) {
 async function main() {
     console.log('Starting update service...');
 
-    // Flush the cache every 12 hours to remove leftovers
-    setInterval(() => flushCache(), 43200000);
-
     // Initial dispatch update call
     await dispatchUpdateEvent();
 
     // Dispatch updates on an interval every 30 minutes.
     setInterval(async () => {
         await dispatchUpdateEvent();
-    }, 1.8e6);
+    }, 5000);
 
     console.log('Update interval successfully set');
 }
 
 async function dispatchUpdateEvent() {
-    const users = await fs.readdir('users').catch((_e) => {
+    const users = await fs.readdir('users').catch(() => {
         console.log('No users in the directory!');
     });
 
@@ -98,7 +95,7 @@ function dispatchToUser(userConfig: UserJson, updates: Array<MangaPacket>) {
 
         if (updateResult !== undefined) {
             // If there is a hit in the cache, bail.
-            const cacheHit = checkCache(updateResult);
+            const cacheHit = checkCache(updateResult, userConfig.user);
 
             if (!cacheHit) {
                 success++;
@@ -106,7 +103,7 @@ function dispatchToUser(userConfig: UserJson, updates: Array<MangaPacket>) {
                     `Sending notification for ${updateResult.Name} from ${updateResult.Source}`
                 );
 
-                handleServices(userConfig, updateResult);
+                //handleServices(userConfig, updateResult);
             }
         }
     });
