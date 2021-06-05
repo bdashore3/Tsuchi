@@ -35,7 +35,7 @@ export default async function fetchMangaNelo(): Promise<Array<MangaPacket>> {
         const time_string = $('p.a-h.item-chapter > i', manga).first().text().trim();
         const time = calculateTime(time_string);
 
-        if (time > 120) {
+        if (time > 60) {
             break;
         }
 
@@ -44,7 +44,7 @@ export default async function fetchMangaNelo(): Promise<Array<MangaPacket>> {
             Chapter: chapter,
             Source: 'manganelo'
         };
-        
+
         mangaNeloUpdates.push(mangapacket);
     }
 

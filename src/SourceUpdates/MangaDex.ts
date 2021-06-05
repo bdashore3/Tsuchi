@@ -32,7 +32,7 @@ export default async function fetchMangaDex(): Promise<Array<MangaPacket>> {
         const chapter = manga.data.attributes.lastChapter;
         const time = convertTime(manga.data.attributes.upadtedAt);
 
-        if (time > 120) {
+        if (time > 90) {
             break;
         }
 

@@ -43,7 +43,7 @@ export default async function fetchMangaFox(): Promise<Array<MangaPacket>> {
         const chapter_string = $('.manga-list-4-item-part', manga).text();
         const chapter = chapter_string.split(' ')[1];
 
-        if (time > 120) {
+        if (time > 60) {
             return;
         }
 
