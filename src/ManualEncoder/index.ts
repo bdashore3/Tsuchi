@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 import { ManualSetupObject } from 'types/manualSetup';
-import { MangaEntry, UserJson } from 'types/userJson';
-import { removeExtraChars } from '../utils';
+import { MangaEntry } from 'types/userJson';
+import { fetchUserJson, removeExtraChars } from '../utils';
 
 if (require.main === module) {
     main();
@@ -22,17 +22,15 @@ async function main() {
         return;
     }
 
-    const userFile = await fs.readFile(`users/${username}.json`, 'utf8').catch(() => {
+    const userConfig = await fetchUserJson(`${username}.json`).catch(() => {
         console.log(
             "I tried getting your config, but it isn't there? \nCheck the entered username or run setup first!"
         );
     });
 
-    if (!userFile) {
+    if (!userConfig) {
         return;
     }
-
-    const userConfig: UserJson = JSON.parse(userFile);
 
     const manualBuffer = await parseTextFile(textPath);
     const titles = convertTitles(manualBuffer);

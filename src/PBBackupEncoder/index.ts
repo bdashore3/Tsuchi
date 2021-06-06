@@ -1,5 +1,5 @@
 import { promises as fs } from 'fs';
-import { MangaEntry, UserJson } from 'types/userJson';
+import { MangaEntry } from 'types/userJson';
 import { Library, PBBackup, SourceMangas } from 'types/paperbackBackup';
 import { fetchUserJson, removeExtraChars } from '../utils';
 
@@ -15,16 +15,13 @@ async function main() {
         return;
     }
 
-    let userConfig: UserJson | undefined;
-    try {
-        userConfig = await fetchUserJson(username);
-    } catch (e) {
+    const userConfig = await fetchUserJson(`${username}.json`).catch(() => {
         console.log(
             "I tried getting your config, but it isn't there? \nCheck the entered username or run setup first!"
         );
-    }
+    });
 
-    if (userConfig === undefined) {
+    if (!userConfig) {
         return;
     }
 
