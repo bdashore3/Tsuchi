@@ -1,5 +1,5 @@
 import { MangaPacket } from 'types/sourceEntries';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import promptSync from 'prompt-sync';
 import { Spontit } from 'types/services';
 
@@ -20,7 +20,15 @@ export default async function sendSpontit(
         content: `${payload.Chapter} updated from ${payload.Source}`
     };
 
-    await axios.post(url, JSON.stringify(body), options);
+    await axios.post(url, JSON.stringify(body), options).catch((err: AxiosError) => {
+        switch (err.response?.status) {
+            case 502:
+                console.log('502: Bad gateway error on Spontit. Maybe the API is down?');
+                break;
+            default:
+                console.log(err);
+        }
+    });
 }
 
 export function configureSpontit(): Spontit | undefined {

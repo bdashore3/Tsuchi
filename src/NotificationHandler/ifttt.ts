@@ -8,11 +8,13 @@ export default async function sendIfttt(
     key: string,
     payload: MangaPacket
 ): Promise<void> {
-    await axios.post(`https://maker.ifttt.com/trigger/${eventName}/with/key/${key}`, {
-        value1: payload.Name,
-        value2: payload.Chapter,
-        value3: payload.Source
-    });
+    await axios
+        .post(`https://maker.ifttt.com/trigger/${eventName}/with/key/${key}`, {
+            value1: payload.Name,
+            value2: payload.Chapter,
+            value3: payload.Source
+        })
+        .catch((err) => console.log(err));
 }
 
 export function configureIfttt(): Ifttt | undefined {
