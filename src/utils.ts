@@ -19,7 +19,7 @@ export function removeExtraChars(title: string): string {
         .replaceAll("'", '')
         .replace(puncRegex, ' ')
         .replace(spaceRegex, ' ')
-        .trim();
+        .trimEnd();
 
     return strippedString;
 }
