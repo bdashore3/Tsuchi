@@ -1,4 +1,5 @@
-import fetchAnilist from '../Trackers/anilistParser';
+import fetchMangaKakalot from './MangaKakalot';
+import fetchMangaFox from './MangaFox';
 
 if (require.main === module) {
     main();
@@ -7,7 +8,6 @@ if (require.main === module) {
 async function main(): Promise<void> {
     console.clear();
     // console.log(await fetchMangaKakalot());
-    const mangaFox = await fetchAnilist('kingbri');
+    const mangaFox = await fetchMangaFox();
     console.log(mangaFox);
-    console.log(mangaFox.length);
 }
