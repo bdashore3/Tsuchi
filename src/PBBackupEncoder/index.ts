@@ -1,8 +1,7 @@
 import { promises as fs } from 'fs';
 import { MangaEntry, UserJson } from 'types/userJson';
 import { Library, PBBackup, SourceMangas } from 'types/paperbackBackup';
-import { fetchUserJson } from 'src/utils';
-import { removeExtraChars } from '../utils';
+import { fetchUserJson, removeExtraChars } from '../utils';
 
 if (require.main === module) {
     main();
@@ -30,7 +29,7 @@ async function main() {
     }
 
     // Read the backup JSON file and cast it to a PBBackup type
-    const rawBackupJson = await fs.readFile('backupDump/input.json', 'utf8');
+    const rawBackupJson = await fs.readFile('backupDump/paperback.json', 'utf8');
     const backupJson: PBBackup = JSON.parse(rawBackupJson);
 
     const uuids = getUuids(backupJson);
