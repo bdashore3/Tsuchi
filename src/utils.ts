@@ -11,10 +11,15 @@ export async function fetchUserJson(userFile: string): Promise<UserJson> {
 
 // Removes extra punctuation and whitespace from a manga title.
 export function removeExtraChars(title: string): string {
-    const puncRegex = /[!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/g;
+    const puncRegex = /[!"#$%&()*+,-.\/:;<=>?@[\]^_`{|}~]/g;
     const spaceRegex = /\s+/g;
 
-    const strippedString = title.toLowerCase().replace(puncRegex, ' ').replace(spaceRegex, ' ');
+    const strippedString = title
+        .toLowerCase()
+        .replaceAll("'", '')
+        .replace(puncRegex, ' ')
+        .replace(spaceRegex, ' ')
+        .trim();
 
     return strippedString;
 }

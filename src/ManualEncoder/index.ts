@@ -47,8 +47,9 @@ async function parseTextFile(path: string): Promise<Array<ManualSetupObject>> {
 
     const userText = await fs.readFile(path, 'utf8');
     const splitArray = userText.split('\n');
+
     const filteredArray = splitArray.filter((v) => v !== '');
-    const sources = filteredArray.filter((v) => v.toLowerCase().includes(':'));
+    const sources = filteredArray.filter((v) => v.slice(v.length - 1) === ':');
 
     for (let i = 0; i < sources.length; i++) {
         const upperBound =
