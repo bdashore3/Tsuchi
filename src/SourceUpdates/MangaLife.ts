@@ -63,5 +63,5 @@ function parseChapter(inputChapter: string): string {
         numbers[numbers.length - 1] = `.${numbers[numbers.length - 1]}`;
     }
 
-    return numbers.join('').replace(/0/g, '');
+    return numbers.join('').replace(/^0+|0+$/g, '');
 }
