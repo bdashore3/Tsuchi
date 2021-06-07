@@ -3,7 +3,7 @@ import NodeCache from 'node-cache';
 
 const userCache: NodeCache = new NodeCache({
     stdTTL: 7200,
-    checkperiod: 21600
+    deleteOnExpire: true
 });
 
 // Adds a new entry to the cache following the standard TTL.
