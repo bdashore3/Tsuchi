@@ -79,7 +79,7 @@ function convertTitles(manualBuffer: Array<ManualSetupObject>): Array<MangaEntry
     manualBuffer.forEach((element) => {
         element.titles.forEach((title) => {
             titles.push({
-                title: removeExtraChars(title).substring(1),
+                title: removeExtraChars(title),
                 source: element.source
             });
         });
