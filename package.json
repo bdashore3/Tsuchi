@@ -7,6 +7,9 @@
     "server",
     "setup-wizard"
   ],
+  "scripts": {
+    "build": "tsc --build --force tsconfig.json"
+  },
   "devDependencies": {
     "@types/node": "^15.6.1",
     "@typescript-eslint/eslint-plugin": "^4.25.0",
