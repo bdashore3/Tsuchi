@@ -6,4 +6,4 @@ export type Ifttt = {
 export type Spontit = {
     userId: string;
     secretKey: string;
-}
+};

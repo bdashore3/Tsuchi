@@ -1,7 +1,6 @@
-import { MangaPacket } from 'types/sourceEntries';
 import axios, { AxiosError } from 'axios';
 import promptSync from 'prompt-sync';
-import { Spontit } from 'types/services';
+import { MangaPacket, Spontit } from 'manga-updates/types';
 
 export default async function sendSpontit(
     userId: string,

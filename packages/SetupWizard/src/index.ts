@@ -1,8 +1,8 @@
 import { promises as fs } from 'fs';
 import promptSync from 'prompt-sync';
-import { configureIfttt } from '../NotificationHandler/ifttt';
-import { configureSpontit } from '../NotificationHandler/spontit';
-import { UserJson } from 'types/userJson';
+import { configureIfttt } from 'manga-updates/src/NotificationServices';
+import { configureSpontit } from 'manga-updates/src/NotificationServices';
+import { UserJson } from 'manga-updates/types';
 
 const userJson: UserJson = {
     user: '',

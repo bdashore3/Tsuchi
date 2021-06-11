@@ -1,4 +1,4 @@
-import { MangaPacket } from 'types/sourceEntries';
+import { MangaPacket } from 'manga-updates/types';
 import NodeCache from 'node-cache';
 
 const userCache: NodeCache = new NodeCache({

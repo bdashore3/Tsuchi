@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import cheerio from 'cheerio';
-import { MangaPacket } from 'types/sourceEntries';
+import { MangaPacket } from 'manga-updates/types';
 
 export default async function fetchMangaNelo(): Promise<Array<MangaPacket>> {
     const mangaNeloUpdates: Array<MangaPacket> = [];

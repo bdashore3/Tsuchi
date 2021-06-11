@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import { MangaPacket } from 'types/sourceEntries';
+import { MangaPacket } from 'manga-updates/types';
 
 export default async function fetchMangaDex(): Promise<Array<MangaPacket>> {
     const MangaDexUpdates: Array<MangaPacket> = [];

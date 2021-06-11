@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
-import { MangaEntry } from 'types/userJson';
-import { Library, PBBackup, SourceMangas } from 'types/paperbackBackup';
-import { fetchUserJson, removeExtraChars } from '../utils';
+import { MangaEntry } from 'manga-updates/types';
+import { Library, PBBackup, SourceMangas } from 'mangaupdates-setup/types';
+import { fetchUserJson, removeExtraChars } from 'manga-updates/src/utils';
 
 if (require.main === module) {
     main();
