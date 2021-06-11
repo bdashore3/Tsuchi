@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios';
-import { MangaLifeEntry, MangaPacket } from 'types/sourceEntries';
+import { MangaLifeEntry, MangaPacket } from '../types';
 
 export default async function fetchMangaLife(): Promise<Array<MangaPacket>> {
     const mangaLifeUpdates: Array<MangaPacket> = [];

@@ -1,5 +1,5 @@
 import { promises as fs } from 'fs';
-import { UserJson } from 'types/userJson';
+import { UserJson } from './types';
 
 // Fetches user configuration.
 export async function fetchUserJson(userFile: string): Promise<UserJson> {
