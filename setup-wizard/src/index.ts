@@ -100,7 +100,7 @@ async function main() {
     userJson.user = username;
     userJson.services = services;
 
-    await fs.writeFile(`users/${username}.json`, JSON.stringify(userJson, null, 2));
+    await fs.writeFile(`./${username}.json`, JSON.stringify(userJson, null, 2));
 }
 
 function sleep(ms: number) {
