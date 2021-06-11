@@ -8,13 +8,15 @@
     "setup-wizard"
   ],
   "scripts": {
-    "build": "tsc --build --force tsconfig.json"
+    "build": "tsc --build --force tsconfig.json",
+    "package": "pkg ./dist/setup-wizard/src/index.js --out-path executables"
   },
   "devDependencies": {
     "@types/node": "^15.6.1",
     "@typescript-eslint/eslint-plugin": "^4.25.0",
     "@typescript-eslint/parser": "^4.25.0",
     "eslint": "^7.27.0",
+    "pkg": "^5.2.1",
     "prettier": "^2.3.0",
     "typescript": "^4.3.2"
   }
