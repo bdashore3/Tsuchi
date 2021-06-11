@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
-import { ManualSetupObject } from 'types/manualSetup';
-import { MangaEntry } from 'types/userJson';
-import { fetchUserJson, removeExtraChars } from '../utils';
+import { ManualSetupObject } from '../types';
+import { MangaEntry } from 'mangaupdates-server';
+import { fetchUserJson, removeExtraChars } from 'mangaupdates-server/dist/utils';
 
 if (require.main === module) {
     main();

@@ -1,0 +1,20 @@
+{
+  "name": "mangaupdates-setup",
+  "version": "1.0.0",
+  "types": "dist/types/index",
+  "main": "dist/index",
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc",
+    "scrapeBackup": "node dist/PBBackupEncoder/index.js",
+    "mconvert": "node dist/ManualEncoder/index.js",
+    "setup": "node dist/Setup/index.js"
+  },
+  "dependencies": {
+    "mangaupdates-server": "1.0.0",
+    "prompt-sync": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/prompt-sync": "^4.1.0"
+  }
+}

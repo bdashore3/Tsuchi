@@ -1,7 +1,6 @@
-import { MangaPacket } from 'types/sourceEntries';
+import { MangaPacket, Ifttt } from '../types';
 import axios from 'axios';
 import promptSync from 'prompt-sync';
-import { Ifttt } from 'types/services';
 
 export default async function sendIfttt(
     eventName: string,

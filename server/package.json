@@ -1,0 +1,21 @@
+{
+  "name": "mangaupdates-server",
+  "version": "1.0.0",
+  "main": "dist/index",
+  "types": "dist/types/index",
+  "license": "Apache-2.0",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "lint": "eslint --ext .ts ."
+  },
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cheerio": "^1.0.0-rc.10",
+    "node-cache": "^5.1.2",
+    "prompt-sync": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/prompt-sync": "^4.1.0"
+  }
+}

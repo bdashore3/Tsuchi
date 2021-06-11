@@ -1,11 +1,11 @@
 import axios, { AxiosError } from 'axios';
 import cheerio from 'cheerio';
-import { MangaPacket } from 'types/sourceEntries';
+import { MangaPacket } from '../types';
 
-export default async function fetchMangaKakalot(): Promise<Array<MangaPacket>> {
+export default async function fetchMangaNelo(): Promise<Array<MangaPacket>> {
     const mangaNeloUpdates: Array<MangaPacket> = [];
 
-    const baseDomain = 'https://mangakakalot.com/';
+    const baseDomain = 'https://manganato.com/';
     const html = await axios.get(baseDomain, { timeout: 30000 }).catch((err: AxiosError) => {
         switch (err.code) {
             case 'ECONNABORTED':
@@ -28,12 +28,13 @@ export default async function fetchMangaKakalot(): Promise<Array<MangaPacket>> {
         decodeEntities: true
     });
 
-    for (const item of $('.itemupdate.first', '.doreamon').toArray()) {
-        const title = $('h3', item).text();
-        const chapter = $('.sts_1', item).first().text();
-        const update = $('i', item).first().text();
+    for (const manga of $('div.content-homepage-item', 'div.panel-content-homepage').toArray()) {
+        const title = $('img', manga).first().attr('alt') ?? '';
+        const chapter = $('p.a-h.item-chapter > a.text-nowrap', manga).first().text().trim();
 
-        const time = calculateTime(update);
+        const time_string = $('p.a-h.item-chapter > i', manga).first().text().trim();
+        const time = calculateTime(time_string);
+
         if (time > 60) {
             break;
         }
@@ -41,7 +42,7 @@ export default async function fetchMangaKakalot(): Promise<Array<MangaPacket>> {
         const mangapacket: MangaPacket = {
             Name: title,
             Chapter: chapter,
-            Source: 'mangakakalot'
+            Source: 'manganelo'
         };
 
         mangaNeloUpdates.push(mangapacket);
