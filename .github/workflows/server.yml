@@ -1,0 +1,43 @@
+name: Build and package server
+
+on:
+  push:
+    branches: [default]
+
+jobs:
+  build:
+    name: Build and package server
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn config get cacheFolder)"
+      - name: Cache Deps
+        uses: actions/cache@v2
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: ${{ runner.os }}-yarn-
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
+      - name: Install Dependencies
+        run: yarn install
+      - name: Build and package server
+        run: |
+          cd server
+          yarn build
+          yarn package
+          mv executables/index-linux executables/mangaupdates-server-linux
+          mv executables/index-macos executables/mangaupdates-server-macos
+          mv executables/index-win.exe executables/mangaupdates-server-win.exe
+      - name: Get short sha
+        id: vars
+        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+      - name: Upload files
+        uses: actions/upload-artifact@v2
+        with:
+          name: mangaupdates-server-${{ steps.vars.outputs.sha_short }}
+          path: server/executables
