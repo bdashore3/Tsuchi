@@ -1,49 +1,61 @@
 import { promises as fs } from 'fs';
-import { ManualSetupObject } from '../types';
+import { ManualSetupObject } from './types';
 import { MangaEntry } from 'mangaupdates-server';
-import { fetchUserJson, removeExtraChars } from 'mangaupdates-server/dist/utils';
+import { removeExtraChars } from 'mangaupdates-server/dist/utils';
+import { sleep } from './utils';
+import { Prompt } from 'prompt-sync';
 
-if (require.main === module) {
-    main();
-}
-
-async function main() {
-    const username = process.argv[2];
-    if (username === '' || username === undefined) {
-        console.log('Please provide a username in the first argument position!');
-
-        return;
-    }
-
+export async function handleManual(prompt: Prompt, username: string): Promise<Array<MangaEntry>> {
+    /*
     const textPath = process.argv[3];
     if (textPath === '' || textPath === undefined) {
         console.log('Please provide a path to the textfile in the second argument position!');
 
         return;
     }
+    */
 
-    const userConfig = await fetchUserJson(`${username}.json`).catch(() => {
+    console.clear();
+    console.log('Manual manga list conversion \n');
+
+    let rawBackupText;
+
+    // Read the backup JSON file and cast it to a PBBackup type
+    while (true) {
         console.log(
-            "I tried getting your config, but it isn't there? \nCheck the entered username or run setup first!"
+            `To convert a manual manga list, Please put your textfile in the same directory`
         );
-    });
+        console.log(`as this executable and rename it to ${username}.txt. \n`);
+        console.log('Hit enter once you have finished this task.');
+        prompt('> ');
 
-    if (!userConfig) {
-        return;
+        try {
+            rawBackupText = await fs.readFile(`./${username}.txt`, 'utf8');
+        } catch (e) {
+            console.log("Looks like your manual textfile couldn't be read!");
+            console.log(
+                `Make sure you have your formatted manga list in the same folder as this executable and name it ${username}.txt! (case sensitive)`
+            );
+            await sleep(2000);
+
+            console.clear();
+            continue;
+        }
+
+        break;
     }
 
-    const manualBuffer = await parseTextFile(textPath);
+    const manualBuffer = parseTextFile(rawBackupText);
     const titles = convertTitles(manualBuffer);
 
-    userConfig.mangas = titles;
+    console.log('Parsing complete.');
 
-    await fs.writeFile(`users/${userConfig.user}.json`, JSON.stringify(userConfig, null, 2));
+    return titles;
 }
 
-async function parseTextFile(path: string): Promise<Array<ManualSetupObject>> {
+function parseTextFile(userText: string): Array<ManualSetupObject> {
     const parentObject = [];
 
-    const userText = await fs.readFile(path, 'utf8');
     const splitArray = userText.split('\n');
 
     const filteredArray = splitArray.filter((v) => v !== '');

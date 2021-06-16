@@ -1,41 +1,50 @@
 import { promises as fs } from 'fs';
 import { MangaEntry } from 'mangaupdates-server';
-import { fetchUserJson, removeExtraChars } from 'mangaupdates-server/src/utils';
-import { Library, PBBackup, SourceMangas } from '../types';
+import { removeExtraChars } from 'mangaupdates-server/dist/utils';
+import { Prompt } from 'prompt-sync';
+import { Library, PBBackup, SourceMangas } from './types';
+import { sleep } from './utils';
 
-if (require.main === module) {
-    main();
-}
+export async function handlePaperback(prompt: Prompt): Promise<Array<MangaEntry>> {
+    console.clear();
+    console.log('Paperback backup conversion \n');
 
-async function main() {
-    const username = process.argv[2];
-    if (username === '' || username === undefined) {
-        console.log('Please provide a username in the first argument position!');
+    let rawBackupJson;
 
-        return;
-    }
-
-    const userConfig = await fetchUserJson(`${username}.json`).catch(() => {
+    // Read the backup text file and send it to the parser
+    while (true) {
         console.log(
-            "I tried getting your config, but it isn't there? \nCheck the entered username or run setup first!"
+            'To convert a paperback backup, Please put your backup.json in the same directory'
         );
-    });
+        console.log('as this executable and rename it to paperback.json. \n');
+        console.log('Hit enter once you have finished this task.');
+        prompt('> ');
 
-    if (!userConfig) {
-        return;
+        try {
+            rawBackupJson = await fs.readFile('./paperback.json', 'utf8');
+        } catch (e) {
+            console.log("Looks like your paperback backup JSON couldn't be read!");
+            console.log(
+                'Make sure you have your backup JSON in the same folder as this executable and name it paperback.json! (case sensitive)'
+            );
+            await sleep(2000);
+
+            console.clear();
+            continue;
+        }
+
+        break;
     }
 
-    // Read the backup JSON file and cast it to a PBBackup type
-    const rawBackupJson = await fs.readFile('backupDump/paperback.json', 'utf8');
     const backupJson: PBBackup = JSON.parse(rawBackupJson);
 
     const uuids = getUuids(backupJson);
-
     const mangas = genSourceList(backupJson, uuids);
 
-    userConfig.mangas = mangas;
+    console.log('JSON parsing complete.');
+    await sleep(3000);
 
-    await fs.writeFile(`users/${userConfig.user}.json`, JSON.stringify(userConfig, null, 2));
+    return mangas;
 }
 
 // Generates an array of UUIDs from the library section of the backup

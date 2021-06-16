@@ -19,8 +19,8 @@ export default async function sendIfttt(
 export function configureIfttt(): Ifttt | undefined {
     const prompt = promptSync();
 
-    let event_name;
-    let key;
+    let event_name: string;
+    let key: string;
 
     console.clear();
 
@@ -55,6 +55,8 @@ export function configureIfttt(): Ifttt | undefined {
         event_name: event_name,
         key: key
     };
+
+    console.log('\nService setup complete.');
 
     return ifttt;
 }

@@ -6,9 +6,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "build": "tsc --build --force tsconfig.json",
-    "scrapeBackup": "node dist/PBBackupEncoder/index.js",
-    "mconvert": "node dist/ManualEncoder/index.js",
-    "setup": "node dist/Setup/index.js",
+    "start": "node dist/index.js",
     "package": "pkg ./dist/index.js --out-path executables"
   },
   "dependencies": {

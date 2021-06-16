@@ -33,8 +33,8 @@ export default async function sendSpontit(
 export function configureSpontit(): Spontit | undefined {
     const prompt = promptSync();
 
-    let userId;
-    let secretKey;
+    let userId: string;
+    let secretKey: string;
 
     console.clear();
 
@@ -69,5 +69,8 @@ export function configureSpontit(): Spontit | undefined {
         userId: userId,
         secretKey: secretKey
     };
+
+    console.log('\nService setup complete.');
+
     return spontit;
 }

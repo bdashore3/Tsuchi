@@ -3,6 +3,9 @@ import promptSync from 'prompt-sync';
 import { configureIfttt } from 'mangaupdates-server/dist/NotificationServices';
 import { configureSpontit } from 'mangaupdates-server/dist/NotificationServices';
 import { UserJson } from 'mangaupdates-server';
+import { sleep } from './utils';
+import { handlePaperback } from './paperback';
+import { handleManual } from './manual';
 
 const userJson: UserJson = {
     user: '',
@@ -16,6 +19,7 @@ if (require.main === module) {
 
 async function main() {
     const prompt = promptSync();
+    const possibleBackups = ['paperback', 'manual'];
     const possibleServices = ['ifttt', 'spontit'];
 
     console.clear();
@@ -42,11 +46,45 @@ async function main() {
         }
     }
 
-    console.clear();
-    console.log('Please add your mangas manually or through the Paperback backup converter!');
-    console.log(
-        'To run the backup converter, use the `scrapeBackup` command after finishing this wizard'
-    );
+    userJson.user = username;
+
+    let possibleBackupString = '';
+
+    possibleBackups.forEach(function (backupType) {
+        const concatString = `- ${backupType} \n`;
+
+        possibleBackupString = possibleBackupString + concatString;
+    });
+
+    while (true) {
+        console.clear();
+        console.log(
+            'MangaUpdates requires you to have a list or a reader backup to load into your configuration file!'
+        );
+        console.log("If you don't see your app here, choose manual.");
+        console.log('Pick a backup type from the list of possible apps: ');
+        console.log(possibleBackupString);
+        const backupChoice = prompt('> ').toLowerCase();
+
+        switch (backupChoice) {
+            case 'paperback':
+                userJson.mangas = await handlePaperback(prompt);
+                break;
+            case 'manual':
+                userJson.mangas = await handleManual(prompt, userJson.user);
+                break;
+            default:
+                console.log('Please enter a listed backup method!');
+                await sleep(2000);
+                continue;
+        }
+
+        break;
+    }
+
+    console.log();
+    console.log('Now moving on to notification service input...');
+    await sleep(2000);
 
     let possibleServiceString = '';
 
@@ -76,6 +114,7 @@ async function main() {
 
         if (service === '' || !possibleServices.includes(service)) {
             console.log('Please enter a valid service!');
+            await sleep(2000);
             continue;
         }
 
@@ -96,15 +135,23 @@ async function main() {
     console.log('You will now be taken to set up each service. Please follow the prompts.');
     await sleep(2000);
     setupServices(services);
+    await sleep(2000);
+    console.clear();
 
-    userJson.user = username;
-    userJson.services = services;
+    if (services.length > 0) {
+        userJson.services = services;
 
-    await fs.writeFile(`./${username}.json`, JSON.stringify(userJson, null, 2));
-}
+        await fs.writeFile(`./${username}.json`, JSON.stringify(userJson, null, 2));
 
-function sleep(ms: number) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
+        console.log('Looks like setup was successful!');
+        console.log('Take a look in the directory of this executable for a JSON file! \n');
+        console.log(`Your configuration file: ${username}.json \n`);
+        console.log(
+            "If you aren't using an individual server, please send the file to kingbri or nmn!"
+        );
+    } else {
+        console.log('Looks like an error occured! Please re-run the program!');
+    }
 }
 
 function setupServices(services: Array<string>) {
