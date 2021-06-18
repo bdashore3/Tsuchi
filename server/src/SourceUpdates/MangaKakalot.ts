@@ -30,6 +30,7 @@ export default async function fetchMangaKakalot(): Promise<Array<MangaPacket>> {
 
     for (const item of $('.itemupdate.first', '.doreamon').toArray()) {
         const title = $('h3', item).text();
+        const image = $('img', item).attr('src') ?? '';
         const chapter = $('.sts_1', item).first().text();
         const update = $('i', item).first().text();
 
@@ -41,6 +42,7 @@ export default async function fetchMangaKakalot(): Promise<Array<MangaPacket>> {
         const mangapacket: MangaPacket = {
             Name: title,
             Chapter: chapter,
+            Image: image,
             Source: 'mangakakalot'
         };
 

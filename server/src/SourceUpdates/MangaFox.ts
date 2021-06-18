@@ -35,7 +35,7 @@ export default async function fetchMangaFox(): Promise<Array<MangaPacket>> {
 
     mangas.forEach((manga) => {
         const title: string = $('.manga-list-4-item-title', manga).text().trim();
-
+        const image = $('img', manga).first().attr('src') ?? '';
         const subtitle = $('.manga-list-4-item-subtitle', manga).text().trim();
         const time_string = subtitle.split(' ').slice(3).join(' ');
         const time = calculateTime(time_string);
@@ -50,6 +50,7 @@ export default async function fetchMangaFox(): Promise<Array<MangaPacket>> {
         const mangapacket: MangaPacket = {
             Name: title,
             Chapter: chapter,
+            Image: image,
             Source: 'mangafox'
         };
 
