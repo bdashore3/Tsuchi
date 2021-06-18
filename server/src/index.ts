@@ -7,7 +7,7 @@ import fetchMangaLife from './SourceUpdates/MangaLife';
 import fetchMangaKakalot from './SourceUpdates/MangaKakalot';
 import fetchMangaNelo from './SourceUpdates/MangaNelo';
 import sendIfttt from './NotificationServices/ifttt';
-import sendSpontit from './NotificationServices/spontit';
+// import sendSpontit from './NotificationServices/spontit';
 import { fetchUserJson, removeExtraChars } from './utils';
 
 if (require.main === module) {
@@ -118,13 +118,6 @@ function handleServices(userConfig: UserJson, payload: MangaPacket) {
         switch (name) {
             case 'ifttt':
                 await sendIfttt(userConfig.ifttt!.event_name, userConfig.ifttt!.key, payload);
-                break;
-            case 'spontit':
-                await sendSpontit(
-                    userConfig.spontit!.userId,
-                    userConfig.spontit!.secretKey,
-                    payload
-                );
                 break;
         }
     });
