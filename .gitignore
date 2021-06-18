@@ -95,6 +95,5 @@ out/
 backupDump/
 users/
 
-# Source template for now
-src/SourceUpdates/SourceTemplate.ts
-src/SourceUpdates/testSourceCode.ts
+# Test source code
+server/src/SourceUpdates/test.ts

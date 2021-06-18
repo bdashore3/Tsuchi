@@ -7,11 +7,18 @@ export default async function sendIfttt(
     key: string,
     payload: MangaPacket
 ): Promise<void> {
+    // Adding chapter prefix to string where sources like mangalife pass only chapter numbers
+    let prefix = '';
+    if (!payload.Chapter.toLowerCase().includes('ch')) {
+        prefix = 'Chapter ';
+    }
+    const description = `${prefix}${payload.Chapter} updated from ${payload.Source}`;
+
     await axios
         .post(`https://maker.ifttt.com/trigger/${eventName}/with/key/${key}`, {
             value1: payload.Name,
-            value2: payload.Chapter,
-            value3: payload.Source
+            value2: description,
+            value3: payload.Image
         })
         .catch((err) => console.log(err));
 }

@@ -35,10 +35,14 @@ export default async function fetchMangaLife(): Promise<Array<MangaPacket>> {
         if (timeElapsed > 90) {
             return;
         }
+        const imageServer = 'https://cover.nep.li/cover';
+        const id = element.IndexName;
+        const image = `${imageServer}/${id}.jpg`;
 
         const mangaPacket: MangaPacket = {
             Chapter: parseChapter(element.Chapter),
             Name: element.SeriesName,
+            Image: image,
             Source: 'mangalife'
         };
 

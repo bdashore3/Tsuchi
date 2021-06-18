@@ -31,6 +31,7 @@ export default async function fetchMangaNelo(): Promise<Array<MangaPacket>> {
     for (const manga of $('div.content-homepage-item', 'div.panel-content-homepage').toArray()) {
         const title = $('img', manga).first().attr('alt') ?? '';
         const chapter = $('p.a-h.item-chapter > a.text-nowrap', manga).first().text().trim();
+        const image = $('img', manga).first().attr('src') ?? '';
 
         const time_string = $('p.a-h.item-chapter > i', manga).first().text().trim();
         const time = calculateTime(time_string);
@@ -42,6 +43,7 @@ export default async function fetchMangaNelo(): Promise<Array<MangaPacket>> {
         const mangapacket: MangaPacket = {
             Name: title,
             Chapter: chapter,
+            Image: image,
             Source: 'manganelo'
         };
 

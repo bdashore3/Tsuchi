@@ -2,6 +2,7 @@
 export type MangaPacket = {
     Name: string;
     Chapter: string;
+    Image: string;
     Source: string;
 };
 
