@@ -1,6 +1,7 @@
 import { MangaPacket, Ifttt } from '../types';
 import axios from 'axios';
 import promptSync from 'prompt-sync';
+import { renameChapter } from '../utils';
 
 export default async function sendIfttt(
     eventName: string,
@@ -8,11 +9,8 @@ export default async function sendIfttt(
     payload: MangaPacket
 ): Promise<void> {
     // Adding chapter prefix to string where sources like mangalife pass only chapter numbers
-    let prefix = '';
-    if (!payload.Chapter.toLowerCase().includes('ch')) {
-        prefix = 'Chapter ';
-    }
-    const description = `${prefix}${payload.Chapter} updated from ${payload.Source}`;
+    const chapter = renameChapter(payload.Chapter);
+    const description = `${chapter} updated from ${payload.Source}`;
 
     await axios
         .post(`https://maker.ifttt.com/trigger/${eventName}/with/key/${key}`, {

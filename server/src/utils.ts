@@ -23,3 +23,11 @@ export function removeExtraChars(title: string): string {
 
     return strippedString;
 }
+
+export function renameChapter(chapterString: string): string {
+    if (parseFloat(chapterString)) {
+        return `Chapter ${chapterString}`;
+    } else {
+        return chapterString;
+    }
+}
