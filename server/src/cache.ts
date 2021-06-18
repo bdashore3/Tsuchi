@@ -7,13 +7,13 @@ const userCache: NodeCache = new NodeCache({
 });
 
 // Adds a new entry to the cache following the standard TTL.
-function addToCache(input: string, user: string) {
-    // 2 hours in ms
-    userCache.set(input, [user]);
+function addToCache(cachedString: string, user: string) {
+    userCache.set(cachedString, [user]);
 }
 
-function updateCache(input: string, users: Array<string>) {
-    userCache.set(input, users);
+// Updates an existing cache entry with a new user
+function updateCache(cachedString: string, users: Array<string>) {
+    userCache.set(cachedString, users);
 }
 
 /*
@@ -23,8 +23,13 @@ function updateCache(input: string, users: Array<string>) {
  * If the user array exists, but there's no user, update the cache with the new user.
  * If the user array doesn't exist, create a new cache entry for this manga packet
  */
-export function checkCache(input: MangaPacket, user: string): boolean {
-    const inputString = JSON.stringify(input);
+export function checkCache(packet: MangaPacket, user: string): boolean {
+    // Create a cached packet which removes unnecessary data and stringify it
+    const cachedPacket = Object.assign({}, packet);
+    delete cachedPacket.Image;
+
+    const inputString = JSON.stringify(cachedPacket);
+
     const lowercaseUser = user.toLowerCase();
     const userArray: Array<string> | undefined = userCache.get(inputString);
 
