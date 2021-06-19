@@ -51,7 +51,7 @@ export default async function fetchMangaFox(): Promise<Array<MangaPacket>> {
             Name: title,
             Chapter: chapter,
             Image: image,
-            Source: 'mangafox'
+            Source: 'MangaFox'
         };
 
         mangaFoxUpdates.push(mangapacket);

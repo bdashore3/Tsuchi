@@ -43,7 +43,7 @@ export default async function fetchMangaLife(): Promise<Array<MangaPacket>> {
             Chapter: parseChapter(element.Chapter),
             Name: element.SeriesName,
             Image: image,
-            Source: 'mangalife'
+            Source: 'MangaLife'
         };
 
         mangaLifeUpdates.push(mangaPacket);

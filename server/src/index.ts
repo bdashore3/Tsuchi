@@ -83,10 +83,12 @@ function dispatchToUser(userConfig: UserJson, updates: Array<MangaPacket>) {
     userConfig.mangas.forEach((userEntry) => {
         const updateResult = updates.find((i) => {
             const strippedName = removeExtraChars(i.Name);
-            const result = userEntry.title === strippedName && userEntry.source === i.Source;
+            const result =
+                userEntry.title === strippedName && userEntry.source === i.Source.toLowerCase();
 
             if (result) {
                 userEntry.title = i.Name;
+                userEntry.source = i.Source;
             }
 
             return result;

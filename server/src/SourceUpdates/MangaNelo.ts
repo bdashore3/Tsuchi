@@ -44,7 +44,7 @@ export default async function fetchMangaNelo(): Promise<Array<MangaPacket>> {
             Name: title,
             Chapter: chapter,
             Image: image,
-            Source: 'manganelo'
+            Source: 'MangaNelo'
         };
 
         mangaNeloUpdates.push(mangapacket);

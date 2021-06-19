@@ -43,7 +43,7 @@ export default async function fetchMangaKakalot(): Promise<Array<MangaPacket>> {
             Name: title,
             Chapter: chapter,
             Image: image,
-            Source: 'mangakakalot'
+            Source: 'MangaKakalot'
         };
 
         mangaNeloUpdates.push(mangapacket);

@@ -40,7 +40,7 @@ export default async function fetchMangaDex(): Promise<Array<MangaPacket>> {
             Name: title,
             Chapter: chapter,
             Image: undefined,
-            Source: 'mangadex'
+            Source: 'MangaDex'
         };
         MangaDexUpdates.push(mangapacket);
     }
