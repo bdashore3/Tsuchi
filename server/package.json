@@ -14,9 +14,11 @@
     "axios": "^0.21.1",
     "cheerio": "^1.0.0-rc.10",
     "node-cache": "^5.1.2",
+    "pg": "^8.6.0",
     "prompt-sync": "^4.2.0"
   },
   "devDependencies": {
+    "@types/pg": "^8.6.0",
     "@types/prompt-sync": "^4.1.0"
   }
 }
