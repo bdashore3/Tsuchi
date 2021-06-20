@@ -15,7 +15,15 @@ export default async function fetchMangaPark(): Promise<Array<MangaPacket>> {
     };
 
     // Takes anywhere from 6-25 seconds to return data
-    const html = await axios.post('http://0.0.0.0:8191/v1', JSON.stringify(body));
+    const html = await axios
+        .post('http://0.0.0.0:8191/v1', JSON.stringify(body))
+        .catch((err: AxiosError) => {
+            console.log(err);
+        });
+
+    if (!html) {
+        return mangaParkUpdates;
+    }
 
     const $ = cheerio.load(html.data.solution.response, {
         xmlMode: false,
@@ -59,5 +67,4 @@ function calculateTime(time: string): number {
     } else {
         return 100;
     }
-    
 }
