@@ -9,7 +9,7 @@ export default async function fetchMangaPark(): Promise<Array<MangaPacket>> {
 
     const body = {
         cmd: 'request.get',
-        url: 'https://v2.mangapark.net/',
+        url: `${baseDomain}`,
         userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleW...',
         maxTimeout: 60000
     };
@@ -46,7 +46,7 @@ export default async function fetchMangaPark(): Promise<Array<MangaPacket>> {
             Name: title,
             Chapter: chapter,
             Image: image,
-            Source: 'MangaNelo'
+            Source: 'MangaPark'
         };
 
         mangaParkUpdates.push(mangapacket);
