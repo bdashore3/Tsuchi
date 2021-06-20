@@ -32,7 +32,7 @@ export default async function fetchMangaLife(): Promise<Array<MangaPacket>> {
     rawUpdates.forEach((element) => {
         const timeElapsed = convertTime(element.Date);
 
-        if (timeElapsed > 90) {
+        if (timeElapsed > 60) {
             return;
         }
         const imageServer = 'https://cover.nep.li/cover';
