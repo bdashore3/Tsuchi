@@ -1,3 +1,4 @@
+import axios, { AxiosError } from 'axios';
 import { promises as fs } from 'fs';
 import { UserJson } from './types';
 
@@ -32,16 +33,35 @@ export function renameChapter(chapterString: string): string {
     }
 }
 
-export function calculateTime(time: string): number {
+export function calculateGenericTime(time: string): number {
     const arr = time.split(' ');
     const int: number = +arr[0];
 
-    if (arr[1] == 'mins') {
+    if (arr[1].includes('min')) {
         return int;
-    } else if (arr[1] == 'secs') {
+    } else if (arr[1].includes('sec')) {
         // If seconds in the latest update, it would return as 1 minute old
         return 1;
-    } else {
-        return 100;
+    } else if (arr[1].includes('hour')) {
+        return int * 60 + 1;
     }
+    return 1000; // Time at this point is in days or above.
+}
+
+export async function cloudFlareBypassRequest(baseDomain: string): Promise<any> {
+    const body = {
+        cmd: 'request.get',
+        url: `${baseDomain}`,
+        userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleW...',
+        maxTimeout: 60000
+    };
+
+    // Takes anywhere from 6-25 seconds to return data
+    const html = await axios
+        .post('http://0.0.0.0:8191/v1', JSON.stringify(body))
+        .catch((err: AxiosError) => {
+            console.log(err);
+        });
+
+    return html;
 }
