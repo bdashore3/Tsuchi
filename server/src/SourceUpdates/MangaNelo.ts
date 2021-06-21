@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import cheerio from 'cheerio';
 import { MangaPacket } from '../types';
+import { calculateTime } from '../utils';
 
 export default async function fetchMangaNelo(): Promise<Array<MangaPacket>> {
     const mangaNeloUpdates: Array<MangaPacket> = [];
@@ -51,15 +52,4 @@ export default async function fetchMangaNelo(): Promise<Array<MangaPacket>> {
     }
 
     return mangaNeloUpdates;
-}
-
-function calculateTime(time: string): number {
-    const arr = time.split(' ');
-    const int: number = +arr[0];
-
-    if (arr[1] == 'mins') {
-        return int;
-    } else {
-        return 100;
-    }
 }
