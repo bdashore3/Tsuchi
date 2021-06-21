@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import cheerio from 'cheerio';
 import { MangaPacket } from '../types';
+import { calculateGenericTime } from '../utils';
 
 export default async function fetchBaTo(): Promise<Array<MangaPacket>> {
     const baToUpdates: Array<MangaPacket> = [];
@@ -36,11 +37,12 @@ export default async function fetchBaTo(): Promise<Array<MangaPacket>> {
         const chapter = $('.visited', item).text().trim();
         const time_string = $('.item-volch > div', item).text().trim();
 
-        const time = calculateTime(time_string);
+        const time = calculateGenericTime(time_string);
+        console.log(time)
 
-        if (time > 60) {
-            break;
-        }
+        // if (time > 60) {
+        //     break;
+        // }
 
         const mangapacket: MangaPacket = {
             Name: title,
@@ -53,18 +55,4 @@ export default async function fetchBaTo(): Promise<Array<MangaPacket>> {
     }
 
     return baToUpdates;
-}
-
-function calculateTime(time: string): number {
-    const arr = time.split(' ');
-    const int: number = +arr[0];
-
-    if (arr[1] == 'mins') {
-        return int;
-    } else if (arr[1] == 'secs') {
-        // If seconds in the latest update, it would return as 1 minute old
-        return 1;
-    } else {
-        return 100;
-    }
 }

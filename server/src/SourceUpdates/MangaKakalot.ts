@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import cheerio from 'cheerio';
 import { MangaPacket } from '../types';
+import { calculateGenericTime } from '../utils';
 
 export default async function fetchMangaKakalot(): Promise<Array<MangaPacket>> {
     const mangaNeloUpdates: Array<MangaPacket> = [];
@@ -34,7 +35,7 @@ export default async function fetchMangaKakalot(): Promise<Array<MangaPacket>> {
         const chapter = $('.sts_1', item).first().text();
         const update = $('i', item).first().text();
 
-        const time = calculateTime(update);
+        const time = calculateGenericTime(update);
         if (time > 60) {
             break;
         }
@@ -50,15 +51,4 @@ export default async function fetchMangaKakalot(): Promise<Array<MangaPacket>> {
     }
 
     return mangaNeloUpdates;
-}
-
-function calculateTime(time: string): number {
-    const arr = time.split(' ');
-    const int: number = +arr[0];
-
-    if (arr[1] == 'mins') {
-        return int;
-    } else {
-        return 100;
-    }
 }

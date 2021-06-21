@@ -1,7 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import cheerio from 'cheerio';
 import { MangaPacket } from '../../types';
-import { calculateTime } from '../../utils';
+import { calculateGenericTime } from '../../utils';
 
 export default async function fetchFromGenkan(
     baseDomain: string,
@@ -26,6 +26,9 @@ export default async function fetchFromGenkan(
     if (!html) {
         return genkanUpdates;
     }
+    console.log(html.data.solution.cookies);
+
+    const cookies = html.data.solution.cookies;
 
     const $ = cheerio.load(html.data.solution.response, {
         xmlMode: false,
@@ -43,7 +46,7 @@ export default async function fetchFromGenkan(
         const image = style.slice(style.indexOf('(') + 1, style.indexOf(')'));
 
         const time_string = $('.text-muted', item).text().trim();
-        const time = calculateTime(time_string);
+        const time = calculateGenericTime(time_string);
 
         if (time > 60) {
             break;
