@@ -31,3 +31,17 @@ export function renameChapter(chapterString: string): string {
         return chapterString;
     }
 }
+
+export function calculateTime(time: string): number {
+    const arr = time.split(' ');
+    const int: number = +arr[0];
+
+    if (arr[1] == 'mins') {
+        return int;
+    } else if (arr[1] == 'secs') {
+        // If seconds in the latest update, it would return as 1 minute old
+        return 1;
+    } else {
+        return 100;
+    }
+}
