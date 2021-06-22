@@ -95,5 +95,8 @@ out/
 backupDump/
 users/
 
+# Configuration JSON files
+info.json
+
 # Test source code
 server/src/SourceUpdates/test.ts

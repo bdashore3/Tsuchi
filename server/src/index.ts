@@ -9,13 +9,23 @@ import fetchMangaNelo from './SourceUpdates/MangaNelo';
 import sendIfttt from './NotificationServices/ifttt';
 // import sendSpontit from './NotificationServices/spontit';
 import { fetchUserJson, removeExtraChars } from './utils';
+import { handleCredentials } from './Config/credentialsHelper';
+import { configurePool } from './Config/PgPool';
 
 if (require.main === module) {
     main();
 }
 
 async function main() {
-    console.log('Starting update service...');
+    const args = process.argv.slice(2);
+
+    const creds = await handleCredentials(args[0]);
+
+    // All internal service configuration goes here
+    configurePool(creds.DBUrl);
+
+    // Clear sensitive credentials for security
+    creds.DBUrl = undefined;
 
     // Initial dispatch update call
     await dispatchUpdateEvent();
