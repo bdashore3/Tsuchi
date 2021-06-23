@@ -1,4 +1,4 @@
-import fetchFromGenkan from './GenkanParaer';
+import fetchFromGenkan from './GenkanParser';
 import { MangaPacket } from '../../types';
 
 export default async function fetchNoNameScans(): Promise<Array<MangaPacket>> {

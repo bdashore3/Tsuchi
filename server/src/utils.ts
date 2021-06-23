@@ -48,7 +48,7 @@ export function calculateGenericTime(time: string): number {
     return 1000; // Time at this point is in days or above.
 }
 
-//cloudflare by pass with FlareSolverr Library
+//cloudflare bypass with FlareSolverr Library
 export async function cloudFlareBypassRequest(baseDomain: string): Promise<any> {
     const body = {
         cmd: 'request.get',
