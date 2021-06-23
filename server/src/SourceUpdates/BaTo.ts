@@ -3,6 +3,7 @@ import cheerio from 'cheerio';
 import { MangaPacket } from '../types';
 import { calculateGenericTime } from '../utils';
 
+// Disabled due to error 1020 reports
 export default async function fetchBaTo(): Promise<Array<MangaPacket>> {
     const baToUpdates: Array<MangaPacket> = [];
 
@@ -38,7 +39,7 @@ export default async function fetchBaTo(): Promise<Array<MangaPacket>> {
         const time_string = $('.item-volch > div', item).text().trim();
 
         const time = calculateGenericTime(time_string);
-        console.log(time)
+        console.log(time);
 
         // if (time > 60) {
         //     break;

@@ -1,6 +1,7 @@
 import fetchFromGenkan from './GenkanParaer';
 import { MangaPacket } from '../../types';
 
+// Disabled due to error 1020
 export default async function fetchReaperScans(): Promise<Array<MangaPacket>> {
     const baseDomain = 'https://reaperscans.com/';
     const source = 'Reaper Scans';
