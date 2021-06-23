@@ -1,7 +1,9 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import cheerio from 'cheerio';
 import { MangaPacket } from '../types';
-import { calculateGenericTime } from '../utils';
+import { calculateGenericTime, cloudFlareRequest } from '../utils';
+
+let cookieString = '';
 
 // Disabled due to error 1020 reports
 export default async function fetchBaTo(): Promise<Array<MangaPacket>> {
@@ -9,25 +11,27 @@ export default async function fetchBaTo(): Promise<Array<MangaPacket>> {
 
     const baseDomain = 'https://bato.to/';
 
-    const body = {
-        cmd: 'request.get',
-        url: `${baseDomain}`,
-        userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleW...',
-        maxTimeout: 60000
-    };
-
-    // Takes anywhere from 6-25 seconds to return data
-    const html = await axios
-        .post('http://0.0.0.0:8191/v1', JSON.stringify(body))
-        .catch((err: AxiosError) => {
-            console.log(err);
+    let resp;
+    try {
+        resp = await axios.get(baseDomain, {
+            headers: {
+                Cookie: cookieString
+            }
         });
+    } catch (err) {
+        if (err.response.status == 403 || err.response.status == 503) {
+            const cfResp = await cloudFlareRequest(baseDomain);
 
-    if (!html) {
-        return baToUpdates;
+            cookieString = cfResp.cookies;
+            resp = cfResp.response;
+        } else {
+            console.log(err);
+
+            return baToUpdates;
+        }
     }
 
-    const $ = cheerio.load(html.data.solution.response, {
+    const $ = cheerio.load(resp.data.solution.response, {
         xmlMode: false,
         decodeEntities: true
     });

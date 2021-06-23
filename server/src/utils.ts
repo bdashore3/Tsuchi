@@ -1,6 +1,6 @@
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import { promises as fs } from 'fs';
-import { UserJson } from './types';
+import { CloudFlareResponse, UserJson } from './types';
 
 // Fetches user configuration.
 export async function fetchUserJson(userFile: string): Promise<UserJson> {
@@ -48,22 +48,25 @@ export function calculateGenericTime(time: string): number {
     return 1000; // Time at this point is in days or above.
 }
 
-//cloudflare bypass with FlareSolverr Library
-export async function cloudFlareBypassRequest(baseDomain: string): Promise<any> {
+// CloudFlare bypass using the FlareSolverr proxy server
+export async function cloudFlareRequest(baseDomain: string): Promise<CloudFlareResponse> {
     const body = {
         cmd: 'request.get',
         url: `${baseDomain}`,
-        userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleW...',
-        maxTimeout: 60000
+        userAgent: 'Mozilla/5.0 (X11; Linux x86_64; rv:73.0) Gecko/20100101 Firefox/73.0',
+        // 5 minutes in ms
+        maxTimeout: 300000
     };
 
     // Takes anywhere from 6-25 seconds to return data
-    const html = await axios
-        .post('http://0.0.0.0:8191/v1', JSON.stringify(body))
-        .catch((err: AxiosError) => {
-            console.log(err);
-        });
+    const resp = await axios.post('http://0.0.0.0:8191/v1', JSON.stringify(body));
 
-    return html;
+    let cookieString = '';
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    resp.data.solution.cookies.forEach((cookie: any) => {
+        cookieString += `${cookie.name}=${cookie.value};`;
+    });
+
+    return { response: resp, cookies: cookieString };
 }
-//

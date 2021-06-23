@@ -1,4 +1,5 @@
 import { promises as fs } from 'fs';
+import axios from 'axios';
 import { UserJson, MangaPacket } from './types';
 import { checkCache } from './cache';
 // import fetchMangaDex from './SourceUpdates/MangaDex';
@@ -15,6 +16,11 @@ if (require.main === module) {
 }
 
 async function main() {
+    // Set Axios defaults
+    axios.defaults.headers.common['User-Agent'] =
+        'Mozilla/5.0 (X11; Linux x86_64; rv:73.0) Gecko/20100101 Firefox/73.0';
+    axios.defaults.withCredentials = true;
+
     console.log('Starting update service...');
 
     // Initial dispatch update call
