@@ -5,7 +5,8 @@
   "private": true,
   "workspaces": [
     "server",
-    "setup-wizard"
+    "setup-wizard",
+    "migration-setup"
   ],
   "scripts": {
     "build": "tsc --build --force tsconfig.json"
