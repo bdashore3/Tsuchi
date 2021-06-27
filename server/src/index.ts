@@ -1,5 +1,4 @@
-import { promises as fs } from 'fs';
-import { UserJson, MangaPacket } from './types';
+import { MangaPacket, GenericService } from './types';
 import { checkCache } from './cache';
 // import fetchMangaDex from './SourceUpdates/MangaDex';
 import fetchMangaFox from './SourceUpdates/MangaFox';
@@ -8,9 +7,9 @@ import fetchMangaKakalot from './SourceUpdates/MangaKakalot';
 import fetchMangaNelo from './SourceUpdates/MangaNelo';
 import sendIfttt from './NotificationServices/ifttt';
 // import sendSpontit from './NotificationServices/spontit';
-import { fetchUserJson, removeExtraChars } from './utils';
+import { removeExtraChars } from './utils';
 import { handleCredentials } from './Config/credentialsHelper';
-import { configurePool } from './Config/PgPool';
+import { configurePool, PgPool } from './Config/PgPool';
 
 if (require.main === module) {
     main();
@@ -38,21 +37,24 @@ async function main() {
     console.log('Update interval successfully set');
 }
 
+// TODO: Split into an update handler for server/single-user
 async function dispatchUpdateEvent() {
-    const users = await fs.readdir('users').catch(() => {
-        console.log('No users in the directory!');
-    });
+    const users = await PgPool.query('SELECT username FROM users');
 
-    if (!users) {
+    if (users.rows.length === 0) {
+        console.log('No users in the DB!');
+
         return;
     }
 
     const updates = await fetchUpdates();
 
-    users.forEach(async (userFile) => {
-        const userConfig = await fetchUserJson(userFile);
-        dispatchToUser(userConfig, updates);
+    const promises: Array<Promise<void>> = [];
+    users.rows.forEach((user) => {
+        promises.push(dispatchToUser(user.username, updates));
     });
+
+    await Promise.allSettled(promises);
 }
 
 async function fetchUpdates(): Promise<Array<MangaPacket>> {
@@ -83,22 +85,27 @@ async function fetchUpdates(): Promise<Array<MangaPacket>> {
  *
  * If the user entry's title and source is found in the updates list, send a notification.
  */
-function dispatchToUser(userConfig: UserJson, updates: Array<MangaPacket>) {
+async function dispatchToUser(username: string, updates: Array<MangaPacket>) {
+    const mangaQuery = await PgPool.query('SELECT title, source FROM mangas WHERE username = $1', [
+        username
+    ]);
+    const mangas = mangaQuery.rows;
+
+    let userServices: Array<GenericService> = [];
     let success = 0;
-    const total = userConfig.mangas.length;
+    const total = mangas.length;
 
     console.log();
-    console.log(`Evaluating mangas for ${userConfig.user}`);
+    console.log(`Evaluating mangas for ${username}`);
 
-    userConfig.mangas.forEach((userEntry) => {
+    for (const manga of mangas) {
         const updateResult = updates.find((i) => {
             const strippedName = removeExtraChars(i.Name);
-            const result =
-                userEntry.title === strippedName && userEntry.source === i.Source.toLowerCase();
+            const result = manga.title === strippedName && manga.source === i.Source.toLowerCase();
 
             if (result) {
-                userEntry.title = i.Name;
-                userEntry.source = i.Source;
+                manga.title = i.Name;
+                manga.source = i.Source;
             }
 
             return result;
@@ -106,18 +113,27 @@ function dispatchToUser(userConfig: UserJson, updates: Array<MangaPacket>) {
 
         if (updateResult !== undefined) {
             // If there is a hit in the cache, bail.
-            const cacheHit = checkCache(updateResult, userConfig.user);
+            const cacheHit = checkCache(updateResult, username);
 
             if (!cacheHit) {
+                if (userServices.length === 0) {
+                    const userServicesQuery = await PgPool.query(
+                        'SELECT service_name, api_name, api_secret FROM services WHERE username = $1',
+                        [username]
+                    );
+
+                    userServices = userServicesQuery.rows;
+                }
+
                 success++;
                 console.log(
                     `Sending notification for ${updateResult.Name} from ${updateResult.Source}`
                 );
 
-                handleServices(userConfig, updateResult);
+                handleServices(userServices, updateResult);
             }
         }
-    });
+    }
 
     console.log(`${success} updates from a total of ${total} manga(s)`);
     console.log();
@@ -125,11 +141,11 @@ function dispatchToUser(userConfig: UserJson, updates: Array<MangaPacket>) {
 
 // Handles dispatch to notification services.
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-function handleServices(userConfig: UserJson, payload: MangaPacket) {
-    userConfig.services.forEach(async (name) => {
-        switch (name) {
+function handleServices(services: Array<GenericService>, payload: MangaPacket) {
+    services.forEach(async (service) => {
+        switch (service.service_name) {
             case 'ifttt':
-                await sendIfttt(userConfig.ifttt!.event_name, userConfig.ifttt!.key, payload);
+                await sendIfttt(service.api_name!, service.api_secret!, payload);
                 break;
         }
     });
