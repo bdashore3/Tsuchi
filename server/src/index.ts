@@ -127,7 +127,7 @@ async function dispatchToUser(username: string, updates: Array<MangaPacket>) {
                     `Sending notification for ${updateResult.Name} from ${updateResult.Source}`
                 );
 
-                handleServices(userServices, updateResult);
+                await handleServices(userServices, updateResult);
             }
         }
     }
@@ -138,12 +138,16 @@ async function dispatchToUser(username: string, updates: Array<MangaPacket>) {
 
 // Handles dispatch to notification services.
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-function handleServices(services: Array<GenericService>, payload: MangaPacket) {
-    services.forEach(async (service) => {
+async function handleServices(services: Array<GenericService>, payload: MangaPacket) {
+    const promises: Array<Promise<void>> = [];
+
+    services.forEach((service) => {
         switch (service.service_name) {
             case 'ifttt':
-                await sendIfttt(service.api_name!, service.api_secret!, payload);
+                promises.push(sendIfttt(service.api_name!, service.api_secret!, payload));
                 break;
         }
     });
+
+    await Promise.allSettled(promises);
 }
