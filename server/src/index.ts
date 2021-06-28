@@ -12,7 +12,7 @@ import { handleCredentials } from './Config/credentialsHelper';
 import { configurePool, PgPool } from './Config/PgPool';
 
 if (require.main === module) {
-    main();
+    main().catch((err) => console.log(`Uncaught exception: \n\n${err}`));
 }
 
 async function main() {
