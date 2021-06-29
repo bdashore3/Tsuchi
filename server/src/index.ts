@@ -39,9 +39,9 @@ async function main() {
 
 // TODO: Split into an update handler for server/single-user
 async function dispatchUpdateEvent() {
-    const users = await PgPool.query('SELECT username FROM users');
+    const users = await PgPool.any('SELECT username FROM users');
 
-    if (users.rows.length === 0) {
+    if (users.length === 0) {
         console.log('No users in the DB!');
 
         return;
@@ -50,7 +50,7 @@ async function dispatchUpdateEvent() {
     const updates = await fetchUpdates();
 
     const promises: Array<Promise<void>> = [];
-    users.rows.forEach((user) => {
+    users.forEach((user) => {
         promises.push(dispatchToUser(user.username, updates));
     });
 
@@ -86,10 +86,9 @@ async function fetchUpdates(): Promise<Array<MangaPacket>> {
  * If the user entry's title and source is found in the updates list, send a notification.
  */
 async function dispatchToUser(username: string, updates: Array<MangaPacket>) {
-    const mangaQuery = await PgPool.query('SELECT title, source FROM mangas WHERE username = $1', [
+    const mangas = await PgPool.any('SELECT title, source FROM mangas WHERE username = $1', [
         username
     ]);
-    const mangas = mangaQuery.rows;
 
     let userServices: Array<GenericService> = [];
     let success = 0;
@@ -117,12 +116,10 @@ async function dispatchToUser(username: string, updates: Array<MangaPacket>) {
 
             if (!cacheHit) {
                 if (userServices.length === 0) {
-                    const userServicesQuery = await PgPool.query(
+                    userServices = await PgPool.any(
                         'SELECT service_name, api_name, api_secret FROM services WHERE username = $1',
                         [username]
                     );
-
-                    userServices = userServicesQuery.rows;
                 }
 
                 success++;
