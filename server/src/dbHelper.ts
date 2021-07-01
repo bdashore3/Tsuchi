@@ -98,7 +98,7 @@ async function handleDbServices(userConfig: UserJson) {
 
     const genericServices: Array<GenericService> = [];
 
-    userConfig.services.forEach((name) => {
+    for (const name of userConfig.services) {
         switch (name) {
             case 'ifttt':
                 genericServices.push({
@@ -109,7 +109,7 @@ async function handleDbServices(userConfig: UserJson) {
                 });
                 break;
         }
-    });
+    }
 
     const insertQuery =
         PgPromise.helpers.insert(genericServices, cs) +

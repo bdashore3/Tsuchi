@@ -29,11 +29,11 @@ export default async function fetchMangaLife(): Promise<Array<MangaPacket>> {
 
     rawUpdates.splice(20, rawUpdates.length - 1);
 
-    rawUpdates.forEach((element) => {
+    for (const element of rawUpdates) {
         const timeElapsed = convertTime(element.Date);
 
         if (timeElapsed > 60) {
-            return;
+            break;
         }
         const imageServer = 'https://cover.nep.li/cover';
         const id = element.IndexName;
@@ -47,7 +47,7 @@ export default async function fetchMangaLife(): Promise<Array<MangaPacket>> {
         };
 
         mangaLifeUpdates.push(mangaPacket);
-    });
+    }
 
     return mangaLifeUpdates;
 }

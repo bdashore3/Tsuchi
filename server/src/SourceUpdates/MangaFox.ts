@@ -33,7 +33,7 @@ export default async function fetchMangaFox(): Promise<Array<MangaPacket>> {
 
     const mangas = $('.manga-list-4-list > li', latestMangas).toArray();
 
-    mangas.forEach((manga) => {
+    for (const manga of mangas) {
         const title: string = $('.manga-list-4-item-title', manga).text().trim();
         const image = $('img', manga).first().attr('src') ?? '';
         const subtitle = $('.manga-list-4-item-subtitle', manga).text().trim();
@@ -44,7 +44,7 @@ export default async function fetchMangaFox(): Promise<Array<MangaPacket>> {
         const chapter = chapter_string.split(' ')[1];
 
         if (time > 60) {
-            return;
+            break;
         }
 
         const mangapacket: MangaPacket = {
@@ -55,7 +55,7 @@ export default async function fetchMangaFox(): Promise<Array<MangaPacket>> {
         };
 
         mangaFoxUpdates.push(mangapacket);
-    });
+    }
 
     return mangaFoxUpdates;
 }
