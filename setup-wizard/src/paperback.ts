@@ -51,9 +51,9 @@ export async function handlePaperback(prompt: Prompt): Promise<Array<MangaEntry>
 function getUuids(rawJson: PBBackup): Array<string> {
     const uuids: Array<string> = [];
 
-    rawJson.library.forEach((element: Library) => {
+    for (const element of rawJson.library) {
         uuids.push(element.manga.id);
-    });
+    }
 
     return uuids;
 }
@@ -66,7 +66,7 @@ function getUuids(rawJson: PBBackup): Array<string> {
 function genSourceList(rawJson: PBBackup, uuids: Array<string>): Array<MangaEntry> {
     const titles: Array<MangaEntry> = [];
 
-    rawJson.sourceMangas.forEach((element: SourceMangas) => {
+    for (const element of rawJson.sourceMangas) {
         let source = element.sourceId;
 
         if (['mangasee', 'mangalife'].includes(source.toLowerCase())) {
@@ -81,7 +81,7 @@ function genSourceList(rawJson: PBBackup, uuids: Array<string>): Array<MangaEntr
                 source: source
             });
         }
-    });
+    }
 
     return titles;
 }

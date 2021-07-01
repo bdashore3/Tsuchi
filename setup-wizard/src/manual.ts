@@ -81,14 +81,14 @@ function parseTextFile(userText: string): Array<ManualSetupObject> {
 function convertTitles(manualBuffer: Array<ManualSetupObject>): Array<MangaEntry> {
     const titles: Array<MangaEntry> = [];
 
-    manualBuffer.forEach((element) => {
-        element.titles.forEach((title) => {
+    for (const element of manualBuffer) {
+        for (const title of element.titles) {
             titles.push({
                 title: removeExtraChars(title),
                 source: element.source
             });
-        });
-    });
+        }
+    }
 
     return titles;
 }

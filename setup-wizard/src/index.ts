@@ -50,11 +50,11 @@ async function main() {
 
     let possibleBackupString = '';
 
-    possibleBackups.forEach(function (backupType) {
+    for (const backupType of possibleBackups) {
         const concatString = `- ${backupType} \n`;
 
         possibleBackupString = possibleBackupString + concatString;
-    });
+    }
 
     while (true) {
         console.clear();
@@ -88,11 +88,11 @@ async function main() {
 
     let possibleServiceString = '';
 
-    possibleServices.forEach(function (serviceName) {
+    for (const serviceName of possibleServices) {
         const concatString = `- ${serviceName} \n`;
 
         possibleServiceString = possibleServiceString + concatString;
-    });
+    }
 
     let services: Array<string> = [];
     while (true) {
