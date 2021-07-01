@@ -61,9 +61,9 @@ async function dispatchUpdateEvent() {
     const updates = await fetchUpdates();
 
     const promises: Array<Promise<void>> = [];
-    users.forEach((user) => {
+    for (const user of users) {
         promises.push(dispatchToUser(user.username, updates));
-    });
+    }
 
     await Promise.allSettled(promises);
 }
@@ -152,13 +152,13 @@ async function dispatchToUser(username: string, updates: Array<MangaPacket>) {
 async function handleServices(services: Array<GenericService>, payload: MangaPacket) {
     const promises: Array<Promise<void>> = [];
 
-    services.forEach((service) => {
+    for (const service of services) {
         switch (service.service_name) {
             case 'ifttt':
                 promises.push(sendIfttt(service.api_name!, service.api_secret!, payload));
                 break;
         }
-    });
+    }
 
     await Promise.allSettled(promises);
 }
