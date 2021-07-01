@@ -6,21 +6,12 @@ import { sleep } from './utils';
 import { Prompt } from 'prompt-sync';
 
 export async function handleManual(prompt: Prompt, username: string): Promise<Array<MangaEntry>> {
-    /*
-    const textPath = process.argv[3];
-    if (textPath === '' || textPath === undefined) {
-        console.log('Please provide a path to the textfile in the second argument position!');
-
-        return;
-    }
-    */
-
     console.clear();
     console.log('Manual manga list conversion \n');
 
     let rawBackupText;
 
-    // Read the backup JSON file and cast it to a PBBackup type
+    // Read the manual textfile and split into an array
     while (true) {
         console.log(
             `To convert a manual manga list, Please put your textfile in the same directory`
@@ -58,8 +49,10 @@ function parseTextFile(userText: string): Array<ManualSetupObject> {
 
     const splitArray = userText.split('\n');
 
-    const filteredArray = splitArray.filter((v) => v !== '');
-    const sources = filteredArray.filter((v) => v.slice(v.length - 1) === ':');
+    const sources = splitArray.filter((v) => v.slice(v.length - 1) === ':');
+    const filteredArray = splitArray
+        .filter((v) => v !== '')
+        .filter((v) => v.slice(v.length - 1) !== ':');
 
     for (let i = 0; i < sources.length; i++) {
         const upperBound =
