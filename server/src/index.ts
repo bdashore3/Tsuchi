@@ -10,6 +10,7 @@ import sendIfttt from './NotificationServices/ifttt';
 import { removeExtraChars } from './utils';
 import { handleCredentials } from './Config/credentialsHelper';
 import { configurePool, PgPool } from './Config/PgPool';
+import { prepareDbUpdate } from './dbHelper';
 
 if (require.main === module) {
     main().catch((err) => console.log(`Uncaught exception: \n\n${err}`));
@@ -26,10 +27,14 @@ async function main() {
     // Clear sensitive credentials for security
     creds.DBUrl = undefined;
 
-    // Initial dispatch update call
+    // Initial dispatch update call and initial database update prep
     await dispatchUpdateEvent();
+    await prepareDbUpdate();
 
-    // Dispatch updates on an interval every 30 minutes.
+    /*
+     * Dispatch updates on an interval every 30 minutes.
+     * Also check if there are any JSON files to update the database
+     */
     setInterval(async () => {
         await dispatchUpdateEvent();
     }, 1.8e6);
