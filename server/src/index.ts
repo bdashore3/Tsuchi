@@ -28,15 +28,21 @@ async function main() {
     creds.DBUrl = undefined;
 
     // Initial dispatch update call and initial database update prep
-    await dispatchUpdateEvent();
+    console.log('Checking for and adding new users...');
     await prepareDbUpdate();
+
+    console.log('Running initial update event');
+    await dispatchUpdateEvent();
 
     /*
      * Dispatch updates on an interval every 30 minutes.
      * Also check if there are any JSON files to update the database
      */
+    console.log('Setting an update interval of 30 minutes');
+
     setInterval(async () => {
         await dispatchUpdateEvent();
+        await prepareDbUpdate();
     }, 1.8e6);
 
     console.log('Update interval successfully set');

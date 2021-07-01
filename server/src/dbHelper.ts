@@ -14,12 +14,10 @@ export async function prepareDbUpdate(): Promise<void> {
     }
 
     const promises: Array<Promise<void>> = [];
-    users.forEach(async (user) => {
+    for (const user of users) {
         const userConfig = await fetchUserJson(user);
-        console.log(userConfig);
-
         promises.push(updateDb(userConfig));
-    });
+    }
 
     await Promise.allSettled(promises);
 }
@@ -39,6 +37,8 @@ async function updateDb(userConfig: UserJson) {
 
 // Remove mangas that aren't present in the user JSON
 async function deleteOldMangas(userConfig: UserJson) {
+    console.log(`Running manga delete task for ${userConfig.user}`);
+
     const dbMangas = await PgPool.any(
         'SELECT title, source, username FROM mangas WHERE username = $1',
         [userConfig.user]
@@ -66,6 +66,8 @@ async function deleteOldMangas(userConfig: UserJson) {
 
 // Add new mangas for a user. On a conflict, skip.
 async function insertNewMangas(userConfig: UserJson) {
+    console.log(`Running manga insert task for ${userConfig.user}`);
+
     const cs = new PgPromise.helpers.ColumnSet(['title', 'source', 'username'], {
         table: 'mangas'
     });
@@ -87,6 +89,8 @@ async function insertNewMangas(userConfig: UserJson) {
 
 // Insert/update notification services. A removal function isn't required at this time
 async function handleDbServices(userConfig: UserJson) {
+    console.log(`Inserting/updating services for ${userConfig.user}`);
+
     const cs = new PgPromise.helpers.ColumnSet(
         ['service_name', 'api_name', 'api_secret', 'username'],
         { table: 'services' }
