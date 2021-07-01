@@ -1,12 +1,12 @@
 import pgPromise from 'pg-promise';
 
-const pgp = pgPromise();
+export const PgPromise = pgPromise();
 
 // Dummy pool string
-export let PgPool = pgp('postgres://username:password@host:port/database');
+export let PgPool = PgPromise('postgres://username:password@host:port/database');
 
 export function configurePool(url: string | undefined): void {
     if (url !== undefined) {
-        PgPool = pgp(url);
+        PgPool = PgPromise(url);
     }
 }

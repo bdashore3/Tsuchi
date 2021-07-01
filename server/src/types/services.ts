@@ -12,4 +12,5 @@ export type GenericService = {
     service_name: string;
     api_name?: string;
     api_secret?: string;
+    username?: string;
 };
