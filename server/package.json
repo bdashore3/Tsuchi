@@ -15,7 +15,8 @@
     "cheerio": "^1.0.0-rc.10",
     "node-cache": "^5.1.2",
     "pg-promise": "^10.10.2",
-    "prompt-sync": "^4.2.0"
+    "prompt-sync": "^4.2.0",
+    "rss-parser": "^3.12.0"
   },
   "devDependencies": {
     "@types/prompt-sync": "^4.1.0"
