@@ -16,3 +16,17 @@ export type MangaLifeEntry = {
     Date: string;
     IsEdd: boolean;
 };
+
+export type BakaUpdatesData = {
+    items: Array<BakaUpdatesDetails>;
+    title: string;
+    description: string;
+    link: string;
+};
+
+export type BakaUpdatesDetails = {
+    title: string;
+    link?: string;
+    content: string;
+    contentSnippet?: string;
+};

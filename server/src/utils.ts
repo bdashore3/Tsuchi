@@ -31,3 +31,18 @@ export function renameChapter(chapterString: string): string {
         return chapterString;
     }
 }
+
+export function calculateGenericTime(time: string): number {
+    const arr = time.split(' ');
+    const int: number = +arr[0];
+
+    if (arr[1].includes('min')) {
+        return int;
+    } else if (arr[1].includes('sec')) {
+        // If seconds in the latest update, it would return as 1 minute old
+        return 1;
+    } else if (arr[1].includes('hour')) {
+        return int * 60 + 1;
+    }
+    return 1000; // Time at this point is in days or above.
+}
