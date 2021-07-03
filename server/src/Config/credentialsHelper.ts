@@ -4,7 +4,7 @@ import { ProjectCredentials } from '../types';
 export async function handleCredentials(path: string): Promise<ProjectCredentials> {
     const rawCreds = await fs
         .readFile(path, 'utf8')
-        .catch((err) => console.log('No credentials found! Skipping...'));
+        .catch(() => console.log('No credentials found! Skipping...'));
 
     if (!rawCreds) {
         return {};
