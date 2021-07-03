@@ -6,15 +6,6 @@ import { sleep } from './utils';
 import { Prompt } from 'prompt-sync';
 
 export async function handleManual(prompt: Prompt, username: string): Promise<Array<MangaEntry>> {
-    /*
-    const textPath = process.argv[3];
-    if (textPath === '' || textPath === undefined) {
-        console.log('Please provide a path to the textfile in the second argument position!');
-
-        return;
-    }
-    */
-
     console.clear();
     console.log('Manual manga list conversion \n');
 
@@ -63,16 +54,13 @@ function parseTextFile(userText: string): Array<ManualSetupObject> {
 
     for (let i = 0; i < sources.length; i++) {
         const upperBound =
-            i + 1 === sources.length
-                ? filteredArray.length
-                : filteredArray.indexOf(sources[i + 1]) - 1;
-
-        const singleSourceArray = filteredArray.splice(
-            filteredArray.indexOf(sources[i]) + 1,
-            upperBound
-        );
+            i + 1 === sources.length ? filteredArray.length : filteredArray.indexOf(sources[i + 1]);
 
         const source = sources[i];
+        const singleSourceArray = filteredArray.slice(
+            filteredArray.indexOf(source) + 1,
+            upperBound
+        );
 
         const sampleObject: ManualSetupObject = {
             source: source.substring(0, source.length - 1).toLowerCase(),
