@@ -5,7 +5,8 @@ Description=MangaUpdates service
 User=mangaupdates
 Group=mangaupdates
 WorkingDirectory=/home/mangaupdates/MangaUpdates
-ExecStart=/home/mangaupdates/MangaUpdates/server/mangaupdates-server-linux
+Environment = "SCRIPT_ARGS=info.json"
+ExecStart=/home/mangaupdates/MangaUpdates/server/mangaupdates-server-linux $SCRIPT_ARGS
 Type=simple
 Restart=on-failure
 RestartSec=10
