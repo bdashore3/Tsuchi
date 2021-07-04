@@ -8,21 +8,21 @@ export async function fetchUpdates(): Promise<Array<MangaPacket>> {
     // Empty array of updates from all sources
     let updateArray: Array<MangaPacket> = [];
 
+    const promises: Array<Promise<Array<MangaPacket>>> = [];
+
     // Fetches updates from Manga4Life
-    const mangaLife = await fetchMangaLife();
-    updateArray = updateArray.concat(mangaLife);
+    promises.push(fetchMangaLife());
+    promises.push(fetchMangaFox());
+    promises.push(fetchMangaKakalot());
+    promises.push(fetchMangaNelo());
 
-    // Fetches updates from MangaFox
-    const mangaFox = await fetchMangaFox();
-    updateArray = updateArray.concat(mangaFox);
+    (await Promise.allSettled(promises))
+        .filter((p) => p.status === 'fulfilled')
+        .map((p) => {
+            const individualResult = p as PromiseFulfilledResult<Array<MangaPacket>>;
 
-    // Fetches updates from MangaKakalot
-    const mangaKakalot = await fetchMangaKakalot();
-    updateArray = updateArray.concat(mangaKakalot);
-
-    // Fetches updates from MangaNelo
-    const mangaNelo = await fetchMangaNelo();
-    updateArray = updateArray.concat(mangaNelo);
+            updateArray = updateArray.concat(individualResult.value);
+        });
 
     return updateArray;
 }
