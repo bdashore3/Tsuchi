@@ -5,7 +5,6 @@ MangaUpdates provides a framework to push notifications to third-party services.
 ## Currently supported services
 
 -   [Ifttt](https://ifttt.com/) (iOS, Android, Web)
--   [Spontit](https://spontit.com/) (iOS, Android, Web)
 
 ## Adding a service
 

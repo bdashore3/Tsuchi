@@ -1,7 +1,6 @@
 import { promises as fs } from 'fs';
 import promptSync from 'prompt-sync';
 import { configureIfttt } from 'mangaupdates-server/dist/NotificationServices';
-import { configureSpontit } from 'mangaupdates-server/dist/NotificationServices';
 import { UserJson } from 'mangaupdates-server';
 import { sleep } from './utils';
 import { handlePaperback } from './paperback';
@@ -20,7 +19,7 @@ if (require.main === module) {
 async function main() {
     const prompt = promptSync();
     const possibleBackups = ['paperback', 'manual'];
-    const possibleServices = ['ifttt', 'spontit'];
+    const possibleServices = ['ifttt'];
 
     console.clear();
     console.log('Welcome to the MangaUpdates setup wizard!');
@@ -164,16 +163,6 @@ function setupServices(services: Array<string>) {
                     services.splice(index);
                 } else {
                     userJson.ifttt = iftttResult;
-                }
-
-                break;
-            case 'spontit':
-                const spontitResult = (userJson.spontit = configureSpontit());
-
-                if (spontitResult === undefined) {
-                    services.splice(index);
-                } else {
-                    userJson.spontit = spontitResult;
                 }
 
                 break;
