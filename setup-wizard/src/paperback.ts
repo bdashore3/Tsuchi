@@ -2,7 +2,7 @@ import { promises as fs } from 'fs';
 import { MangaEntry } from 'mangaupdates-server';
 import { removeExtraChars } from 'mangaupdates-server/dist/utils';
 import { Prompt } from 'prompt-sync';
-import { Library, PBBackup, SourceMangas } from './types';
+import { PBBackup } from './types';
 import { sleep } from './utils';
 
 export async function handlePaperback(prompt: Prompt): Promise<Array<MangaEntry>> {
