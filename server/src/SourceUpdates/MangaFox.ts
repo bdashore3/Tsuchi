@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import cheerio from 'cheerio';
 import { MangaPacket } from '../types';
+import { calculateGenericTime } from '../utils';
 
 export default async function fetchMangaFox(): Promise<Array<MangaPacket>> {
     const mangaFoxUpdates: Array<MangaPacket> = [];
@@ -38,7 +39,7 @@ export default async function fetchMangaFox(): Promise<Array<MangaPacket>> {
         const image = $('img', manga).first().attr('src') ?? '';
         const subtitle = $('.manga-list-4-item-subtitle', manga).text().trim();
         const time_string = subtitle.split(' ').slice(3).join(' ');
-        const time = calculateTime(time_string);
+        const time = calculateGenericTime(time_string);
 
         const chapter_string = $('.manga-list-4-item-part', manga).text();
         const chapter = chapter_string.split(' ')[1];
@@ -58,15 +59,4 @@ export default async function fetchMangaFox(): Promise<Array<MangaPacket>> {
     }
 
     return mangaFoxUpdates;
-}
-
-function calculateTime(time: string): number {
-    const arr = time.split(' ');
-    const int: number = +arr[0];
-
-    if (arr[1] == 'minutes') {
-        return int;
-    } else {
-        return 100;
-    }
 }
