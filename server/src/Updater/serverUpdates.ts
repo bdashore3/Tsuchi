@@ -44,7 +44,10 @@ async function dispatchToUser(username: string, updates: Array<MangaPacket>) {
     for (const manga of mangas) {
         const updateResult = updates.find((i) => {
             const strippedName = removeExtraChars(i.Name);
-            const result = manga.title === strippedName && manga.source === i.Source.toLowerCase();
+            const lowerCaseSource = i.Source.toLowerCase();
+            const result =
+                manga.title === strippedName &&
+                (manga.source.includes(lowerCaseSource) || lowerCaseSource.includes(manga.source));
 
             if (result) {
                 manga.title = i.Name;
