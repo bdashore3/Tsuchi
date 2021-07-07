@@ -26,7 +26,11 @@ tldr; MangaUpdates is supported on any computer/mobile device.
 
 ## Initial Configuration/setup
 
-Documentation soon.
+To get on the official server, please read the setup wizard docs.
+
+[Setup wizard documentation](https://github.com/bdashore3/MangaUpdates/blob/default/setup-wizard/README.md)
+
+[Individual server setup documentation](https://github.com/bdashore3/MangaUpdates/blob/default/server/README.md)
 
 ## How often are notifications sent?
 
@@ -49,8 +53,8 @@ There are many ways users can contribute since each piece of MangaUpdates is dyn
 -   Feature requests
 -   Making JSON configuration easier
 
-For sources, please reference the [sources guide](https://github.com/bdashore3/MangaUpdates/blob/default/src/SourceUpdates/README.md)
-For notification services, please reference the [notification services guide](https://github.com/bdashore3/MangaUpdates/blob/default/src/NotificationHandler/README.md)
+For sources, please reference the [sources guide](https://github.com/bdashore3/MangaUpdates/blob/default/server/src/SourceUpdates/README.md)
+For notification services, please reference the [notification services guide](https://github.com/bdashore3/MangaUpdates/blob/default/server/src/NotificationServices/README.md)
 
 In other cases, please make a new issue in [Github issues](https://github.com/bdashore3/MangaUpdates/issues).
 
