@@ -4,10 +4,9 @@ import { MangaPacket } from '../types';
 export default async function fetchMangaDex(): Promise<Array<MangaPacket>> {
     const MangaDexUpdates: Array<MangaPacket> = [];
 
-    const baseDomain = 'https://api.mangadex.org/';
-    const limit = '20';
-    const latest = baseDomain + 'manga?limit=' + limit;
-    const response = await axios.get(latest, { timeout: 30000 }).catch((err: AxiosError) => {
+    const latestPage = `https://api.mangadex.org/manga?limit=20&order[updatedAt]=desc`;
+
+    const response = await axios.get(latestPage, { timeout: 30000 }).catch((err: AxiosError) => {
         // Handle errors
         switch (err.code) {
             case 'ECONNABORTED':
@@ -28,18 +27,25 @@ export default async function fetchMangaDex(): Promise<Array<MangaPacket>> {
     const json = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
 
     for (const manga of json.results) {
+        const id = manga.data.id;
         const title = manga.data.attributes.title.en;
+
+        // manga.data.attributes.lastChapter is set to null for all in API
         const chapter = manga.data.attributes.lastChapter;
-        const time = convertTime(manga.data.attributes.upadtedAt);
+        const time = convertTime(manga.data.attributes.updatedAt);
+
+        const coverId = manga.relationships.filter((x: any) => x.type == 'cover_art')[0];
 
         if (time > 90) {
             break;
         }
 
+        const image = await getCoverImage(coverId.id, id);
+
         const mangapacket: MangaPacket = {
             Name: title,
-            Chapter: chapter,
-            Image: undefined,
+            Chapter: 'New Chapter',
+            Image: image,
             Source: 'MangaDex'
         };
         MangaDexUpdates.push(mangapacket);
@@ -51,3 +57,24 @@ function convertTime(inputDate: string): number {
     const time = Date.parse(inputDate);
     return (Date.now() - time) / 60000;
 }
+
+async function getCoverImage(coverId: string, id: string): Promise<string> {
+    const COVER_BASE_URL = 'https://uploads.mangadex.org/covers';
+    const coverItem = `https://api.mangadex.org/cover/${coverId}`;
+
+    const response = await axios.get(coverItem).catch((err: AxiosError) => {
+        console.log(`Image Not Found for ${id}`);
+    });
+
+    if (!response) {
+        return 'https://mangadex.org/_nuxt/img/cover-placeholder.d12c3c5.jpg';
+    }
+
+    const json = typeof response.data === 'string' ? JSON.parse(response.data) : response.data;
+    const imageFileName = json.data.attributes.fileName;
+
+    const image = `${COVER_BASE_URL}/${id}/${imageFileName}`;
+    return image;
+}
+
+// `https://api.mangadex.org/manga?limit=3&originalLanguage[]=en&order[updatedAt]=desc`;
