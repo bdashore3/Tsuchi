@@ -1,5 +1,6 @@
 import { MangaPacket } from '../types';
 import fetchBakaUpdates from './BakaUpdates';
+import fetchMangaDex from './MangaDex';
 import fetchMangaFox from './MangaFox';
 import fetchMangaKakalot from './MangaKakalot';
 import fetchMangaLife from './MangaLife';
@@ -17,6 +18,7 @@ export async function fetchUpdates(): Promise<Array<MangaPacket>> {
     promises.push(fetchMangaKakalot());
     promises.push(fetchMangaNelo());
     promises.push(fetchBakaUpdates());
+    promises.push(fetchMangaDex());
 
     (await Promise.allSettled(promises))
         .filter((p) => p.status === 'fulfilled')

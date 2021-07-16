@@ -30,3 +30,37 @@ export type BakaUpdatesDetails = {
     content: string;
     contentSnippet?: string;
 };
+
+export type MangaDexEntry = {
+    results: Array<MangaDexResult>;
+};
+
+export interface MangaDexResult {
+    data: MangaDexData;
+    relationships: Array<MangaDexRelationship>;
+}
+
+export interface MangaDexData {
+    id: string;
+    attributes: MangaDexDataAttributes;
+}
+
+export interface MangaDexDataAttributes {
+    chapter: string;
+    title: null | string;
+    updatedAt: string;
+}
+
+export interface MangaDexRelationship {
+    id: string;
+    type: string;
+    attributes: MangaDexRelationshipAttributes;
+}
+
+export interface MangaDexRelationshipAttributes {
+    title: MangaDexTitle;
+}
+
+export interface MangaDexTitle {
+    en: string;
+}
