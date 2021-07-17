@@ -42,39 +42,37 @@ async function dispatchToUser(username: string, updates: Array<MangaPacket>) {
     console.log(`Evaluating mangas for ${username}`);
 
     for (const manga of mangas) {
-        const updateResult = updates.find((i) => {
+        const updateResultArray = updates.filter((i) => {
             const strippedName = removeExtraChars(i.Name);
             const lowerCaseSource = i.Source.toLowerCase();
             const result =
                 manga.title === strippedName &&
                 (manga.source.includes(lowerCaseSource) || lowerCaseSource.includes(manga.source));
 
-            if (result) {
-                manga.title = i.Name;
-                manga.source = i.Source;
-            }
-
             return result;
         });
 
-        if (updateResult !== undefined) {
-            // If there is a hit in the cache, bail.
-            const cacheHit = checkCache(updateResult, username);
+        // Iterate through all possible chapters and send notifications
+        for (const updateResult of updateResultArray) {
+            if (updateResult !== undefined) {
+                // If there is a hit in the cache, bail.
+                const cacheHit = checkCache(updateResult, username);
 
-            if (!cacheHit) {
-                if (userServices.length === 0) {
-                    userServices = await PgPool.any(
-                        'SELECT service_name, api_name, api_secret FROM services WHERE username = $1',
-                        [username]
+                if (!cacheHit) {
+                    if (userServices.length === 0) {
+                        userServices = await PgPool.any(
+                            'SELECT service_name, api_name, api_secret FROM services WHERE username = $1',
+                            [username]
+                        );
+                    }
+
+                    success++;
+                    console.log(
+                        `Sending notification for ${updateResult.Name} from ${updateResult.Source}`
                     );
+
+                    await handleServices(userServices, updateResult);
                 }
-
-                success++;
-                console.log(
-                    `Sending notification for ${updateResult.Name} from ${updateResult.Source}`
-                );
-
-                await handleServices(userServices, updateResult);
             }
         }
     }
