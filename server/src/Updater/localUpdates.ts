@@ -73,7 +73,7 @@ async function dispatchToUser(userConfig: UserJson, updates: Array<MangaPacket>)
 
 // Handles dispatch to notification services.
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-async function handleServices(userConfig: UserJson, payload: MangaPacket) {
+export async function handleServices(userConfig: UserJson, payload: MangaPacket): Promise<void> {
     const promises: Array<Promise<void>> = [];
 
     for (const name of userConfig.services) {
