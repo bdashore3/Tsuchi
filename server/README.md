@@ -100,6 +100,20 @@ Replace the parts in curly braces with your database URL.
 
 After you've set up the database, add the user JSON files into the `users` folder. These will be deleted when the database is populated/updated for security purposes.
 
+## Testing the server
+
+To make sure the server is working for updates and notifications, it's a good idea to test the server binary in your production environment before launch.
+
+There are two tests:
+
+-   updates: Test for checking if sources update properly
+-   notification: Test for checking if a notification is sent properly. Utilizes your database/users folder depending on if an info.json is present.
+
+To run these tests with the binary, run:
+`./tsuchi-server-os-commitsha --test <test name> info.json`
+
+You can also provide an info.json to test notifications using a PostgreSQL database.
+
 ### Finally
 
 Once you are done, run `./tsuchi-server-os-commitsha info.json`. Replace `project_root` and `os` with the appropriate values.
