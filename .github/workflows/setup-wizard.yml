@@ -31,18 +31,18 @@ jobs:
           cd setup-wizard
           yarn build
           yarn package
-          mv executables/index-linux executables/mangaupdates-setup-linux
-          mv executables/index-macos executables/mangaupdates-setup-macos
-          mv executables/index-win.exe executables/mangaupdates-setup-win.exe
+          mv executables/index-linux executables/tsuchi-setup-linux
+          mv executables/index-macos executables/tsuchi-setup-macos
+          mv executables/index-win.exe executables/tsuchi-setup-win.exe
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
       - name: Zip binaries
-        run: zip -j mangaupdates-setup-${{ steps.date.outputs.date }} setup-wizard/executables/*
+        run: zip -j tsuchi-setup-${{ steps.date.outputs.date }} setup-wizard/executables/*
       - name: Upload binaries
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: ./mangaupdates-setup-${{ steps.date.outputs.date }}.zip
+          files: ./tsuchi-setup-${{ steps.date.outputs.date }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

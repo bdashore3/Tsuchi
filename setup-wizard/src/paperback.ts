@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
-import { MangaEntry } from 'mangaupdates-server';
-import { removeExtraChars } from 'mangaupdates-server/dist/utils';
+import { MangaEntry } from 'tsuchi-server';
+import { removeExtraChars } from 'tsuchi-server/dist/utils';
 import { Prompt } from 'prompt-sync';
 import { PBBackup } from './types';
 import { sleep } from './utils';

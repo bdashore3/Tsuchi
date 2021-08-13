@@ -1,5 +1,5 @@
 {
-  "name": "mangaupdates-setup",
+  "name": "tsuchi-setup",
   "version": "1.0.0",
   "types": "dist/types/index",
   "main": "dist/index",
@@ -10,7 +10,7 @@
     "package": "pkg ./dist/index.js --out-path executables"
   },
   "dependencies": {
-    "mangaupdates-server": "1.0.0",
+    "tsuchi-server": "1.0.0",
     "prompt-sync": "^4.2.0"
   },
   "devDependencies": {

@@ -9,10 +9,10 @@ export async function sendTestNotification(): Promise<void> {
     console.log('Running the notification test');
 
     const testUpdate: MangaPacket = {
-        Name: 'MangaUpdates test manga',
+        Name: 'Tsūchi test manga',
         Chapter: '420',
-        Source: 'MangaUpdates',
-        Image: 'https://files.kingbri.dev/.public-app-assets/MangaUpdates/KujouKaren.jpg'
+        Source: 'Tsūchi',
+        Image: 'https://files.kingbri.dev/.public-app-assets/Tsuchi/KujouKaren.jpg'
     };
 
     let users;

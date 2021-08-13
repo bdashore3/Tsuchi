@@ -1,10 +1,10 @@
-# MangaUpdates Server
+# Tsūchi Server
 
-The server contains the heart of MangaUpdates which includes sources, notification services, and the updater.
+The server contains the heart of Tsūchi which includes sources, notification services, and the updater.
 
 ## Setup
 
-Looking to be added on the official server? Please look at the [setup wizard README](https://github.com/bdashore3/MangaUpdates/tree/default/setup-wizard/README.md) instead
+Looking to be added on the official server? Please look at the [setup wizard README](https://github.com/bdashore3/Tsuchi/tree/default/setup-wizard/README.md) instead
 
 There are two possible ways to configure the server:
 
@@ -17,9 +17,9 @@ The server binaries are distributed in a rolling release format through Github A
 
 NOTE: You have to have a Github account to access artifacts! If you don't have one, make one.
 
--   Head to the [actions page](https://github.com/bdashore3/MangaUpdates/actions)
+-   Head to the [actions page](https://github.com/bdashore3/Tsuchi/actions)
 -   Click on the latest run
--   Download the server binary archive from the artifacts section of the action (ex name. mangaupdates-server-commitsha).
+-   Download the server binary archive from the artifacts section of the action (ex name. tsuchi-server-commitsha).
 
 ## Single-user setup
 
@@ -35,14 +35,14 @@ Steps:
 1. Unzip the artifact files
 2. Place your OS-specific binary inside a folder, this will serve as the "project root" from now on
 3. Add a folder called `users` in the project root
-4. Place your `user.json` that was generated from the [setup wizard](https://github.com/bdashore3/MangaUpdates/tree/default/setup-wizard) inside the `users` folder
+4. Place your `user.json` that was generated from the [setup wizard](https://github.com/bdashore3/Tsuchi/tree/default/setup-wizard) inside the `users` folder
 5. Run the binary file
    a. Double click the .exe on Windows
-   b. For macOS and Linux, run this binary in the terminal using this one-step command: `cd project_root && chmod +x mangaupdates-server-os && ./mangaupdates-server-os`. Replace `project_root` and `os` with the appropriate values.
+   b. For macOS and Linux, run this binary in the terminal using this one-step command: `cd project_root && chmod +x tsuchi-server-os && ./tsuchi-server-os`. Replace `project_root` and `os` with the appropriate values.
 
 ## Server/Multi-user setup
 
-Once you downloaded the binary, you can also run MangaUpdates in server mode. This is ideal for production environments with multiple users through the use of PostgreSQL.
+Once you downloaded the binary, you can also run Tsūchi in server mode. This is ideal for production environments with multiple users through the use of PostgreSQL.
 
 Prerequisites:
 
@@ -65,7 +65,7 @@ If you have a connection refused error, follow [this forum post](https://www.dig
 
 ### Database migrations
 
-All migrations are located [here](https://github.com/bdashore3/MangaUpdates/tree/default/migration-setup).
+All migrations are located [here](https://github.com/bdashore3/Tsuchi/tree/default/migration-setup).
 
 This is a one-time process for setting up the database. Once it's completed, all files and folders regarding migrations can be removed.
 
@@ -102,7 +102,7 @@ After you've set up the database, add the user JSON files into the `users` folde
 
 ### Finally
 
-Once you are done, run `./mangaupdates-server-os-commitsha info.json`. Replace `project_root` and `os` with the appropriate values.
+Once you are done, run `./tsuchi-server-os-commitsha info.json`. Replace `project_root` and `os` with the appropriate values.
 
 info.json is provided as a command line argument. Without this argument, the service will fallback to single-user mode.
 

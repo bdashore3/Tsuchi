@@ -1,12 +1,12 @@
 [Unit]
-Description=MangaUpdates service
+Description=Tsuchi service
 
 [Service]
-User=mangaupdates
-Group=mangaupdates
-WorkingDirectory=/home/mangaupdates/MangaUpdates
+User=tsuchi
+Group=tsuchi
+WorkingDirectory=/home/tsuchi/Tsuchi
 Environment = "SCRIPT_ARGS=info.json"
-ExecStart=/home/mangaupdates/MangaUpdates/server/mangaupdates-server-linux $SCRIPT_ARGS
+ExecStart=/home/tsuchi/Tsuchi/server/tsuchi-server-linux $SCRIPT_ARGS
 Type=simple
 Restart=on-failure
 RestartSec=10

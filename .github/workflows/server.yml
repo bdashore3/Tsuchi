@@ -30,14 +30,14 @@ jobs:
           cd server
           yarn build
           yarn package
-          mv executables/index-linux executables/mangaupdates-server-linux
-          mv executables/index-macos executables/mangaupdates-server-macos
-          mv executables/index-win.exe executables/mangaupdates-server-win.exe
+          mv executables/index-linux executables/tsuchi-server-linux
+          mv executables/index-macos executables/tsuchi-server-macos
+          mv executables/index-win.exe executables/tsuchi-server-win.exe
       - name: Get short sha
         id: vars
         run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
       - name: Upload files
         uses: actions/upload-artifact@v2
         with:
-          name: mangaupdates-server-${{ steps.vars.outputs.sha_short }}
+          name: tsuchi-server-${{ steps.vars.outputs.sha_short }}
           path: server/executables

@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 import promptSync from 'prompt-sync';
-import { configureIfttt } from 'mangaupdates-server/dist/NotificationServices';
-import { UserJson } from 'mangaupdates-server';
+import { configureIfttt } from 'tsuchi-server/dist/NotificationServices';
+import { UserJson } from 'tsuchi-server';
 import { sleep } from './utils';
 import { handlePaperback } from './paperback';
 import { handleManual } from './manual';
@@ -22,7 +22,7 @@ async function main() {
     const possibleServices = ['ifttt'];
 
     console.clear();
-    console.log('Welcome to the MangaUpdates setup wizard!');
+    console.log('Welcome to the Tsūchi setup wizard!');
     console.log('This will setup a user configuration for the update server.');
     console.log('Please follow the prompts. \n');
     console.log(
@@ -58,7 +58,7 @@ async function main() {
     while (true) {
         console.clear();
         console.log(
-            'MangaUpdates requires you to have a list or a reader backup to load into your configuration file!'
+            'Tsūchi requires you to have a list or a reader backup to load into your configuration file!'
         );
         console.log("If you don't see your app here, choose manual.");
         console.log('Pick a backup type from the list of possible apps: ');

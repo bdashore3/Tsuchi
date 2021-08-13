@@ -1,4 +1,4 @@
-# MangaUpdates
+# Tsūchi
 
 An easy and reliable way to get notifications for updated manga.
 
@@ -10,27 +10,27 @@ However, some readers are reliable and deliver updates on a schedule while other
 
 Manga readers tend to fetch background updates from the client side. While this works fine in Android, iOS handles client background processes in small windows and can cause inaccurate or nonexistent notifications.
 
-In comes MangaUpdates. This service runs from a server which sends out push notification requests. Since this is a direct push notification and not one from a client background service, the notifications are accurate.
+In comes Tsūchi. This service runs from a server which sends out push notification requests. Since this is a direct push notification and not one from a client background service, the notifications are accurate.
 
 ## Does this depend on a reader?
 
 The short answer, No.
 
-Since MangaUpdates is a server-side service, it is 100% independent from reader apps. We use a special JSON format to check for new updates and provide ways to convert your reader backups into these JSON files.
+Since Tsūchi is a server-side service, it is 100% independent from reader apps. We use a special JSON format to check for new updates and provide ways to convert your reader backups into these JSON files.
 
 ## Supported Devices
 
 As long as you read manga from a supported source, it doesn't matter what device you use. You can read manga on a reader, websites, or even have a notepad list for tracking.
 
-tldr; MangaUpdates is supported on any computer/mobile device.
+tldr; Tsūchi is supported on any computer/mobile device.
 
 ## Initial Configuration/setup
 
 To get on the official server, please read the setup wizard docs.
 
-[Setup wizard documentation](https://github.com/bdashore3/MangaUpdates/blob/default/setup-wizard/README.md)
+[Setup wizard documentation](https://github.com/bdashore3/Tsuchi/blob/default/setup-wizard/README.md)
 
-[Individual server setup documentation](https://github.com/bdashore3/MangaUpdates/blob/default/server/README.md)
+[Individual server setup documentation](https://github.com/bdashore3/Tsuchi/blob/default/server/README.md)
 
 ## How often are notifications sent?
 
@@ -46,17 +46,17 @@ Here are features that are planned for future updates:
 
 ## Contribution
 
-There are many ways users can contribute since each piece of MangaUpdates is dynamic in nature:
+There are many ways users can contribute since each piece of Tsūchi is dynamic in nature:
 
 -   Adding new manga sources
 -   Adding new notification services
 -   Feature requests
 -   Making JSON configuration easier
 
-For sources, please reference the [sources guide](https://github.com/bdashore3/MangaUpdates/blob/default/server/src/SourceUpdates/README.md)
-For notification services, please reference the [notification services guide](https://github.com/bdashore3/MangaUpdates/blob/default/server/src/NotificationServices/README.md)
+For sources, please reference the [sources guide](https://github.com/bdashore3/Tsuchi/blob/default/server/src/SourceUpdates/README.md)
+For notification services, please reference the [notification services guide](https://github.com/bdashore3/Tsuchi/blob/default/server/src/NotificationServices/README.md)
 
-In other cases, please make a new issue in [Github issues](https://github.com/bdashore3/MangaUpdates/issues).
+In other cases, please make a new issue in [Github issues](https://github.com/bdashore3/Tsuchi/issues).
 
 If you don't have a github account, please take a look at [other contact options](#developers-and-permissions) and we'll add your issue for you.
 

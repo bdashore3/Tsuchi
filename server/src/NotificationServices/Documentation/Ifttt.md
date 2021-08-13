@@ -1,6 +1,6 @@
 # Setting up IFTTT
 
-[Ifttt](https://ifttt.com) is currently the only notification service that is supported by MangaUpdates. This will be rewritten and expanded when other services come into play.
+[Ifttt](https://ifttt.com) is currently the only notification service that is supported by Tsūchi. This will be rewritten and expanded when other services come into play.
 
 Here are the steps for setting up a notification service using IFTTT:
 
@@ -43,7 +43,7 @@ Value3
 
 Value1, Value2, and Value3 can be retrieved from the `Add ingredient` button under each text field.
 
-Here's how the ingredients correspond to MangaUpdates
+Here's how the ingredients correspond to Tsūchi
 
 ```
 Value1: The manga title

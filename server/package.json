@@ -1,5 +1,5 @@
 {
-  "name": "mangaupdates-server",
+  "name": "tsuchi-server",
   "version": "1.0.0",
   "main": "dist/index",
   "types": "dist/types/index",

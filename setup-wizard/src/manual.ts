@@ -1,7 +1,7 @@
 import { promises as fs } from 'fs';
 import { ManualSetupObject } from './types';
-import { MangaEntry } from 'mangaupdates-server';
-import { removeExtraChars } from 'mangaupdates-server/dist/utils';
+import { MangaEntry } from 'tsuchi-server';
+import { removeExtraChars } from 'tsuchi-server/dist/utils';
 import { sleep } from './utils';
 import { Prompt } from 'prompt-sync';
 
