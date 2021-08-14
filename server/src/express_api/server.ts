@@ -7,14 +7,17 @@ const app = express();
 app.get('/', (req, res) => {
     res.send('Hello World');
 });
+app.get('/api', (req, res) => {
+    res.send('API Base Path');
+});
 
-app.get('/authenticate/:username/:password', (req, res) => {
+app.get('/api/authenticate/:username/:password', (req, res) => {
     // Hash Password and check hash ...
 
     res.send(`Username: ${req.params.username}<br>Password: ${req.params.password}`);
 });
 
-app.post('/authenticate', (req, res) => {
+app.post('/api/authenticate', (req, res) => {
     // post_body is a json obj -> {username:u, password:p}
     const post_body = req.body;
     console.log(post_body);
