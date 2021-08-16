@@ -1,7 +1,16 @@
 import { promises as fs } from 'fs';
-import { PgPool, PgPromise } from './Config/PgPool';
+import pgPromise from 'pg-promise';
 import { GenericService, UserJson } from './types';
 import { fetchUserJson } from './utils';
+
+const PgPromise = pgPromise();
+
+// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+export const PgPool = PgPromise(
+    process.env.DATABASE_URL
+        ? process.env.DATABASE_URL
+        : 'postgres://username:password@host:port/database'
+);
 
 // Fetch all pending user JSONs from the users directory
 export async function prepareDbUpdate(): Promise<void> {
