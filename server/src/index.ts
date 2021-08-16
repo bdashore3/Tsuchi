@@ -1,15 +1,18 @@
+import dotenv from 'dotenv';
 import { handleCredentials } from './Config/credentialsHelper';
 import { configurePool } from './Config/PgPool';
 import { prepareDbUpdate } from './dbHelper';
 import { dispatchServerUpdate } from './Updater/serverUpdates';
 import { dispatchLocalUpdate } from './Updater/localUpdates';
 import { dispatchTests } from './Tests';
+import { startApi } from './Api/express';
 
 if (require.main === module) {
     main().catch((err) => console.log(`Uncaught exception: \n\n${err}`));
 }
 
 async function main() {
+    dotenv.config();
     const args = process.argv.slice(2);
 
     // Make the optional config file
@@ -27,6 +30,7 @@ async function main() {
         // Initial dispatch update call and initial database update prep
         console.log('Checking for and adding new users...');
         await prepareDbUpdate();
+        startApi();
 
         if (args[0] !== '--test') {
             console.log('Running initial update event');
