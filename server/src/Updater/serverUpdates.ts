@@ -1,5 +1,5 @@
 import { checkCache } from '../cache';
-import { PgPool } from '../Config/PgPool';
+import { PgPool } from '../dbHelper';
 import sendIfttt from '../NotificationServices/ifttt';
 import { fetchUpdates } from '../SourceUpdates';
 import { GenericService, MangaPacket } from '../types';

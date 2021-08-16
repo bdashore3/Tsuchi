@@ -2,7 +2,7 @@
 
 import { compare, hash } from 'bcrypt';
 import express from 'express';
-import { PgPool } from '../Config/PgPool';
+import { PgPool } from '../dbHelper';
 
 const authRouter = express.Router();
 

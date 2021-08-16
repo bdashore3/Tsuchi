@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
-import { handleCredentials } from './Config/credentialsHelper';
-import { configurePool } from './Config/PgPool';
+dotenv.config();
+
 import { prepareDbUpdate } from './dbHelper';
 import { dispatchServerUpdate } from './Updater/serverUpdates';
 import { dispatchLocalUpdate } from './Updater/localUpdates';
@@ -15,17 +15,8 @@ async function main() {
     dotenv.config();
     const args = process.argv.slice(2);
 
-    // Make the optional config file
-    const creds = await handleCredentials(args[args.length - 1]);
-
-    if (creds.DBUrl) {
+    if (process.env.DATABASE_URL) {
         console.log('A database URL has been provided! Using the server-based configuration...');
-
-        // All internal service configuration goes here
-        configurePool(creds.DBUrl);
-
-        // Clear sensitive credentials for security
-        creds.DBUrl = undefined;
 
         // Initial dispatch update call and initial database update prep
         console.log('Checking for and adding new users...');

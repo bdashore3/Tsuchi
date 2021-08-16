@@ -1,5 +1,5 @@
 import { promises as fs } from 'fs';
-import { PgPool, useDb } from '../Config/PgPool';
+import { PgPool } from '../dbHelper';
 import { handleServices as handleDbServices } from '../Updater/serverUpdates';
 import { handleServices as handleLocalServices } from '../Updater/localUpdates';
 import { MangaPacket } from '../types';
@@ -17,7 +17,7 @@ export async function sendTestNotification(): Promise<void> {
 
     let users;
 
-    if (useDb) {
+    if (process.env.DATABASE_URL) {
         users = await PgPool.any('SELECT username FROM users');
     } else {
         users = await fs.readdir('users').catch(() => {
@@ -32,7 +32,7 @@ export async function sendTestNotification(): Promise<void> {
     for (const user of users) {
         let username;
 
-        if (useDb) {
+        if (process.env.DATABASE_URL) {
             username = user.username;
             const userServices = await PgPool.any(
                 'SELECT service_name, api_name, api_secret FROM services WHERE username = $1',
