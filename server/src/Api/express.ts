@@ -7,11 +7,12 @@ import apiRouter from './apiRoutes';
 
 export function startApi(): void {
     const app = express();
+    const port = 4000;
     app.use(express.json());
 
     // Main route is /api from nginx
     app.use('/api', authRouter);
     app.use('/api', apiRouter);
 
-    app.listen(3000, () => console.log(`Tsuchi API running on port 3000`));
+    app.listen(port, () => console.log(`Tsuchi API running on port ${port}`));
 }
