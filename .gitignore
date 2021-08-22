@@ -97,6 +97,7 @@ users/
 
 # Configuration JSON files
 info.json
+firebaseCreds.json
 
 # Test source code
 server/src/SourceUpdates/test.ts

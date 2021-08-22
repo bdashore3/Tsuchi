@@ -5,6 +5,8 @@ import { prepareDbUpdate } from './dbHelper';
 import { dispatchServerUpdate } from './Updater/serverUpdates';
 import { dispatchLocalUpdate } from './Updater/localUpdates';
 import { dispatchTests } from './Tests';
+import { startApi } from './Api/express';
+import { configFirebase } from './firebaseConfig';
 
 if (require.main === module) {
     main().catch((err) => console.log(`Uncaught exception: \n\n${err}`));
@@ -16,8 +18,16 @@ async function main() {
     if (process.env.DATABASE_URL) {
         console.log('A database URL has been provided! Using the server-based configuration...');
 
+        configFirebase();
+
+        // Start express API
+        console.log('Starting Tsuchi API...');
+        startApi();
+
         // Initial dispatch update call and initial database update prep
         console.log('Checking for and adding new users...');
+
+        // This is not needed once the API is live.
         await prepareDbUpdate();
 
         if (args[0] !== '--test') {
