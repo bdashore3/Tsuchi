@@ -6,6 +6,15 @@ export type MangaPacket = {
     Source: string;
 };
 
+export type SearchPacket = {
+    Name: string;
+    Image?: string;
+    Link: string;
+    Status: string;
+    Source: string;
+    Views: number;
+};
+
 export type MangaLifeEntry = {
     SeriesId: string;
     IndexName: string;
@@ -15,6 +24,25 @@ export type MangaLifeEntry = {
     Genres: string;
     Date: string;
     IsEdd: boolean;
+};
+
+export type SearchMangaLifeEntry = {
+    i: string;
+    s: string;
+    o: string;
+    ss: string;
+    ps: string;
+    t: string;
+    v: string;
+    vm: string;
+    y: string;
+    a: Array<string>;
+    al: Array<string>;
+    l: string;
+    lt: string;
+    ls: string;
+    g: Array<string>;
+    h: string;
 };
 
 export type BakaUpdatesData = {
