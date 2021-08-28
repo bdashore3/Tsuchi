@@ -46,7 +46,7 @@ export default async function searchMangaNato(searchString: string): Promise<Arr
         const views = $('span.genres-item-view', manga).text().replace(/,/g, '') ?? '';
 
         const searchPacket: SearchPacket = {
-            Name: removeExtraChars(title),
+            Name: title,
             Image: image,
             Link: link,
             Author: author,

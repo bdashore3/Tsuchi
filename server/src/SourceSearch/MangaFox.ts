@@ -43,7 +43,7 @@ export default async function searchMangaFox(searchString: string): Promise<Arra
         const desc = $('p:nth-child(6)', manga).html() ?? '...';
 
         const searchPacket: SearchPacket = {
-            Name: removeExtraChars(title),
+            Name: title,
             Image: image,
             Link: link,
             Author: author,

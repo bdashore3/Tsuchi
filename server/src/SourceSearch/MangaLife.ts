@@ -34,7 +34,7 @@ export default async function searchMangaLife(searchString: string): Promise<Arr
         const views = +entry.v ?? 0;
 
         const searchPacket: SearchPacket = {
-            Name: title,
+            Name: entry.s,
             Image: `https://cover.nep.li/cover'/${entry.i}.jpg`,
             Link: `https://manga4life.com/manga/${entry.i}`,
             Author: entry.a.join(', '),
