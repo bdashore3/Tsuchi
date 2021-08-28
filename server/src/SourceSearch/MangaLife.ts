@@ -5,7 +5,7 @@ import { removeExtraChars } from '../utils';
 export default async function searchMangaLife(searchString: string): Promise<Array<SearchPacket>> {
     const mangaLifeSearchResults: Array<SearchPacket> = [];
 
-    const query = removeExtraChars(searchString);
+    const query = removeExtraChars(searchString).trim();
 
     const MLSearch = 'https://manga4life.com/search/';
 

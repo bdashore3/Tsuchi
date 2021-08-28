@@ -6,7 +6,7 @@ import { removeExtraChars } from '../utils';
 export default async function searchMangaNato(searchString: string): Promise<Array<SearchPacket>> {
     const mangaLifeSearchResults: Array<SearchPacket> = [];
 
-    const query = removeExtraChars(searchString).replace(/ /g, '_');
+    const query = removeExtraChars(searchString).trim().replace(/ /g, '_');
 
     const MNSearch = `https://manganato.com/advanced_search?s=all&sts=ongoing&orby=topview&page=1&keyw=${query}`;
 
@@ -44,7 +44,6 @@ export default async function searchMangaNato(searchString: string): Promise<Arr
                 .replace(/[\r\n]+/gm, '') ?? '';
 
         const views = $('span.genres-item-view', manga).text().replace(/,/g, '') ?? '';
-
 
         const searchPacket: SearchPacket = {
             Name: removeExtraChars(title),

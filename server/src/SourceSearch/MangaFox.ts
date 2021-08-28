@@ -6,17 +6,17 @@ import { removeExtraChars } from '../utils';
 export default async function searchMangaFox(searchString: string): Promise<Array<SearchPacket>> {
     const mangaLifeSearchResults: Array<SearchPacket> = [];
 
-    const query = removeExtraChars(searchString).replace(/ /g, '+');
+    const query = removeExtraChars(searchString).trim().replace(/ /g, '+');
 
     const MNSearch = `https://fanfox.net/search?title=${query}`;
 
     const html = await axios.get(MNSearch, { timeout: 30000 }).catch((err: AxiosError) => {
         switch (err.code) {
             case 'ECONNABORTED':
-                console.log('Error: MangaNato: forcibly timed out');
+                console.log('Error: MangaFox: forcibly timed out');
                 break;
             case 'ETIMEDOUT':
-                console.log('Error: MangaNato: timed out');
+                console.log('Error: MangaFox: timed out');
                 break;
             default:
                 console.log(err);
