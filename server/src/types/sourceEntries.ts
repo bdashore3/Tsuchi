@@ -10,9 +10,9 @@ export type SearchPacket = {
     Name: string;
     Image?: string;
     Link: string;
-    Author?: string;
-    LatestChapter?: string;
-    Description?: string;
+    Author: string;
+    LatestChapter: string;
+    Description: string;
     Views: number;
     Status: string;
     Source: string;
