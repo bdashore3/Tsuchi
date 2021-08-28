@@ -34,7 +34,7 @@ If you are familiar with scraping websites using JavaScript or TypeScript, this 
 Tsūchi uses [axios](https://www.npmjs.com/package/axios) to fetch a website's contents through a GET request.
 
 -   Example code to fetch a website's content:
--   Here's a [link](https://github.com/bdashore3/Tsuchi/blob/default/src/SourceUpdates/MangaFox.ts#L10) to see the code below in action
+-   Here's a [link](https://github.com/bdashore3/Tsuchi/blob/default/server/src/SourceUpdates/MangaFox.ts#L10) to see the code below in action
 
 ```
 const baseDomain = "https://mymangasite.com";
@@ -60,7 +60,7 @@ If we need the website's HTML to parse updates, we use CheerioJS to interpret an
 
 Fortunately, the devs of the Paperback manga reader have created a [guide on working with CheerioJS](https://paperback.moe/help/contribution/extension-development/parsing-guide). You only need the `Practical guide to parsing` section.
 
-Here's a [link](https://github.com/bdashore3/Tsuchi/blob/default/src/SourceUpdates/MangaFox.ts#L27-L44) showing how CheerioJS is used to parse MangaFox
+Here's a [link](https://github.com/bdashore3/Tsuchi/blob/default/server/src/SourceUpdates/MangaFox.ts#L27-L44) showing how CheerioJS is used to parse MangaFox
 
 ### Putting the parsed content into MangaPackets
 
@@ -76,7 +76,7 @@ The returned array must also have a maximum length of 20 updates.
 
 Once all of these conditions are met, the array can be returned from the source function and parsed in the update handler.
 
-Here's a [link](https://github.com/bdashore3/Tsuchi/blob/default/src/SourceUpdates/MangaFox.ts#L36-L71) which details construction of a MangaPacket and evaluating the time elapsed before returning the updates array.
+Here's a [link](https://github.com/bdashore3/Tsuchi/blob/default/server/src/SourceUpdates/MangaFox.ts#L36-L71) which details construction of a MangaPacket and evaluating the time elapsed before returning the updates array.
 
 ## Questions?
 
