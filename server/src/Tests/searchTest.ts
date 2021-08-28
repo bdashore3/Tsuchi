@@ -6,6 +6,7 @@
 //  node ./server/dist/Tests/searchTest.js Tensei Shi
 //  node ./server/dist/Tests/searchTest.js Baka
 
+import searchMangaFox from '../SourceSearch/MangaFox';
 import searchMangaLife from '../SourceSearch/MangaLife';
 import searchMangaNato from '../SourceSearch/MangaNato';
 
@@ -21,6 +22,7 @@ if (require.main === module) {
 
 async function testSearches(query: string): Promise<void> {
     console.log(`Using "${query}" as a search string...\n`);
+
 
     console.log('### MANGALIFE');
     const ml = await searchMangaLife(query);
@@ -45,4 +47,18 @@ async function testSearches(query: string): Promise<void> {
         }
     }
     console.log();
+
+
+    console.log('### MANGAFOX');
+    const mf = await searchMangaFox(query);
+    if (mf.length < 1) {
+        console.log('### No Manga for this search string was found in MangaNato');
+    } else {
+        console.log(`Found ${mf.length} manga matching the search string...`);
+        for (const el of mf) {
+            console.log(el);
+        }
+    }
+    console.log();
+
 }
