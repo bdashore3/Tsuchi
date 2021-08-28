@@ -38,6 +38,8 @@ export default async function searchMangaLife(searchString: string): Promise<Arr
             Name: title,
             Image: `https://cover.nep.li/cover'/${entry.i}.jpg`,
             Link: `https://manga4life.com/manga/${entry.i}`,
+            Author: entry.a.join(', '),
+            LatestChapter: parseChapter(entry.l),
             Status: entry.ss,
             Source: 'MangaLife',
             Views: views
@@ -54,4 +56,15 @@ export default async function searchMangaLife(searchString: string): Promise<Arr
     =@ts-ignore: Object is possibly 'null'.
     */
     return mangaLifeSearchResults.sort((a, b) => 0 - (a.Views > b.Views ? 1 : -1));
+}
+
+function parseChapter(inputChapter: string): string {
+    const numbers = inputChapter.split('');
+    numbers.shift();
+
+    if (parseInt(numbers[numbers.length - 1]) > 0) {
+        numbers[numbers.length - 1] = `.${numbers[numbers.length - 1]}`;
+    }
+
+    return numbers.join('').replace(/^0+|0$/g, '');
 }

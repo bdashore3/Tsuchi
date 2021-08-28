@@ -13,10 +13,10 @@ export default async function searchMangaNato(searchString: string): Promise<Arr
     const html = await axios.get(MNSearch, { timeout: 30000 }).catch((err: AxiosError) => {
         switch (err.code) {
             case 'ECONNABORTED':
-                console.log('Error: Mangalife: forcibly timed out');
+                console.log('Error: MangaNato: forcibly timed out');
                 break;
             case 'ETIMEDOUT':
-                console.log('Error: Mangalife: timed out');
+                console.log('Error: MangaNato: timed out');
                 break;
             default:
                 console.log(err);
@@ -34,17 +34,28 @@ export default async function searchMangaNato(searchString: string): Promise<Arr
 
     for (const manga of $('div.content-genres-item', 'div.panel-content-genres').toArray()) {
         const title = $('img', manga).first().attr('alt') ?? '';
-        const link = $('a', manga).attr('href') ?? '';
         const image = $('img', manga).first().attr('src') ?? '';
-        const views = $('span.genres-item-view', manga).text().replace(/,/g, '');
+        const link = $('a', manga).attr('href') ?? '';
+        const author = $('span.genres-item-author', manga).text() ?? '';
+        const latest = $('a.genres-item-chap.text-nowrap.a-h', manga).text() ?? '';
+        const desc =
+            $('div.genres-item-description', manga)
+                .text()
+                .replace(/[\r\n]+/gm, '') ?? '';
+
+        const views = $('span.genres-item-view', manga).text().replace(/,/g, '') ?? '';
+
 
         const searchPacket: SearchPacket = {
             Name: removeExtraChars(title),
             Image: image,
             Link: link,
+            Author: author,
+            LatestChapter: latest,
+            Description: desc,
+            Views: +views,
             Status: 'Ongoing',
-            Source: 'MangaNato',
-            Views: +views
+            Source: 'MangaNato'
         };
 
         mangaLifeSearchResults.push(searchPacket);
