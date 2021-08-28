@@ -4,7 +4,6 @@ import { removeExtraChars } from '../utils';
 
 export default async function searchMangaLife(searchString: string): Promise<Array<SearchPacket>> {
     const mangaLifeSearchResults: Array<SearchPacket> = [];
-
     const query = removeExtraChars(searchString).trim();
 
     const MLSearch = 'https://manga4life.com/search/';
@@ -40,9 +39,10 @@ export default async function searchMangaLife(searchString: string): Promise<Arr
             Link: `https://manga4life.com/manga/${entry.i}`,
             Author: entry.a.join(', '),
             LatestChapter: parseChapter(entry.l),
+            Description: '',
+            Views: views,
             Status: entry.ss,
-            Source: 'MangaLife',
-            Views: views
+            Source: 'MangaLife'
         };
 
         if (title.match(query) || (alt.match(query) && entry.ss == 'Ongoing')) {
@@ -50,11 +50,6 @@ export default async function searchMangaLife(searchString: string): Promise<Arr
         }
     }
 
-    /*
-    When views is optional ->
-    =eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    =@ts-ignore: Object is possibly 'null'.
-    */
     return mangaLifeSearchResults.sort((a, b) => 0 - (a.Views > b.Views ? 1 : -1));
 }
 

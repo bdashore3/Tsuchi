@@ -51,7 +51,7 @@ export default async function searchMangaFox(searchString: string): Promise<Arra
             Description: desc,
             Views: 0,
             Status: 'Ongoing',
-            Source: 'MangaNato'
+            Source: 'MangaFox'
         };
 
         mangaLifeSearchResults.push(searchPacket);
