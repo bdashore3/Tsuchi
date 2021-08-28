@@ -1,28 +1,38 @@
-//  node ./server/dist/Tests/searchTest.js
-//  node ./server/dist/Tests/searchTest.js title in args
-
-// Example
-//  node ./server/dist/Tests/searchTest.js A rare marr
-//  node ./server/dist/Tests/searchTest.js Tensei Shi
-//  node ./server/dist/Tests/searchTest.js Baka
+//  node ./server/dist/Tests/searchTest.js -o solo leveling
+//  node ./server/dist/Tests/searchTest.js -t solo leveling
 
 import searchMangaFox from '../SourceSearch/MangaFox';
 import searchMangaLife from '../SourceSearch/MangaLife';
 import searchMangaNato from '../SourceSearch/MangaNato';
+import { fetchSearch } from '../SourceSearch';
 
 if (require.main === module) {
     const args = process.argv;
-    const argTitle = args.slice(2).join(' ');
-    if (argTitle == '') {
-        testSearches('that time i got');
-    } else {
+    const argTitle = args.slice(3).join(' ').trim();
+    if (args[2] == '-o') {
+        searchResult(argTitle);
+    } else if (args[2] == '-t') {
         testSearches(argTitle);
+    } else {
+        console.error('Incorrect arguments at 3rd position.');
     }
 }
 
-async function testSearches(query: string): Promise<void> {
-    console.log(`Using "${query}" as a search string...\n`);
+// -o
+async function searchResult(query: string) {
+    const res = await fetchSearch(query);
+    console.log(res.length);
+    console.log(res);
+    console.log(res.length);
+    return res;
+}
 
+// -t
+async function testSearches(query: string): Promise<void> {
+    if (query == '') {
+        console.log([]);
+        return;
+    }
 
     console.log('### MANGALIFE');
     const ml = await searchMangaLife(query);
@@ -48,7 +58,6 @@ async function testSearches(query: string): Promise<void> {
     }
     console.log();
 
-
     console.log('### MANGAFOX');
     const mf = await searchMangaFox(query);
     if (mf.length < 1) {
@@ -60,5 +69,4 @@ async function testSearches(query: string): Promise<void> {
         }
     }
     console.log();
-
 }
