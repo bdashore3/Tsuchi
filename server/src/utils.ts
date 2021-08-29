@@ -1,5 +1,5 @@
 import { promises as fs } from 'fs';
-import { UserJson } from './types';
+import { MangaPacket, SearchPacket, UserJson } from './types';
 
 // Fetches user configuration.
 export async function fetchUserJson(userFile: string): Promise<UserJson> {
@@ -45,4 +45,15 @@ export function calculateGenericTime(time: string): number {
         return int * 60 + 1;
     }
     return 1000; // Time at this point is in days or above.
+}
+
+// Changes searchPacket to MangaPacket
+export function toMangaPacket(searchPacket: SearchPacket): MangaPacket {
+    const retMangaPacket: MangaPacket = {
+        Name: removeExtraChars(searchPacket.Name),
+        Chapter: searchPacket.LatestChapter,
+        Image: searchPacket.Image,
+        Source: searchPacket.Source
+    };
+    return retMangaPacket;
 }
