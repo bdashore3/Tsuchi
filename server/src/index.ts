@@ -24,6 +24,7 @@ async function main() {
         console.log('Starting Tsuchi API...');
         startApi();
 
+        /*
         // Initial dispatch update call and initial database update prep
         console.log('Checking for and adding new users...');
 
@@ -40,6 +41,7 @@ async function main() {
                 await prepareDbUpdate();
             }, 1.8e6);
         }
+        */
     } else {
         console.log(
             'A database URL was not provided in your configuration! Falling back to single-user mode.'
